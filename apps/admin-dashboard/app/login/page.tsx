@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { API_URL } from "@/app/lib/api";
 import { saveSession } from "@/app/lib/auth";
@@ -82,9 +83,17 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
       >
-        <h1 className="mb-6 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Đăng nhập KIMHOUSING
-        </h1>
+        <div className="mb-6 flex flex-col items-center gap-2">
+          <Image
+            src="/Logo_navbar.png"
+            alt="Kim Housing"
+            width={468}
+            height={196}
+            priority
+            className="h-10 w-auto object-contain"
+          />
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">Đăng nhập vào hệ thống quản lý</p>
+        </div>
 
         <div className="mb-4">
           <label

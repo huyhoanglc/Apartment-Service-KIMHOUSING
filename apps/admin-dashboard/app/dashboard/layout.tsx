@@ -3,6 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
 
 function subscribeNoop() {
@@ -34,8 +35,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
       <header className="flex items-center justify-between border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-800 dark:bg-zinc-950">
         <nav className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="font-semibold text-zinc-900 dark:text-zinc-50">
-            KIMHOUSING
+          <Link href="/dashboard" className="flex items-center">
+            <Image
+              src="/Logo_navbar.png"
+              alt="Kim Housing"
+              width={468}
+              height={196}
+              priority
+              className="h-7 w-auto object-contain"
+            />
           </Link>
           <Link
             href="/dashboard/apartments"
