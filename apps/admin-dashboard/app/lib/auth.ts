@@ -20,10 +20,20 @@ export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
 
+// Cache theo raw string để trả về CÙNG một tham chiếu khi dữ liệu chưa đổi -
+// bắt buộc phải vậy vì getUser được dùng làm getSnapshot cho useSyncExternalStore,
+// trả về object mới mỗi lần gọi (do JSON.parse) sẽ gây vòng lặp render vô hạn (React error #185).
+let cachedRaw: string | null = null;
+let cachedUser: AuthUser | null = null;
+
 export function getUser(): AuthUser | null {
   if (typeof window === "undefined") return null;
   const raw = localStorage.getItem(USER_KEY);
-  return raw ? (JSON.parse(raw) as AuthUser) : null;
+  if (raw !== cachedRaw) {
+    cachedRaw = raw;
+    cachedUser = raw ? (JSON.parse(raw) as AuthUser) : null;
+  }
+  return cachedUser;
 }
 
 export function clearSession() {
