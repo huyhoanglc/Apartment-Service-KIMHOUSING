@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SALE
+  CUSTOMER
+}
+
+enum AccessType {
+  STAIRS
+  ELEVATOR
+  BOTH
+}
+
+enum RoomType {
+  DUPLEX
+  STUDIO
+  ONE_BEDROOM
+  TWO_BEDROOM
+}
+
+enum RoomStatus {
+  AVAILABLE
+  RENTED
+  HIDDEN
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(SALE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  apartments Apartment[] @relation("CreatedBy")
+
+  @@map("users")
+}
+
+model Apartment {
+  id           String  @id @default(cuid())
+  houseNumber  String
+  street       String
+  district     String
+  buildingName String?
+  managerName  String
+  managerPhone String
+
+  accessType AccessType
+  totalRooms Int
+
+  createdById String
+  createdBy   User   @relation("CreatedBy", fields: [createdById], references: [id])
+
+  features ApartmentFeature[]
+  rooms    Room[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([district])
+  @@map("apartments")
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  apartmentId String
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  code     String
+  slug     String   @unique
+  roomType RoomType
+
+  area Float
+
+  basePrice   Int
+  publicPrice Int
+  status      RoomStatus @default(AVAILABLE)
+
+  features RoomFeature[]
+  media    Media[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@map("rooms")
+}
+
+model Feature {
+  id   String @id @default(cuid())
+  name String @unique
+
+  apartments ApartmentFeature[]
+  rooms      RoomFeature[]
+
+  @@map("features")
+}
+
+model ApartmentFeature {
+  apartmentId String
+  featureId   String
+
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  feature   Feature   @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@id([apartmentId, featureId])
+  @@map("apartment_features")
+}
+
+model RoomFeature {
+  roomId    String
+  featureId String
+
+  room    Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  feature Feature @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@id([roomId, featureId])
+  @@map("room_features")
+}
+
+model Media {
+  id     String @id @default(cuid())
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  url      String
+  publicId String
+  type     MediaType
+  order    Int       @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([roomId])
+  @@map("media")
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@map("otp_codes")
+}
