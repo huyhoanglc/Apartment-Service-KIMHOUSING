@@ -18,9 +18,9 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
   return (
     <Link
       href={`/rooms/${room.slug}`}
-      className="block overflow-hidden rounded-lg border border-zinc-200 bg-white transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950"
+      className="block overflow-hidden rounded-lg border border-navy/10 bg-white transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-white/5"
     >
-      <div className="relative aspect-video w-full bg-zinc-100 dark:bg-zinc-900">
+      <div className="relative aspect-video w-full bg-navy/5 dark:bg-white/5">
         {thumbnail ? (
           <Image
             src={thumbnail.url}
@@ -30,20 +30,20 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-zinc-400">
+          <div className="flex h-full w-full items-center justify-center text-sm text-navy/40 dark:text-white/40">
             Chưa có ảnh
           </div>
         )}
       </div>
       <div className="p-4">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{room.apartment.district}</p>
-        <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+        <p className="text-sm text-navy/60 dark:text-white/60">{room.apartment.district}</p>
+        <h3 className="text-base font-semibold text-navy dark:text-white">
           Phòng {room.code} - {ROOM_TYPE_LABEL[room.roomType]}
         </h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-navy/60 dark:text-white/60">
           {address} · {room.area} m²
         </p>
-        <p className="mt-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+        <p className="mt-2 text-lg font-semibold text-navy dark:text-white">
           {room.publicPrice.toLocaleString("vi-VN")} đ/tháng
         </p>
         {room.features.length > 0 && (
@@ -51,7 +51,7 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
             {room.features.map((rf) => (
               <span
                 key={rf.feature.id}
-                className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
+                className="rounded-full bg-navy/5 px-2 py-0.5 text-xs text-navy/70 dark:bg-white/10 dark:text-white/70"
               >
                 {rf.feature.name}
               </span>

@@ -5,8 +5,8 @@ import RoomCard from "@/app/components/RoomCard";
 // mặc định từ app/layout.tsx (layout.template không áp dụng cho page cùng segment gốc).
 
 const inputClass =
-  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
-const labelClass = "mb-1 block text-xs font-medium text-navy/70";
+  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold dark:border-white/15 dark:bg-white/5 dark:text-white";
+const labelClass = "mb-1 block text-xs font-medium text-navy/70 dark:text-white/70";
 
 function asString(value: string | string[] | undefined): string {
   return typeof value === "string" ? value : "";
@@ -30,16 +30,18 @@ export default async function HomePage({
   ]);
 
   return (
-    <div className="flex flex-1 flex-col bg-white">
+    <div className="flex flex-1 flex-col bg-white dark:bg-navy">
       <main className="flex flex-1 flex-col gap-6 p-6">
         <div>
-          <h1 className="text-2xl font-semibold text-navy">Căn hộ dịch vụ cho thuê</h1>
-          <p className="text-sm text-navy/60">Tìm phòng phù hợp theo khu vực, giá và tiện ích</p>
+          <h1 className="text-2xl font-semibold text-navy dark:text-white">Căn hộ dịch vụ cho thuê</h1>
+          <p className="text-sm text-navy/60 dark:text-white/60">
+            Tìm phòng phù hợp theo khu vực, giá và tiện ích
+          </p>
         </div>
 
         <form
           method="GET"
-          className="flex flex-wrap items-end gap-3 rounded-lg border border-navy/10 bg-white p-4 shadow-sm"
+          className="flex flex-wrap items-end gap-3 rounded-lg border border-navy/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5"
         >
           <div>
             <label htmlFor="district" className={labelClass}>
@@ -118,11 +120,13 @@ export default async function HomePage({
         </form>
 
         {rooms === null && (
-          <p className="text-sm text-red-600">Không tải được danh sách phòng, vui lòng thử lại sau.</p>
+          <p className="text-sm text-red-600 dark:text-red-400">
+            Không tải được danh sách phòng, vui lòng thử lại sau.
+          </p>
         )}
 
         {rooms !== null && rooms.length === 0 && (
-          <p className="text-sm text-navy/60">Không tìm thấy phòng phù hợp.</p>
+          <p className="text-sm text-navy/60 dark:text-white/60">Không tìm thấy phòng phù hợp.</p>
         )}
 
         {rooms !== null && rooms.length > 0 && (

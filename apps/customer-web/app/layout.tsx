@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import Navbar from "@/app/components/Navbar";
 import "./globals.css";
+
+const THEME_INIT_SCRIPT = `
+try {
+  if (localStorage.getItem('kimhousing_theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+} catch (e) {}
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +40,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {THEME_INIT_SCRIPT}
+        </Script>
         <Navbar />
         {children}
       </body>

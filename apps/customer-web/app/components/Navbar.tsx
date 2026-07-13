@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ThemeToggle from "@/app/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Trang chủ" },
@@ -20,7 +21,7 @@ function SearchIcon() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
-      className="h-4 w-4 shrink-0 text-navy/40"
+      className="h-4 w-4 shrink-0 text-navy/40 dark:text-white/40"
     >
       <circle cx="9" cy="9" r="6" />
       <path d="m17 17-3.5-3.5" strokeLinecap="round" />
@@ -49,14 +50,14 @@ function SearchForm({ className }: { className?: string }) {
     <form
       action="/"
       method="GET"
-      className={`flex items-center gap-2 rounded-full border border-navy/10 bg-navy/3 px-4 py-2 transition-all duration-300 focus-within:border-gold focus-within:bg-white ${className ?? ""}`}
+      className={`flex items-center gap-2 rounded-full border border-navy/10 bg-navy/3 px-4 py-2 transition-all duration-300 focus-within:border-gold focus-within:bg-white dark:border-white/10 dark:bg-white/5 dark:focus-within:bg-navy-light ${className ?? ""}`}
     >
       <SearchIcon />
       <input
         type="text"
         name="district"
         placeholder="Tìm theo khu vực..."
-        className="w-full bg-transparent text-sm text-navy outline-none placeholder:text-navy/40"
+        className="w-full bg-transparent text-sm text-navy outline-none placeholder:text-navy/40 dark:text-white dark:placeholder:text-white/40"
       />
     </form>
   );
@@ -67,11 +68,11 @@ export default function Navbar() {
   const [logoError, setLogoError] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-navy/5 bg-white/80 shadow-sm backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-navy/5 bg-white/80 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-navy/80">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center">
           {logoError ? (
-            <span className="text-lg font-bold tracking-wide text-navy">
+            <span className="text-lg font-bold tracking-wide text-navy dark:text-white">
               KIM <span className="text-gold-to">HOUSING</span>
             </span>
           ) : (
@@ -90,7 +91,7 @@ export default function Navbar() {
         <div className="hidden flex-1 items-center gap-6 md:flex">
           <SearchForm className="max-w-xs flex-1" />
 
-          <nav className="flex items-center gap-6 text-sm font-medium text-navy">
+          <nav className="flex items-center gap-6 text-sm font-medium text-navy dark:text-white">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -103,27 +104,31 @@ export default function Navbar() {
           </nav>
         </div>
 
-        <div className="ml-auto hidden md:block">
+        <div className="ml-auto hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <Link href="/lien-he" className={goldButtonClass}>
             Liên hệ ngay
           </Link>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setMobileOpen((v) => !v)}
-          className="ml-auto flex h-9 w-9 items-center justify-center rounded-md text-navy md:hidden"
-          aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
+        <div className="ml-auto flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            className="flex h-9 w-9 items-center justify-center rounded-md text-navy dark:text-white"
+            aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-navy/10 bg-white px-4 py-4 md:hidden">
+        <div className="border-t border-navy/10 bg-white px-4 py-4 dark:border-white/10 dark:bg-navy md:hidden">
           <SearchForm className="mb-4" />
-          <nav className="flex flex-col gap-3 text-sm font-medium text-navy">
+          <nav className="flex flex-col gap-3 text-sm font-medium text-navy dark:text-white">
             {NAV_LINKS.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}>
                 {link.label}
