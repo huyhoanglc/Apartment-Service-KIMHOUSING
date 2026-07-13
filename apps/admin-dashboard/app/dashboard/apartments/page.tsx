@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
 import { getUser } from "@/app/lib/auth";
+import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 interface Apartment {
   id: string;
@@ -29,6 +30,7 @@ export default function ApartmentsPage() {
   const [districtInput, setDistrictInput] = useState("");
   const [district, setDistrict] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isAdmin = getUser()?.role === "ADMIN";
 
@@ -69,110 +71,119 @@ export default function ApartmentsPage() {
   async function handleDelete(id: string) {
     if (!confirm("Xoá apartment này? Hành động không thể hoàn tác.")) return;
 
-    const res = await apiFetch(`/api/apartments/${id}`, { method: "DELETE" });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      alert(data.message ?? "Xoá thất bại");
-      return;
+    setDeleting(true);
+    try {
+      const res = await apiFetch(`/api/apartments/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        alert(data.message ?? "Xoá thất bại");
+        return;
+      }
+      setApartments((prev) => prev.filter((a) => a.id !== id));
+    } finally {
+      setDeleting(false);
     }
-    setApartments((prev) => prev.filter((a) => a.id !== id));
   }
 
   return (
     <div>
+      <LoadingOverlay show={deleting} label="Đang xoá..." />
+
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Apartments</h1>
+        <h1 className="text-xl font-semibold text-navy">Apartments</h1>
         <Link
           href="/dashboard/apartments/new"
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
         >
           + Thêm Apartment
         </Link>
       </div>
 
-      <form onSubmit={handleFilterSubmit} className="mb-4 flex gap-2">
-        <input
-          value={districtInput}
-          onChange={(e) => setDistrictInput(e.target.value)}
-          placeholder="Lọc theo quận/huyện"
-          className="w-64 rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-        />
-        <button
-          type="submit"
-          className="rounded-md border border-zinc-300 px-4 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-50"
-        >
-          Lọc
-        </button>
-      </form>
+      <div className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm">
+        <form onSubmit={handleFilterSubmit} className="mb-4 flex gap-2">
+          <input
+            value={districtInput}
+            onChange={(e) => setDistrictInput(e.target.value)}
+            placeholder="Lọc theo quận/huyện"
+            className="w-64 rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold"
+          />
+          <button
+            type="submit"
+            className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+          >
+            Lọc
+          </button>
+        </form>
 
-      {error && <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
-      {loading && <p className="text-sm text-zinc-600 dark:text-zinc-400">Đang tải...</p>}
+        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+        {loading && <p className="text-sm text-navy/60">Đang tải...</p>}
 
-      {!loading && !error && apartments.length === 0 && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Chưa có apartment nào.</p>
-      )}
+        {!loading && !error && apartments.length === 0 && (
+          <p className="text-sm text-navy/60">Chưa có apartment nào.</p>
+        )}
 
-      {!loading && apartments.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-zinc-200 text-left text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
-                <th className="py-2 pr-4">Địa chỉ</th>
-                <th className="py-2 pr-4">Quận</th>
-                <th className="py-2 pr-4">Quản lý</th>
-                <th className="py-2 pr-4">Thang</th>
-                <th className="py-2 pr-4">Số phòng</th>
-                <th className="py-2 pr-4">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apartments.map((apt) => (
-                <tr
-                  key={apt.id}
-                  className="border-b border-zinc-100 text-zinc-900 dark:border-zinc-900 dark:text-zinc-50"
-                >
-                  <td className="py-2 pr-4">
-                    {apt.houseNumber} {apt.street}
-                    {apt.buildingName ? ` (${apt.buildingName})` : ""}
-                  </td>
-                  <td className="py-2 pr-4">{apt.district}</td>
-                  <td className="py-2 pr-4">
-                    {apt.managerName} - {apt.managerPhone}
-                  </td>
-                  <td className="py-2 pr-4">{ACCESS_TYPE_LABEL[apt.accessType]}</td>
-                  <td className="py-2 pr-4">
-                    {apt.rooms.length}/{apt.totalRooms}
-                  </td>
-                  <td className="py-2 pr-4">
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/dashboard/apartments/${apt.id}`}
-                        className="text-zinc-600 underline dark:text-zinc-400"
-                      >
-                        Phòng
-                      </Link>
-                      <Link
-                        href={`/dashboard/apartments/${apt.id}/edit`}
-                        className="text-zinc-600 underline dark:text-zinc-400"
-                      >
-                        Sửa
-                      </Link>
-                      {isAdmin && (
-                        <button
-                          onClick={() => handleDelete(apt.id)}
-                          className="text-red-600 underline dark:text-red-400"
-                        >
-                          Xoá
-                        </button>
-                      )}
-                    </div>
-                  </td>
+        {!loading && apartments.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-navy/10 text-left text-navy/50">
+                  <th className="py-2 pr-4 font-medium">Địa chỉ</th>
+                  <th className="py-2 pr-4 font-medium">Quận</th>
+                  <th className="py-2 pr-4 font-medium">Quản lý</th>
+                  <th className="py-2 pr-4 font-medium">Thang</th>
+                  <th className="py-2 pr-4 font-medium">Số phòng</th>
+                  <th className="py-2 pr-4 font-medium">Thao tác</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {apartments.map((apt) => (
+                  <tr
+                    key={apt.id}
+                    className="border-b border-navy/5 text-navy transition-colors duration-200 hover:bg-navy/2"
+                  >
+                    <td className="py-3 pr-4">
+                      {apt.houseNumber} {apt.street}
+                      {apt.buildingName ? ` (${apt.buildingName})` : ""}
+                    </td>
+                    <td className="py-3 pr-4">{apt.district}</td>
+                    <td className="py-3 pr-4">
+                      {apt.managerName} - {apt.managerPhone}
+                    </td>
+                    <td className="py-3 pr-4">{ACCESS_TYPE_LABEL[apt.accessType]}</td>
+                    <td className="py-3 pr-4">
+                      {apt.rooms.length}/{apt.totalRooms}
+                    </td>
+                    <td className="py-3 pr-4">
+                      <div className="flex gap-3">
+                        <Link
+                          href={`/dashboard/apartments/${apt.id}`}
+                          className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to"
+                        >
+                          Phòng
+                        </Link>
+                        <Link
+                          href={`/dashboard/apartments/${apt.id}/edit`}
+                          className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to"
+                        >
+                          Sửa
+                        </Link>
+                        {isAdmin && (
+                          <button
+                            onClick={() => handleDelete(apt.id)}
+                            className="text-red-600 underline transition-colors duration-300 hover:text-red-700"
+                          >
+                            Xoá
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

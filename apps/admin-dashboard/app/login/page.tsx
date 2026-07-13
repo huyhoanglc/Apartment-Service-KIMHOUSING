@@ -7,8 +7,13 @@ import Image from "next/image";
 import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { API_URL } from "@/app/lib/api";
 import { saveSession } from "@/app/lib/auth";
+import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+const inputClass =
+  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-sm font-medium text-navy/70";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,10 +83,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-zinc-50 px-4 dark:bg-black">
+    <div className="flex flex-1 items-center justify-center bg-background px-4">
+      <LoadingOverlay show={loading} label="Đang đăng nhập..." />
+
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
+        className="w-full max-w-sm rounded-lg border border-navy/10 bg-white p-8 shadow-sm"
       >
         <div className="mb-6 flex flex-col items-center gap-2">
           <Image
@@ -92,14 +99,11 @@ export default function LoginPage() {
             priority
             className="h-10 w-auto object-contain"
           />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Đăng nhập vào hệ thống quản lý</p>
+          <p className="text-sm text-navy/60">Đăng nhập vào hệ thống quản lý</p>
         </div>
 
         <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
+          <label htmlFor="email" className={labelClass}>
             Email
           </label>
           <input
@@ -109,15 +113,12 @@ export default function LoginPage() {
             autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className={inputClass}
           />
         </div>
 
         <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
+          <label htmlFor="password" className={labelClass}>
             Mật khẩu
           </label>
           <input
@@ -127,18 +128,16 @@ export default function LoginPage() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className={inputClass}
           />
         </div>
 
-        {error && (
-          <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>
-        )}
+        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="w-full rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 disabled:opacity-50"
         >
           {loading ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
@@ -146,9 +145,9 @@ export default function LoginPage() {
         {GOOGLE_CLIENT_ID && (
           <div className="mt-4">
             <div className="mb-4 flex items-center gap-2">
-              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">hoặc</span>
-              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+              <div className="h-px flex-1 bg-navy/10" />
+              <span className="text-xs text-navy/40">hoặc</span>
+              <div className="h-px flex-1 bg-navy/10" />
             </div>
             <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale="vi">
               <div className="flex justify-center">
@@ -163,7 +162,7 @@ export default function LoginPage() {
         )}
 
         <div className="mt-4 text-center text-sm">
-          <Link href="/forgot-password" className="text-zinc-600 underline dark:text-zinc-400">
+          <Link href="/forgot-password" className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to">
             Quên mật khẩu?
           </Link>
         </div>

@@ -37,9 +37,7 @@ export default function NewApartmentPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-        Thêm Apartment
-      </h1>
+      <h1 className="mb-6 text-xl font-semibold text-navy">Thêm Apartment</h1>
       <ApartmentForm onSubmit={handleCreate} submitLabel="Tạo mới" />
     </div>
   );

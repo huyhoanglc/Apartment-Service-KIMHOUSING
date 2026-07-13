@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 interface Media {
   id: string;
@@ -162,107 +163,100 @@ export default function RoomDetailPage() {
     }
   }
 
-  if (error) return <p className="text-sm text-red-600 dark:text-red-400">{error}</p>;
-  if (!room) return <p className="text-sm text-zinc-600 dark:text-zinc-400">Đang tải...</p>;
+  if (error) return <p className="text-sm text-red-600">{error}</p>;
+  if (!room) return <p className="text-sm text-navy/60">Đang tải...</p>;
 
   return (
     <div>
+      <LoadingOverlay show={uploading} label="Đang tải ảnh/video lên..." />
+
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            Phòng {room.code}
-          </h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <h1 className="text-xl font-semibold text-navy">Phòng {room.code}</h1>
+          <p className="text-sm text-navy/60">
             {ROOM_TYPE_LABEL[room.roomType]} · {room.area} m² · {ROOM_STATUS_LABEL[room.status]}
           </p>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-navy/60">
             Giá gốc: {room.basePrice?.toLocaleString("vi-VN") ?? "-"} · Giá công khai:{" "}
             {room.publicPrice.toLocaleString("vi-VN")}
           </p>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-navy/60">
             Tiện ích: {room.features.map((rf) => rf.feature.name).join(", ") || "-"}
           </p>
         </div>
         <div className="flex shrink-0 gap-2">
           <button
             onClick={handleCopyText}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-50"
+            className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
           >
             Copy text thông tin phòng
           </button>
           <Link
             href={`/dashboard/apartments/${params.id}/rooms/${room.id}/edit`}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-50"
+            className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
           >
             Sửa thông tin phòng
           </Link>
         </div>
       </div>
 
-      {copyFeedback && (
-        <p className="mb-4 text-sm text-green-600 dark:text-green-400">{copyFeedback}</p>
-      )}
+      {copyFeedback && <p className="mb-4 text-sm text-green-600">{copyFeedback}</p>}
 
-      <h2 className="mb-4 text-base font-semibold text-zinc-900 dark:text-zinc-50">Ảnh / Video</h2>
+      <div className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm">
+        <h2 className="mb-4 text-base font-semibold text-navy">Ảnh / Video</h2>
 
-      <form onSubmit={handleUpload} className="mb-6 flex items-center gap-2">
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/x-msvideo"
-          className="text-sm text-zinc-900 dark:text-zinc-50"
-        />
-        <button
-          type="submit"
-          disabled={uploading}
-          className="whitespace-nowrap rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          {uploading ? "Đang tải lên..." : "Tải lên"}
-        </button>
-      </form>
+        <form onSubmit={handleUpload} className="mb-6 flex items-center gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/x-msvideo"
+            className="text-sm text-navy"
+          />
+          <button
+            type="submit"
+            disabled={uploading}
+            className="whitespace-nowrap rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 disabled:opacity-50"
+          >
+            {uploading ? "Đang tải lên..." : "Tải lên"}
+          </button>
+        </form>
 
-      {uploadError && (
-        <p className="mb-4 text-sm text-red-600 dark:text-red-400">{uploadError}</p>
-      )}
+        {uploadError && <p className="mb-4 text-sm text-red-600">{uploadError}</p>}
 
-      {room.media.length === 0 && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Chưa có ảnh/video nào.</p>
-      )}
+        {room.media.length === 0 && <p className="text-sm text-navy/60">Chưa có ảnh/video nào.</p>}
 
-      {room.media.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {room.media.map((m) => (
-            <div
-              key={m.id}
-              className="overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800"
-            >
-              {m.type === "IMAGE" ? (
-                // eslint-disable-next-line @next/next/no-img-element -- ảnh do người dùng upload lên Cloudinary, không nằm trong danh sách domain tối ưu hoá tĩnh
-                <img src={m.url} alt="" className="aspect-square w-full object-cover" />
-              ) : (
-                <video src={m.url} controls className="aspect-square w-full object-cover" />
-              )}
-              <div className="flex">
-                {m.type === "IMAGE" && (
-                  <button
-                    onClick={() => handleCopyImage(m.url)}
-                    className="flex-1 bg-zinc-100 py-1.5 text-xs text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                  >
-                    Copy ảnh
-                  </button>
+        {room.media.length > 0 && (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+            {room.media.map((m) => (
+              <div key={m.id} className="overflow-hidden rounded-md border border-navy/10">
+                {m.type === "IMAGE" ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- ảnh do người dùng upload lên Cloudinary, không nằm trong danh sách domain tối ưu hoá tĩnh
+                  <img src={m.url} alt="" className="aspect-square w-full object-cover" />
+                ) : (
+                  <video src={m.url} controls className="aspect-square w-full object-cover" />
                 )}
-                <button
-                  onClick={() => handleDeleteMedia(m.id)}
-                  className="flex-1 bg-zinc-100 py-1.5 text-xs text-red-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-red-400 dark:hover:bg-zinc-800"
-                >
-                  Xoá
-                </button>
+                <div className="flex">
+                  {m.type === "IMAGE" && (
+                    <button
+                      onClick={() => handleCopyImage(m.url)}
+                      className="flex-1 bg-navy/3 py-1.5 text-xs font-medium text-navy transition-colors duration-300 hover:bg-navy/5 hover:text-gold-to"
+                    >
+                      Copy ảnh
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDeleteMedia(m.id)}
+                    className="flex-1 bg-navy/3 py-1.5 text-xs font-medium text-red-600 transition-colors duration-300 hover:bg-navy/5 hover:text-red-700"
+                  >
+                    Xoá
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

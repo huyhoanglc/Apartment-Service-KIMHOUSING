@@ -2,8 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
+import Sidebar from "@/app/components/Sidebar";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
 
 function subscribeNoop() {
@@ -32,39 +31,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
-      <header className="flex items-center justify-between border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="flex items-center">
-            <Image
-              src="/Logo_navbar.png"
-              alt="Kim Housing"
-              width={468}
-              height={196}
-              priority
-              className="h-7 w-auto object-contain"
-            />
-          </Link>
-          <Link
-            href="/dashboard/apartments"
-            className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            Apartments
-          </Link>
-        </nav>
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-zinc-600 dark:text-zinc-400">
-            {user.name} ({user.role})
+    <div className="flex flex-1">
+      <Sidebar />
+      <div className="flex flex-1 flex-col">
+        <header className="flex h-16 shrink-0 items-center justify-end gap-4 border-b border-navy/10 bg-white px-6">
+          <span className="text-sm text-navy/70">
+            {user.name} <span className="text-navy/40">({user.role})</span>
           </span>
           <button
             onClick={handleLogout}
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-zinc-900 dark:border-zinc-700 dark:text-zinc-50"
+            className="rounded-md border border-navy/15 px-3 py-1.5 text-sm font-medium text-navy transition-colors duration-200 hover:border-gold hover:text-gold-to"
           >
             Đăng xuất
           </button>
-        </div>
-      </header>
-      <main className="flex flex-1 flex-col p-6">{children}</main>
+        </header>
+        <main className="flex flex-1 flex-col bg-background p-6">{children}</main>
+      </div>
     </div>
   );
 }

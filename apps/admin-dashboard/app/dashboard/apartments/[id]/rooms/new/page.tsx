@@ -39,7 +39,7 @@ export default function NewRoomPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-lg font-semibold text-zinc-900 dark:text-zinc-50">Thêm phòng</h1>
+      <h1 className="mb-6 text-xl font-semibold text-navy">Thêm phòng</h1>
       <RoomForm onSubmit={handleCreate} submitLabel="Tạo mới" />
     </div>
   );

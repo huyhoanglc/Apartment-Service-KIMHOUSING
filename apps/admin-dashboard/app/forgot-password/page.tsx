@@ -3,8 +3,15 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { API_URL } from "@/app/lib/api";
+import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 type Step = "request" | "reset" | "done";
+
+const inputClass =
+  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-sm font-medium text-navy/70";
+const buttonClass =
+  "w-full rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 disabled:opacity-50";
 
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState<Step>("request");
@@ -83,22 +90,20 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-zinc-50 px-4 dark:bg-black">
-      <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="flex flex-1 items-center justify-center bg-background px-4">
+      <LoadingOverlay
+        show={loading}
+        label={step === "reset" ? "Đang xử lý..." : "Đang gửi mã OTP..."}
+      />
+
+      <div className="w-full max-w-sm rounded-lg border border-navy/10 bg-white p-8 shadow-sm">
         {step === "request" && (
           <form onSubmit={handleRequestOtp}>
-            <h1 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Quên mật khẩu
-            </h1>
-            <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
-              Nhập email để nhận mã OTP đặt lại mật khẩu.
-            </p>
+            <h1 className="mb-2 text-xl font-semibold text-navy">Quên mật khẩu</h1>
+            <p className="mb-6 text-sm text-navy/60">Nhập email để nhận mã OTP đặt lại mật khẩu.</p>
 
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-              >
+              <label htmlFor="email" className={labelClass}>
                 Email
               </label>
               <input
@@ -108,24 +113,18 @@ export default function ForgotPasswordPage() {
                 autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className={inputClass}
               />
             </div>
 
-            {error && (
-              <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>
-            )}
+            {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
+            <button type="submit" disabled={loading} className={buttonClass}>
               {loading ? "Đang gửi..." : "Gửi mã OTP"}
             </button>
 
             <div className="mt-4 text-center text-sm">
-              <Link href="/login" className="text-zinc-600 underline dark:text-zinc-400">
+              <Link href="/login" className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to">
                 Quay lại đăng nhập
               </Link>
             </div>
@@ -134,18 +133,11 @@ export default function ForgotPasswordPage() {
 
         {step === "reset" && (
           <form onSubmit={handleResetPassword}>
-            <h1 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Nhập mã OTP
-            </h1>
-            {info && (
-              <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">{info}</p>
-            )}
+            <h1 className="mb-2 text-xl font-semibold text-navy">Nhập mã OTP</h1>
+            {info && <p className="mb-6 text-sm text-navy/60">{info}</p>}
 
             <div className="mb-4">
-              <label
-                htmlFor="otp"
-                className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-              >
+              <label htmlFor="otp" className={labelClass}>
                 Mã OTP (6 số, hết hạn sau 5 phút)
               </label>
               <input
@@ -156,15 +148,12 @@ export default function ForgotPasswordPage() {
                 required
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className={inputClass}
               />
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="newPassword"
-                className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-              >
+              <label htmlFor="newPassword" className={labelClass}>
                 Mật khẩu mới
               </label>
               <input
@@ -175,15 +164,12 @@ export default function ForgotPasswordPage() {
                 autoComplete="new-password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className={inputClass}
               />
             </div>
 
             <div className="mb-6">
-              <label
-                htmlFor="confirmPassword"
-                className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-              >
+              <label htmlFor="confirmPassword" className={labelClass}>
                 Nhập lại mật khẩu mới
               </label>
               <input
@@ -194,19 +180,13 @@ export default function ForgotPasswordPage() {
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className={inputClass}
               />
             </div>
 
-            {error && (
-              <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>
-            )}
+            {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
+            <button type="submit" disabled={loading} className={buttonClass}>
               {loading ? "Đang xử lý..." : "Đặt lại mật khẩu"}
             </button>
 
@@ -214,7 +194,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="button"
                 onClick={() => setStep("request")}
-                className="text-zinc-600 underline dark:text-zinc-400"
+                className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to"
               >
                 Đổi email
               </button>
@@ -222,7 +202,7 @@ export default function ForgotPasswordPage() {
                 type="button"
                 disabled={loading}
                 onClick={() => void requestOtp()}
-                className="text-zinc-600 underline dark:text-zinc-400 disabled:opacity-50"
+                className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to disabled:opacity-50"
               >
                 Gửi lại mã OTP
               </button>
@@ -232,16 +212,9 @@ export default function ForgotPasswordPage() {
 
         {step === "done" && (
           <div>
-            <h1 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-              Đặt lại mật khẩu thành công
-            </h1>
-            <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
-              Bạn có thể đăng nhập bằng mật khẩu mới.
-            </p>
-            <Link
-              href="/login"
-              className="block w-full rounded-md bg-zinc-900 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
+            <h1 className="mb-2 text-xl font-semibold text-navy">Đặt lại mật khẩu thành công</h1>
+            <p className="mb-6 text-sm text-navy/60">Bạn có thể đăng nhập bằng mật khẩu mới.</p>
+            <Link href="/login" className={`${buttonClass} block text-center`}>
               Về trang đăng nhập
             </Link>
           </div>

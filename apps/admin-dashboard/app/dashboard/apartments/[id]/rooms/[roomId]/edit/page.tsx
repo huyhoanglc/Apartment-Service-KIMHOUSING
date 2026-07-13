@@ -77,13 +77,11 @@ export default function EditRoomPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-lg font-semibold text-zinc-900 dark:text-zinc-50">Sửa phòng</h1>
+      <h1 className="mb-6 text-xl font-semibold text-navy">Sửa phòng</h1>
 
-      {loadError && <p className="text-sm text-red-600 dark:text-red-400">{loadError}</p>}
+      {loadError && <p className="text-sm text-red-600">{loadError}</p>}
 
-      {!loadError && !initialValues && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Đang tải...</p>
-      )}
+      {!loadError && !initialValues && <p className="text-sm text-navy/60">Đang tải...</p>}
 
       {initialValues && (
         <RoomForm initialValues={initialValues} onSubmit={handleUpdate} submitLabel="Lưu thay đổi" />

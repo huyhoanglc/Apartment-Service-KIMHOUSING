@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 export type AccessType = "STAIRS" | "ELEVATOR" | "BOTH";
 
@@ -27,8 +28,8 @@ export const emptyApartmentFormValues: ApartmentFormValues = {
 };
 
 const inputClass =
-  "w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
-const labelClass = "mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300";
+  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-sm font-medium text-navy/70";
 
 export default function ApartmentForm({
   initialValues,
@@ -60,7 +61,11 @@ export default function ApartmentForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-lg space-y-4 rounded-lg border border-navy/10 bg-white p-6 shadow-sm"
+    >
+      <LoadingOverlay show={loading} label="Đang lưu..." />
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="houseNumber" className={labelClass}>
@@ -177,12 +182,12 @@ export default function ApartmentForm({
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 disabled:opacity-50"
       >
         {loading ? "Đang lưu..." : submitLabel}
       </button>
