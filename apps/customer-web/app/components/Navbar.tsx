@@ -76,12 +76,12 @@ export default function Navbar() {
             </span>
           ) : (
             <Image
-              src="/Logo_removebg.png"
+              src="/Logo_navbar.png"
               alt="Kim Housing"
-              width={140}
-              height={40}
+              width={468}
+              height={196}
               priority
-              className="h-9 w-auto object-contain"
+              className="h-10 w-auto object-contain"
               onError={() => setLogoError(true)}
             />
           )}
