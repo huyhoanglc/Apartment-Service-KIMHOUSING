@@ -1,12 +1,8 @@
-import type { Metadata } from "next";
 import { getRooms, getFeatures, type RoomType } from "@/app/lib/api";
 import RoomCard from "@/app/components/RoomCard";
 
-export const metadata: Metadata = {
-  title: "Danh sách phòng cho thuê | KIMHOUSING",
-  description:
-    "Tìm phòng dịch vụ cho thuê tại KIMHOUSING - lọc theo quận, giá, loại phòng và tiện ích.",
-};
+// Không khai báo metadata riêng ở đây - trang chủ kế thừa title/description
+// mặc định từ app/layout.tsx (layout.template không áp dụng cho page cùng segment gốc).
 
 const inputClass =
   "w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";

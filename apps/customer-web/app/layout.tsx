@@ -14,10 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | KIMHOUSING",
-    default: "KIMHOUSING - Căn hộ dịch vụ cho thuê",
+    template: "%s | Kim Housing",
+    default: "Kim Housing - Căn Hộ Dịch Vụ TP.HCM",
   },
-  description: "Nền tảng tìm phòng dịch vụ cho thuê KIMHOUSING.",
+  description:
+    "Kim Housing cung cấp dịch vụ cho thuê căn hộ dịch vụ, phòng trọ cao cấp tại TP.HCM - đầy đủ tiện nghi, vị trí thuận tiện, giá cả hợp lý.",
 };
 
 export default function RootLayout({
