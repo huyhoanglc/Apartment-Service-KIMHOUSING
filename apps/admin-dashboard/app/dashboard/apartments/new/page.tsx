@@ -21,6 +21,7 @@ export default function NewApartmentPage() {
         managerPhone: values.managerPhone,
         accessType: values.accessType,
         apartmentType: values.apartmentType,
+        isNewProject: values.isNewProject,
         totalRooms: Number(values.totalRooms),
       }),
     });

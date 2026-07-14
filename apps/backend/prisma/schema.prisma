@@ -69,6 +69,7 @@ model Apartment {
 
   accessType    AccessType
   apartmentType ApartmentType @default(APARTMENT)
+  isNewProject  Boolean       @default(false)
   totalRooms    Int
 
   createdById String

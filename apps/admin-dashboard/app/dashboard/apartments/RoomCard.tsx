@@ -18,6 +18,7 @@ export interface RoomListItem {
     street: string;
     district: string;
     buildingName: string | null;
+    isNewProject?: boolean;
   };
 }
 
@@ -59,8 +60,14 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
         <div className="relative bg-navy/5">
           <PhotoGalleryGrid images={imageUrls} heightClass="h-48" />
 
+          {room.apartment.isNewProject && (
+            <span className="absolute top-2 left-2 rounded-full bg-linear-to-r from-rose-500 to-orange-500 px-2 py-0.5 text-xs font-bold tracking-wide text-white shadow-sm">
+              NEW
+            </span>
+          )}
+
           <span
-            className={`absolute top-2 left-2 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm ${ROOM_STATUS_BADGE[room.status]}`}
+            className={`absolute top-2 right-2 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm ${ROOM_STATUS_BADGE[room.status]}`}
           >
             {ROOM_STATUS_LABEL[room.status]}
           </span>

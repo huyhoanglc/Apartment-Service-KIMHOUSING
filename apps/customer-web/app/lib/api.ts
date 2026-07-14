@@ -41,9 +41,18 @@ export interface RoomFilters {
   minPrice?: string;
   maxPrice?: string;
   featureId?: string;
+  page?: number;
 }
 
-export async function getRooms(filters: RoomFilters): Promise<RoomListItem[]> {
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export async function getRooms(filters: RoomFilters): Promise<PaginatedResponse<RoomListItem>> {
   const query = new URLSearchParams();
   // customer-web chỉ hiển thị phòng còn trống, không cho khách chọn xem phòng đã thuê/ẩn
   query.set("status", "AVAILABLE");
@@ -52,6 +61,7 @@ export async function getRooms(filters: RoomFilters): Promise<RoomListItem[]> {
   if (filters.minPrice) query.set("minPrice", filters.minPrice);
   if (filters.maxPrice) query.set("maxPrice", filters.maxPrice);
   if (filters.featureId) query.set("featureId", filters.featureId);
+  query.set("page", String(filters.page ?? 1));
 
   const res = await fetch(`${API_URL}/api/rooms?${query.toString()}`, {
     cache: "no-store",

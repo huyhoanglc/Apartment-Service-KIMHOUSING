@@ -1,10 +1,12 @@
 const apartmentsModel = require('../models/apartments.model');
+const { parsePagination } = require('../utils/pagination');
 
 async function getApartments(req, res, next) {
   try {
     const { district, apartmentType } = req.query;
-    const apartments = await apartmentsModel.findAll({ district, apartmentType });
-    res.json(apartments);
+    const { page, pageSize } = parsePagination(req.query);
+    const result = await apartmentsModel.findAll({ district, apartmentType, page, pageSize });
+    res.json(result);
   } catch (err) {
     next(err);
   }

@@ -395,6 +395,7 @@ export default function NewRoomWizardPage() {
               .filter((f) => roomValues.featureIds.includes(f.id))
               .map((f) => f.name)}
             onImageClick={setLightboxIndex}
+            isNewProject={building?.isNewProject}
           />
         </div>
       </div>

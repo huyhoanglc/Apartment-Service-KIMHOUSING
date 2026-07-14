@@ -1,16 +1,27 @@
 const prisma = require('../config/prisma');
+const { buildPageResult } = require('../utils/pagination');
 
-async function findAll({ district, apartmentType }) {
-  return prisma.apartment.findMany({
-    where: {
-      ...(district && { district }),
-      ...(apartmentType && { apartmentType }),
-    },
-    include: {
-      features: { include: { feature: true } },
-      rooms: true,
-    },
-  });
+async function findAll({ district, apartmentType, page, pageSize }) {
+  const where = {
+    ...(district && { district }),
+    ...(apartmentType && { apartmentType }),
+  };
+
+  const [data, total] = await Promise.all([
+    prisma.apartment.findMany({
+      where,
+      include: {
+        features: { include: { feature: true } },
+        rooms: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.apartment.count({ where }),
+  ]);
+
+  return buildPageResult({ data, total, page, pageSize });
 }
 
 async function findById(id) {

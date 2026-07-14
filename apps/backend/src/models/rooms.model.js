@@ -1,33 +1,55 @@
 const prisma = require('../config/prisma');
+const { buildPageResult } = require('../utils/pagination');
 
-async function findAll({ apartmentId, status, minPrice, maxPrice, roomType, district, apartmentType, featureId }) {
-  return prisma.room.findMany({
-    where: {
-      ...(apartmentId && { apartmentId }),
-      ...(status && { status }),
-      ...(roomType && { roomType }),
-      ...((district || apartmentType) && {
-        apartment: {
-          ...(district && { district }),
-          ...(apartmentType && { apartmentType }),
-        },
-      }),
-      ...(featureId && { features: { some: { featureId } } }),
-      ...(minPrice || maxPrice
-        ? {
-            publicPrice: {
-              ...(minPrice && { gte: Number(minPrice) }),
-              ...(maxPrice && { lte: Number(maxPrice) }),
-            },
-          }
-        : {}),
-    },
-    include: {
-      apartment: true,
-      features: { include: { feature: true } },
-      media: { orderBy: { order: 'asc' } },
-    },
-  });
+async function findAll({
+  apartmentId,
+  status,
+  minPrice,
+  maxPrice,
+  roomType,
+  district,
+  apartmentType,
+  featureId,
+  page,
+  pageSize,
+}) {
+  const where = {
+    ...(apartmentId && { apartmentId }),
+    ...(status && { status }),
+    ...(roomType && { roomType }),
+    ...((district || apartmentType) && {
+      apartment: {
+        ...(district && { district }),
+        ...(apartmentType && { apartmentType }),
+      },
+    }),
+    ...(featureId && { features: { some: { featureId } } }),
+    ...(minPrice || maxPrice
+      ? {
+          publicPrice: {
+            ...(minPrice && { gte: Number(minPrice) }),
+            ...(maxPrice && { lte: Number(maxPrice) }),
+          },
+        }
+      : {}),
+  };
+
+  const [data, total] = await Promise.all([
+    prisma.room.findMany({
+      where,
+      include: {
+        apartment: true,
+        features: { include: { feature: true } },
+        media: { orderBy: { order: 'asc' } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.room.count({ where }),
+  ]);
+
+  return buildPageResult({ data, total, page, pageSize });
 }
 
 async function findById(id) {

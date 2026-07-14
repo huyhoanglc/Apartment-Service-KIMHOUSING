@@ -80,14 +80,14 @@ export default function BuildingSearchCard({
 
     (async () => {
       try {
-        const res = await apiFetch("/api/apartments");
+        const res = await apiFetch("/api/apartments?pageSize=100");
         const data = await res.json();
         if (ignore) return;
         if (!res.ok) {
           setLoadError(data.message ?? "Không tải được danh sách dự án");
           return;
         }
-        setAllApartments(data);
+        setAllApartments(data.data ?? []);
       } catch {
         if (!ignore) setLoadError("Không thể kết nối đến máy chủ");
       } finally {
@@ -290,6 +290,11 @@ export default function BuildingSearchCard({
               <span className="rounded-full bg-navy/5 px-2.5 py-1 font-medium text-navy/70">
                 {APARTMENT_TYPE_LABEL[found.apartmentType]}
               </span>
+              {found.isNewProject && (
+                <span className="rounded-full bg-linear-to-r from-rose-500 to-orange-500 px-2.5 py-1 font-bold tracking-wide text-white">
+                  NEW
+                </span>
+              )}
             </div>
 
             <div className="mt-3 border-t border-navy/10 pt-3 text-xs text-navy/60">

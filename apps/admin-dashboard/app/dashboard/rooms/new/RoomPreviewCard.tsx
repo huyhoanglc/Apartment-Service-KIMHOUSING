@@ -67,6 +67,7 @@ export default function RoomPreviewCard({
   district,
   featureLabels,
   onImageClick,
+  isNewProject,
 }: {
   imageUrls: string[];
   code: string;
@@ -78,6 +79,7 @@ export default function RoomPreviewCard({
   district: string;
   featureLabels: string[];
   onImageClick?: (index: number) => void;
+  isNewProject?: boolean;
 }) {
   const price = Number(publicPrice) || 0;
   const [liked, setLiked] = useState(false);
@@ -87,9 +89,11 @@ export default function RoomPreviewCard({
       <div className="group relative w-full bg-navy/5">
         <PhotoGalleryGrid images={imageUrls} heightClass="h-80" onImageClick={onImageClick} />
 
-        <span className="absolute top-3 left-3 rounded-full bg-linear-to-r from-rose-500 to-orange-500 px-2.5 py-1 text-xs font-bold tracking-wide text-white shadow-sm">
-          NEW
-        </span>
+        {isNewProject && (
+          <span className="absolute top-3 left-3 rounded-full bg-linear-to-r from-rose-500 to-orange-500 px-2.5 py-1 text-xs font-bold tracking-wide text-white shadow-sm">
+            NEW
+          </span>
+        )}
 
         <span
           className={`absolute top-3 right-3 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm ${ROOM_STATUS_BADGE[status]}`}

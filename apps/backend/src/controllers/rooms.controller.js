@@ -1,4 +1,5 @@
 const roomsModel = require('../models/rooms.model');
+const { parsePagination } = require('../utils/pagination');
 
 function hideBasePriceIfNeeded(room, req) {
   const isInternal = req.user && ['ADMIN', 'SALE'].includes(req.user.role);
@@ -11,7 +12,8 @@ function hideBasePriceIfNeeded(room, req) {
 async function getRooms(req, res, next) {
   try {
     const { apartmentId, status, minPrice, maxPrice, roomType, district, apartmentType, featureId } = req.query;
-    const rooms = await roomsModel.findAll({
+    const { page, pageSize } = parsePagination(req.query);
+    const result = await roomsModel.findAll({
       apartmentId,
       status,
       minPrice,
@@ -20,10 +22,12 @@ async function getRooms(req, res, next) {
       district,
       apartmentType,
       featureId,
+      page,
+      pageSize,
     });
 
-    const data = rooms.map((room) => hideBasePriceIfNeeded(room, req));
-    res.json(data);
+    result.data = result.data.map((room) => hideBasePriceIfNeeded(room, req));
+    res.json(result);
   } catch (err) {
     next(err);
   }

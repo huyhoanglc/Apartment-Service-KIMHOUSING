@@ -26,6 +26,7 @@ export interface ApartmentFormValues {
   managerPhone: string;
   accessType: AccessType | "";
   apartmentType: ApartmentType;
+  isNewProject: boolean;
   totalRooms: string;
 }
 
@@ -38,6 +39,7 @@ export const emptyApartmentFormValues: ApartmentFormValues = {
   managerPhone: "",
   accessType: "",
   apartmentType: "APARTMENT",
+  isNewProject: false,
   totalRooms: "",
 };
 
@@ -197,19 +199,30 @@ export default function ApartmentForm({
         </div>
       </div>
 
-      <div>
-        <label htmlFor="totalRooms" className={labelClass}>
-          Tổng số phòng
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="totalRooms" className={labelClass}>
+            Tổng số phòng
+          </label>
+          <input
+            id="totalRooms"
+            type="number"
+            min={1}
+            required
+            value={values.totalRooms}
+            onChange={(e) => update("totalRooms", e.target.value)}
+            className={inputClass}
+          />
+        </div>
+        <label className="flex items-center gap-2 self-end pb-2 text-sm text-navy/70">
+          <input
+            type="checkbox"
+            checked={values.isNewProject}
+            onChange={(e) => update("isNewProject", e.target.checked)}
+            className="h-3.5 w-3.5 rounded border-navy/30 accent-current text-gold-to"
+          />
+          Dự án mới (hiện nhãn NEW trên các phòng)
         </label>
-        <input
-          id="totalRooms"
-          type="number"
-          min={1}
-          required
-          value={values.totalRooms}
-          onChange={(e) => update("totalRooms", e.target.value)}
-          className={inputClass}
-        />
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}

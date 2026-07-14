@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getRooms, getFeatures, type RoomType } from "@/app/lib/api";
 import RoomCard from "@/app/components/RoomCard";
 
@@ -23,11 +24,26 @@ export default async function HomePage({
   const minPrice = asString(params.minPrice);
   const maxPrice = asString(params.maxPrice);
   const featureId = asString(params.featureId);
+  const page = Math.max(1, parseInt(asString(params.page), 10) || 1);
 
-  const [rooms, features] = await Promise.all([
-    getRooms({ district, roomType, minPrice, maxPrice, featureId }).catch(() => null),
+  const [roomsResult, features] = await Promise.all([
+    getRooms({ district, roomType, minPrice, maxPrice, featureId, page }).catch(() => null),
     getFeatures().catch(() => []),
   ]);
+  const rooms = roomsResult?.data ?? null;
+  const totalPages = roomsResult?.totalPages ?? 1;
+  const total = roomsResult?.total ?? 0;
+
+  function pageHref(target: number) {
+    const next = new URLSearchParams();
+    if (district) next.set("district", district);
+    if (roomType) next.set("roomType", roomType);
+    if (minPrice) next.set("minPrice", minPrice);
+    if (maxPrice) next.set("maxPrice", maxPrice);
+    if (featureId) next.set("featureId", featureId);
+    next.set("page", String(target));
+    return `/?${next.toString()}`;
+  }
 
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
@@ -131,11 +147,45 @@ export default async function HomePage({
         )}
 
         {rooms !== null && rooms.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {rooms.map((room) => (
-              <RoomCard key={room.id} room={room} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {rooms.map((room) => (
+                <RoomCard key={room.id} room={room} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4">
+                {page > 1 ? (
+                  <Link
+                    href={pageHref(page - 1)}
+                    className="rounded-full border border-navy/15 px-4 py-1.5 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to dark:border-white/15 dark:text-white"
+                  >
+                    Trước
+                  </Link>
+                ) : (
+                  <span className="rounded-full border border-navy/10 px-4 py-1.5 text-sm font-medium text-navy/30 dark:border-white/10 dark:text-white/30">
+                    Trước
+                  </span>
+                )}
+                <span className="text-sm text-navy/60 dark:text-white/60">
+                  Trang {page} / {totalPages} · {total} phòng
+                </span>
+                {page < totalPages ? (
+                  <Link
+                    href={pageHref(page + 1)}
+                    className="rounded-full border border-navy/15 px-4 py-1.5 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to dark:border-white/15 dark:text-white"
+                  >
+                    Sau
+                  </Link>
+                ) : (
+                  <span className="rounded-full border border-navy/10 px-4 py-1.5 text-sm font-medium text-navy/30 dark:border-white/10 dark:text-white/30">
+                    Sau
+                  </span>
+                )}
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

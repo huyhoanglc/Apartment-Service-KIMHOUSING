@@ -36,6 +36,7 @@ export default function EditApartmentPage() {
           managerPhone: data.managerPhone,
           accessType: data.accessType,
           apartmentType: data.apartmentType ?? "APARTMENT",
+          isNewProject: data.isNewProject ?? false,
           totalRooms: String(data.totalRooms),
         });
       } catch {
@@ -60,6 +61,7 @@ export default function EditApartmentPage() {
         managerPhone: values.managerPhone,
         accessType: values.accessType,
         apartmentType: values.apartmentType,
+        isNewProject: values.isNewProject,
         totalRooms: Number(values.totalRooms),
       }),
     });

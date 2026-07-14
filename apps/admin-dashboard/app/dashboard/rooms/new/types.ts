@@ -11,6 +11,7 @@ export interface BuildingSummary {
   managerPhone: string;
   accessType: AccessType;
   apartmentType: ApartmentType;
+  isNewProject: boolean;
   totalRooms: number;
   rooms: { id: string }[];
 }

@@ -29,6 +29,7 @@ export default function BuildingCreateCard({
   const [managerPhone, setManagerPhone] = useState("");
   const [apartmentType, setApartmentType] = useState<ApartmentType>("APARTMENT");
   const [accessType, setAccessType] = useState<AccessType | "">("");
+  const [isNewProject, setIsNewProject] = useState(false);
   const [totalRooms, setTotalRooms] = useState("");
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +56,7 @@ export default function BuildingCreateCard({
           managerPhone: managerPhone.trim(),
           accessType,
           apartmentType,
+          isNewProject,
           totalRooms: Number(totalRooms),
         }),
       });
@@ -151,15 +153,26 @@ export default function BuildingCreateCard({
           </div>
         </div>
 
-        <div>
-          <label className={labelClass}>Tổng số phòng *</label>
-          <input
-            type="number"
-            min={1}
-            value={totalRooms}
-            onChange={(e) => setTotalRooms(e.target.value)}
-            className={`${inputClass} ${touched && !(Number(totalRooms) > 0) ? "border-red-400" : ""}`}
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Tổng số phòng *</label>
+            <input
+              type="number"
+              min={1}
+              value={totalRooms}
+              onChange={(e) => setTotalRooms(e.target.value)}
+              className={`${inputClass} ${touched && !(Number(totalRooms) > 0) ? "border-red-400" : ""}`}
+            />
+          </div>
+          <label className="flex items-center gap-2 self-end pb-2 text-sm text-navy/70">
+            <input
+              type="checkbox"
+              checked={isNewProject}
+              onChange={(e) => setIsNewProject(e.target.checked)}
+              className="h-3.5 w-3.5 rounded border-navy/30 accent-current text-gold-to"
+            />
+            Dự án mới
+          </label>
         </div>
 
         <div className="border-t border-navy/10 pt-4">

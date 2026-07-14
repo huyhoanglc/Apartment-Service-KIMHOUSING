@@ -95,25 +95,33 @@ export default function DashboardPage() {
     (async () => {
       setLoading(true);
       try {
-        const [aptRes, roomRes] = await Promise.all([
-          apiFetch("/api/apartments"),
-          apiFetch("/api/rooms"),
+        // Chỉ cần .total nên gọi pageSize=1 cho các số liệu thống kê để tránh tải dư dữ liệu;
+        // riêng danh sách apartment lấy pageSize=5 để hiển thị bảng xem nhanh ở dưới.
+        const [aptListRes, aptCountRes, roomCountRes, availableRes, rentedRes] = await Promise.all([
+          apiFetch("/api/apartments?pageSize=5"),
+          apiFetch("/api/apartments?pageSize=1"),
+          apiFetch("/api/rooms?pageSize=1"),
+          apiFetch("/api/rooms?status=AVAILABLE&pageSize=1"),
+          apiFetch("/api/rooms?status=RENTED&pageSize=1"),
         ]);
-        const aptData = await aptRes.json();
-        const rooms = await roomRes.json();
+        const aptList = await aptListRes.json();
+        const aptCount = await aptCountRes.json();
+        const roomCount = await roomCountRes.json();
+        const available = await availableRes.json();
+        const rented = await rentedRes.json();
         if (ignore) return;
 
-        if (!aptRes.ok || !roomRes.ok) {
+        if (!aptListRes.ok || !aptCountRes.ok || !roomCountRes.ok || !availableRes.ok || !rentedRes.ok) {
           setError("Không tải được thống kê");
           return;
         }
 
-        setApartments(aptData);
+        setApartments(aptList.data ?? []);
         setStats({
-          apartments: aptData.length,
-          rooms: rooms.length,
-          available: rooms.filter((r: { status: string }) => r.status === "AVAILABLE").length,
-          rented: rooms.filter((r: { status: string }) => r.status === "RENTED").length,
+          apartments: aptCount.total ?? 0,
+          rooms: roomCount.total ?? 0,
+          available: available.total ?? 0,
+          rented: rented.total ?? 0,
         });
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");

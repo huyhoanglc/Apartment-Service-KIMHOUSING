@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
 import { usePageTitle } from "@/app/components/PageTitleContext";
@@ -21,6 +21,7 @@ interface Filters {
 const PRICE_MIN = 0;
 const PRICE_MAX = 30_000_000;
 const PRICE_STEP = 500_000;
+const PAGE_SIZE = 20;
 
 const DEFAULT_FILTERS: Filters = {
   district: "",
@@ -43,7 +44,19 @@ function SearchIcon() {
   );
 }
 
-function buildQuery(filters: Filters): string {
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
+      <path
+        d={direction === "left" ? "M12.5 4.5 6 10l6.5 5.5" : "M7.5 4.5 14 10l-6.5 5.5"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function buildQuery(filters: Filters, page: number): string {
   const params = new URLSearchParams();
   if (filters.district) params.set("district", filters.district);
   if (filters.roomType) params.set("roomType", filters.roomType);
@@ -51,20 +64,38 @@ function buildQuery(filters: Filters): string {
   if (filters.status) params.set("status", filters.status);
   if (filters.priceRange[0] > PRICE_MIN) params.set("minPrice", String(filters.priceRange[0]));
   if (filters.priceRange[1] < PRICE_MAX) params.set("maxPrice", String(filters.priceRange[1]));
-  const query = params.toString();
-  return query ? `?${query}` : "";
+  params.set("page", String(page));
+  params.set("pageSize", String(PAGE_SIZE));
+  return `?${params.toString()}`;
 }
 
 export default function ApartmentsPage() {
   usePageTitle("Rổ Hàng Kim Housing");
 
   const [rooms, setRooms] = useState<RoomListItem[]>([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [search, setSearch] = useState("");
-  const [draftFilters, setDraftFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [appliedFilters, setAppliedFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [priceRangeUi, setPriceRangeUi] = useState<[number, number]>(DEFAULT_FILTERS.priceRange);
+  const [page, setPage] = useState(1);
+
+  function updateFilters(updater: (f: Filters) => Filters) {
+    setFilters(updater);
+    setPage(1);
+  }
+
+  // Thanh kéo giá cập nhật UI ngay lập tức, nhưng chỉ áp filter thật (gọi API) sau khi
+  // người dùng dừng kéo ~400ms, tránh gọi API liên tục theo từng pixel kéo.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      updateFilters((f) => ({ ...f, priceRange: priceRangeUi }));
+    }, 400);
+    return () => clearTimeout(t);
+  }, [priceRangeUi]);
 
   useEffect(() => {
     let ignore = false;
@@ -73,15 +104,17 @@ export default function ApartmentsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await apiFetch(`/api/rooms${buildQuery(appliedFilters)}`);
-        const data = await res.json();
+        const res = await apiFetch(`/api/rooms${buildQuery(filters, page)}`);
+        const result = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setError(data.message ?? "Không tải được danh sách phòng");
+          setError(result.message ?? "Không tải được danh sách phòng");
           return;
         }
-        setRooms(data);
+        setRooms(result.data ?? []);
+        setTotal(result.total ?? 0);
+        setTotalPages(result.totalPages ?? 1);
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");
       } finally {
@@ -92,17 +125,13 @@ export default function ApartmentsPage() {
     return () => {
       ignore = true;
     };
-  }, [appliedFilters]);
-
-  function handleFilterSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setAppliedFilters(draftFilters);
-  }
+  }, [filters, page]);
 
   function handleClearFilters() {
-    setDraftFilters(DEFAULT_FILTERS);
-    setAppliedFilters(DEFAULT_FILTERS);
+    setFilters(DEFAULT_FILTERS);
+    setPriceRangeUi(DEFAULT_FILTERS.priceRange);
     setSearch("");
+    setPage(1);
   }
 
   const keyword = search.trim().toLowerCase();
@@ -131,10 +160,7 @@ export default function ApartmentsPage() {
         </Link>
       </div>
 
-      <form
-        onSubmit={handleFilterSubmit}
-        className="mb-6 space-y-4 rounded-lg border border-navy/10 bg-white p-5 shadow-sm"
-      >
+      <div className="mb-6 space-y-4 rounded-lg border border-navy/10 bg-white p-5 shadow-sm">
         <div className="relative">
           <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
             <SearchIcon />
@@ -151,8 +177,8 @@ export default function ApartmentsPage() {
           <div>
             <label className={labelClass}>Quận</label>
             <select
-              value={draftFilters.district}
-              onChange={(e) => setDraftFilters((f) => ({ ...f, district: e.target.value }))}
+              value={filters.district}
+              onChange={(e) => updateFilters((f) => ({ ...f, district: e.target.value }))}
               className={inputClass}
             >
               <option value="">Tất cả</option>
@@ -167,8 +193,8 @@ export default function ApartmentsPage() {
           <div>
             <label className={labelClass}>Dạng phòng</label>
             <select
-              value={draftFilters.roomType}
-              onChange={(e) => setDraftFilters((f) => ({ ...f, roomType: e.target.value as RoomType | "" }))}
+              value={filters.roomType}
+              onChange={(e) => updateFilters((f) => ({ ...f, roomType: e.target.value as RoomType | "" }))}
               className={inputClass}
             >
               <option value="">Tất cả</option>
@@ -183,9 +209,9 @@ export default function ApartmentsPage() {
           <div>
             <label className={labelClass}>Dạng Căn Hộ</label>
             <select
-              value={draftFilters.apartmentType}
+              value={filters.apartmentType}
               onChange={(e) =>
-                setDraftFilters((f) => ({ ...f, apartmentType: e.target.value as ApartmentType | "" }))
+                updateFilters((f) => ({ ...f, apartmentType: e.target.value as ApartmentType | "" }))
               }
               className={inputClass}
             >
@@ -198,8 +224,8 @@ export default function ApartmentsPage() {
           <div>
             <label className={labelClass}>Trạng thái</label>
             <select
-              value={draftFilters.status}
-              onChange={(e) => setDraftFilters((f) => ({ ...f, status: e.target.value as RoomStatus | "" }))}
+              value={filters.status}
+              onChange={(e) => updateFilters((f) => ({ ...f, status: e.target.value as RoomStatus | "" }))}
               className={inputClass}
             >
               <option value="">Tất cả</option>
@@ -210,24 +236,18 @@ export default function ApartmentsPage() {
           </div>
         </div>
 
-        <div className="max-w-sm">
+        <div>
           <label className={labelClass}>Khoảng giá</label>
           <PriceRangeSlider
             min={PRICE_MIN}
             max={PRICE_MAX}
             step={PRICE_STEP}
-            value={draftFilters.priceRange}
-            onChange={(priceRange) => setDraftFilters((f) => ({ ...f, priceRange }))}
+            value={priceRangeUi}
+            onChange={setPriceRangeUi}
           />
         </div>
 
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
-          >
-            Lọc
-          </button>
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={handleClearFilters}
@@ -236,7 +256,7 @@ export default function ApartmentsPage() {
             Xoá lọc
           </button>
         </div>
-      </form>
+      </div>
 
       {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
       {loading && <p className="text-sm text-navy/60">Đang tải...</p>}
@@ -246,11 +266,39 @@ export default function ApartmentsPage() {
       )}
 
       {!loading && visibleRooms.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {visibleRooms.map((room) => (
-            <RoomCard key={room.id} room={room} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {visibleRooms.map((room) => (
+              <RoomCard key={room.id} room={room} />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="mt-6 flex items-center justify-center gap-4">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-navy/15 text-navy transition-colors duration-200 hover:border-gold hover:text-gold-to disabled:opacity-30"
+                aria-label="Trang trước"
+              >
+                <ChevronIcon direction="left" />
+              </button>
+              <span className="text-sm text-navy/60">
+                Trang {page} / {totalPages} · {total} phòng
+              </span>
+              <button
+                type="button"
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-navy/15 text-navy transition-colors duration-200 hover:border-gold hover:text-gold-to disabled:opacity-30"
+                aria-label="Trang sau"
+              >
+                <ChevronIcon direction="right" />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
