@@ -189,6 +189,7 @@ export default function NewRoomWizardPage() {
 
     if (key === "code") setErrors((prev) => ({ ...prev, code: undefined }));
     if (key === "roomType") setErrors((prev) => ({ ...prev, roomType: undefined }));
+    if (key === "area") setErrors((prev) => ({ ...prev, area: undefined }));
     if (key === "basePrice" || key === "publicPrice") setErrors((prev) => ({ ...prev, price: undefined }));
   }
 
@@ -214,6 +215,7 @@ export default function NewRoomWizardPage() {
     const nextErrors: RoomFieldErrors = {};
     if (!roomValues.code.trim()) nextErrors.code = "Chưa nhập mã phòng";
     if (!roomValues.roomType) nextErrors.roomType = "Chưa chọn loại phòng";
+    if (!(Number(roomValues.area) > 0)) nextErrors.area = "Diện tích phải lớn hơn 0";
     if (!(Number(roomValues.basePrice) > 0) || !(Number(roomValues.publicPrice) > 0)) {
       nextErrors.price = "Chưa nhập giá hợp lệ";
     }
@@ -385,7 +387,7 @@ export default function NewRoomWizardPage() {
 
         <div className="lg:col-span-5">
           <RoomPreviewCard
-            coverUrl={images[0]?.previewUrl}
+            imageUrls={images.map((img) => img.previewUrl)}
             code={roomValues.code}
             roomType={roomValues.roomType}
             area={roomValues.area}

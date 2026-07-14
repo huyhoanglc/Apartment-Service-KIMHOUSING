@@ -102,15 +102,16 @@ export default function RoomFormCard({
               {errors.roomType && <p className="mt-1 text-xs text-red-600">{errors.roomType}</p>}
             </div>
             <div>
-              <label className={labelClass}>Diện tích (m²)</label>
+              <label className={labelClass}>Diện tích (m²) *</label>
               <input
                 type="number"
                 min={0}
                 step="0.1"
                 value={values.area}
                 onChange={(e) => onChange("area", e.target.value)}
-                className={inputClass}
+                className={`${inputClass} ${errors.area ? errorInputClass : ""}`}
               />
+              {errors.area && <p className="mt-1 text-xs text-red-600">{errors.area}</p>}
             </div>
           </div>
 

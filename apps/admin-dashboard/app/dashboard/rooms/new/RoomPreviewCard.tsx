@@ -5,16 +5,7 @@ import {
   type RoomType,
   type RoomStatus,
 } from "../../apartments/RoomCard";
-
-function ImagePlaceholderIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4" className="h-7 w-7">
-      <rect x="2.5" y="4" width="15" height="12" rx="1.5" />
-      <circle cx="7" cy="9" r="1.5" />
-      <path d="m4 14 4-3.5 3 2.5 3.5-3.5 3.5 4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import PhotoGalleryGrid from "@/app/components/PhotoGalleryGrid";
 
 function PinIcon() {
   return (
@@ -26,7 +17,7 @@ function PinIcon() {
 }
 
 export default function RoomPreviewCard({
-  coverUrl,
+  imageUrls,
   code,
   roomType,
   area,
@@ -36,7 +27,7 @@ export default function RoomPreviewCard({
   district,
   featureLabels,
 }: {
-  coverUrl?: string;
+  imageUrls: string[];
   code: string;
   roomType: RoomType | "";
   area: string;
@@ -50,16 +41,8 @@ export default function RoomPreviewCard({
 
   return (
     <div className="sticky top-6 overflow-hidden rounded-[20px] border border-navy/10 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl">
-      <div className="relative aspect-4/3 w-full bg-navy/5">
-        {coverUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- preview ảnh local (blob URL) trước khi upload
-          <img src={coverUrl} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 text-navy/25">
-            <ImagePlaceholderIcon />
-            <span className="text-xs font-medium">No Image</span>
-          </div>
-        )}
+      <div className="group relative w-full bg-navy/5">
+        <PhotoGalleryGrid images={imageUrls} heightClass="h-56" />
 
         <span
           className={`absolute top-3 left-3 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm ${ROOM_STATUS_BADGE[status]}`}

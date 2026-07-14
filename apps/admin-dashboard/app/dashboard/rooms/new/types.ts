@@ -45,4 +45,4 @@ export const emptyWizardRoomValues: WizardRoomValues = {
   featureIds: [],
 };
 
-export type RoomFieldErrors = Partial<Record<"code" | "roomType" | "price" | "images", string>>;
+export type RoomFieldErrors = Partial<Record<"code" | "roomType" | "area" | "price" | "images", string>>;
