@@ -12,8 +12,8 @@ import LoadingOverlay from "@/app/components/LoadingOverlay";
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
 const inputClass =
-  "w-full rounded-md border border-navy/15 py-2 pl-10 pr-10 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
-const labelClass = "mb-1 block text-sm font-medium text-navy/70";
+  "w-full rounded-md border border-white/15 bg-white/5 py-2 pl-10 pr-10 text-sm text-white placeholder-white/30 outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-sm font-medium text-white/70";
 
 const FEATURES = [
   "Quản lý căn hộ & phòng toàn diện",
@@ -140,31 +140,31 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex flex-1 overflow-hidden bg-navy">
+    <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[#050d1a] px-6 py-16">
       <LoadingOverlay show={loading} label="Đang đăng nhập..." />
 
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 15% 20%, rgba(212,175,55,0.16), transparent), radial-gradient(50% 50% at 90% 85%, rgba(212,175,55,0.12), transparent)",
+            "radial-gradient(120% 90% at 12% 8%, #12294a 0%, #0a192f 45%, #050d1a 100%), radial-gradient(45% 40% at 90% 90%, rgba(212,175,55,0.10), transparent)",
         }}
       />
 
-      <div className="relative z-10 grid w-full grid-cols-1 md:grid-cols-2">
-        {/* Left branding panel */}
-        <div className="hidden flex-col justify-between bg-linear-to-br from-navy via-navy-light to-navy p-16 md:flex">
+      <div className="relative z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-12 md:grid-cols-2">
+        {/* Left branding */}
+        <div className="hidden flex-col gap-10 md:flex">
           <Image
             src="/Logo_navbar.png"
             alt="Kim Housing"
             width={468}
             height={196}
             priority
-            className="h-9 w-auto object-contain"
+            className="h-11 w-auto object-contain"
           />
 
           <div>
-            <h2 className="text-2xl font-semibold text-white">Nền tảng quản lý căn hộ hàng đầu</h2>
+            <h2 className="text-3xl font-semibold text-white">Nền tảng quản lý căn hộ hàng đầu</h2>
             <ul className="mt-6 space-y-3">
               {FEATURES.map((f) => (
                 <li key={f} className="flex items-center gap-2 text-sm text-white/70">
@@ -174,13 +174,11 @@ export default function LoginPage() {
               ))}
             </ul>
           </div>
-
-          <p className="text-xs text-white/30">© {new Date().getFullYear()} Kim Housing</p>
         </div>
 
-        {/* Right form panel */}
-        <div className="flex items-center justify-center bg-white p-8 sm:p-10">
-          <form onSubmit={handleSubmit} className="w-full max-w-sm">
+        {/* Right form card */}
+        <div className="mx-auto w-full max-w-sm rounded-2xl border border-white/10 bg-white/6 p-8 shadow-2xl backdrop-blur-xl sm:p-10">
+          <form onSubmit={handleSubmit}>
             <div className="mb-6">
               <Image
                 src="/Logo_navbar.png"
@@ -188,10 +186,10 @@ export default function LoginPage() {
                 width={468}
                 height={196}
                 priority
-                className="mb-3 h-8 w-auto object-contain md:hidden"
+                className="mb-4 h-8 w-auto object-contain md:hidden"
               />
-              <h1 className="text-xl font-semibold text-navy">Đăng nhập</h1>
-              <p className="mt-1 text-sm text-navy/60">Đăng nhập vào hệ thống quản lý</p>
+              <h1 className="text-xl font-semibold text-white">Đăng nhập</h1>
+              <p className="mt-1 text-sm text-white/60">Đăng nhập vào hệ thống quản lý</p>
             </div>
 
             <div className="mb-4">
@@ -199,7 +197,7 @@ export default function LoginPage() {
                 Email
               </label>
               <div className="relative">
-                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
+                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-white/40">
                   <MailIcon />
                 </span>
                 <input
@@ -220,7 +218,7 @@ export default function LoginPage() {
                 Mật khẩu
               </label>
               <div className="relative">
-                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
+                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-white/40">
                   <LockIcon />
                 </span>
                 <input
@@ -235,7 +233,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-3 flex items-center text-navy/40 transition-colors duration-200 hover:text-navy"
+                  className="absolute inset-y-0 right-3 flex items-center text-white/40 transition-colors duration-200 hover:text-white"
                   aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                 >
                   <EyeIcon open={showPassword} />
@@ -244,21 +242,21 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-6 flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-navy/60">
+              <label className="flex items-center gap-2 text-white/60">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-3.5 w-3.5 rounded border-navy/30 text-gold-to accent-current"
+                  className="h-3.5 w-3.5 rounded border-white/30 text-gold-to accent-current"
                 />
                 Ghi nhớ tôi
               </label>
-              <Link href="/forgot-password" className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to">
+              <Link href="/forgot-password" className="text-gold underline transition-colors duration-300 hover:text-gold-via">
                 Quên mật khẩu?
               </Link>
             </div>
 
-            {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+            {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
 
             <button
               type="submit"
@@ -269,9 +267,9 @@ export default function LoginPage() {
             </button>
 
             <div className="mt-6 flex items-center gap-2">
-              <div className="h-px flex-1 bg-navy/10" />
-              <span className="text-xs text-navy/40">hoặc</span>
-              <div className="h-px flex-1 bg-navy/10" />
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-xs text-white/40">hoặc</span>
+              <div className="h-px flex-1 bg-white/10" />
             </div>
 
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
@@ -288,7 +286,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     disabled
-                    className="flex w-full items-center justify-center gap-2 rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy/40"
+                    className="flex w-full items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/40"
                   >
                     Google
                   </button>
@@ -298,7 +296,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setZaloNotice(true)}
-                className="flex flex-1 items-center justify-center gap-2 rounded-md border border-navy/15 bg-white px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+                className="flex flex-1 items-center justify-center gap-2 rounded-md border border-white/15 bg-white px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
               >
                 <ZaloIcon />
                 Zalo
@@ -306,13 +304,17 @@ export default function LoginPage() {
             </div>
 
             {zaloNotice && (
-              <p className="mt-3 text-center text-xs text-navy/50">
+              <p className="mt-3 text-center text-xs text-white/50">
                 Tính năng đăng nhập Zalo sắp ra mắt
               </p>
             )}
           </form>
         </div>
       </div>
+
+      <p className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs text-white/25">
+        © {new Date().getFullYear()} Kim Housing
+      </p>
     </div>
   );
 }
