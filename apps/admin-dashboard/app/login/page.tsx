@@ -140,7 +140,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-navy px-4 py-10">
+    <div className="relative flex flex-1 overflow-hidden bg-navy">
       <LoadingOverlay show={loading} label="Đang đăng nhập..." />
 
       <div
@@ -151,9 +151,9 @@ export default function LoginPage() {
         }}
       />
 
-      <div className="relative z-10 grid w-full max-w-4xl grid-cols-1 overflow-hidden rounded-2xl border border-white/10 bg-navy shadow-2xl md:grid-cols-2">
+      <div className="relative z-10 grid w-full grid-cols-1 md:grid-cols-2">
         {/* Left branding panel */}
-        <div className="hidden flex-col justify-between bg-linear-to-br from-navy via-navy-light to-navy p-10 md:flex">
+        <div className="hidden flex-col justify-between bg-linear-to-br from-navy via-navy-light to-navy p-16 md:flex">
           <Image
             src="/Logo_navbar.png"
             alt="Kim Housing"
@@ -179,8 +179,8 @@ export default function LoginPage() {
         </div>
 
         {/* Right form panel */}
-        <div className="bg-white p-8 sm:p-10">
-          <form onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center bg-white p-8 sm:p-10">
+          <form onSubmit={handleSubmit} className="w-full max-w-sm">
             <div className="mb-6">
               <Image
                 src="/Logo_navbar.png"
