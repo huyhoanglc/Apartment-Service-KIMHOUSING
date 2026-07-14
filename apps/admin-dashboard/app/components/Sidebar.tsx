@@ -34,16 +34,16 @@ export default function Sidebar() {
 
   return (
     <aside className="flex w-60 shrink-0 flex-col bg-navy text-white">
-      <div className="flex items-center px-5 py-5">
+      <Link href="/" className="flex items-center px-5 py-6 transition-opacity duration-200 hover:opacity-80">
         <Image
           src="/Logo_navbar.png"
           alt="Kim Housing"
           width={468}
           height={196}
           priority
-          className="h-7 w-auto object-contain"
+          className="h-12 w-auto object-contain"
         />
-      </div>
+      </Link>
 
       <nav className="flex-1 space-y-1 px-3 py-2">
         {NAV_ITEMS.map((item) => {
