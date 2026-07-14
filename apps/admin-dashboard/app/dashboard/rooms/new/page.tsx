@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { API_URL, apiFetch } from "@/app/lib/api";
-import { getToken } from "@/app/lib/auth";
+import { getToken, getUser } from "@/app/lib/auth";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import { useToast } from "@/app/components/ToastProvider";
+import { useConfirm } from "@/app/components/ConfirmProvider";
 import { slugify } from "@/app/lib/slugify";
 import Stepper, { type WizardStep } from "./Stepper";
 import BuildingSearchCard from "./BuildingSearchCard";
@@ -73,9 +74,10 @@ export default function NewRoomWizardPage() {
   usePageTitle("Thêm phòng mới");
   const router = useRouter();
   const { showToast } = useToast();
+  const confirmDialog = useConfirm();
+  const isAdmin = getUser()?.role === "ADMIN";
 
   const [phase, setPhase] = useState<Phase>("search");
-  const [searchStatus, setSearchStatus] = useState<"idle" | "loading" | "found" | "not-found">("idle");
   const [addressSummary, setAddressSummary] = useState<BuildingSearchInput>({
     houseNumber: "",
     street: "",
@@ -143,35 +145,43 @@ export default function NewRoomWizardPage() {
     }
   }
 
-  async function handleSearch(input: BuildingSearchInput) {
-    setAddressSummary(input);
-    setSearchStatus("loading");
+  async function handleDeleteFeature(id: string) {
+    const ok = await confirmDialog({
+      title: "Xoá tiện ích?",
+      description: "Tiện ích này sẽ bị gỡ khỏi mọi apartment/phòng đang dùng trong hệ thống.",
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
+
     try {
-      const res = await apiFetch(`/api/apartments?district=${encodeURIComponent(input.district)}`);
-      const data: BuildingSummary[] = await res.json();
+      const res = await apiFetch(`/api/features/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        showToast("Không kiểm tra được dự án, vui lòng thử lại", "error");
-        setSearchStatus("idle");
+        const data = await res.json().catch(() => ({}));
+        showToast(data.message ?? "Xoá tiện ích thất bại", "error");
         return;
       }
-
-      const match = data.find(
-        (apt) =>
-          apt.houseNumber.trim().toLowerCase() === input.houseNumber.trim().toLowerCase() &&
-          apt.street.trim().toLowerCase() === input.street.trim().toLowerCase()
-      );
-
-      if (match) {
-        setBuilding(match);
-        setSearchStatus("found");
-      } else {
-        setBuilding(null);
-        setSearchStatus("not-found");
-      }
+      setFeatures((prev) => prev.filter((f) => f.id !== id));
+      setRoomValues((prev) => ({ ...prev, featureIds: prev.featureIds.filter((fid) => fid !== id) }));
+      showToast("Đã xoá tiện ích", "success");
     } catch {
       showToast("Không thể kết nối đến máy chủ", "error");
-      setSearchStatus("idle");
     }
+  }
+
+  function handleBuildingFound(foundBuilding: BuildingSummary) {
+    setAddressSummary({
+      houseNumber: foundBuilding.houseNumber,
+      street: foundBuilding.street,
+      district: foundBuilding.district,
+    });
+    setBuilding(foundBuilding);
+    setPhase("create-room");
+  }
+
+  function handleCreateNewBuilding(input: BuildingSearchInput) {
+    setAddressSummary(input);
+    setPhase("create-building");
   }
 
   function updateRoomValue<K extends keyof WizardRoomValues>(key: K, value: WizardRoomValues[K]) {
@@ -200,7 +210,6 @@ export default function NewRoomWizardPage() {
 
   function resetWizard() {
     setPhase("search");
-    setSearchStatus("idle");
     setAddressSummary({ houseNumber: "", street: "", district: "" });
     setBuilding(null);
     setRoomValues(emptyWizardRoomValues);
@@ -319,8 +328,8 @@ export default function NewRoomWizardPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-start gap-3">
+      <div className="mb-8 flex flex-col items-center gap-5">
+        <div className="flex w-full items-start gap-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-navy">
             <BuildingIcon />
           </span>
@@ -335,13 +344,7 @@ export default function NewRoomWizardPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-7">
           {phase === "search" && (
-            <BuildingSearchCard
-              status={searchStatus}
-              building={building}
-              onSearch={handleSearch}
-              onContinue={() => setPhase("create-room")}
-              onCreateNew={() => setPhase("create-building")}
-            />
+            <BuildingSearchCard onContinue={handleBuildingFound} onCreateNew={handleCreateNewBuilding} />
           )}
 
           {phase === "create-building" && (
@@ -366,6 +369,7 @@ export default function NewRoomWizardPage() {
                 featuresError={featuresError}
                 onAddFeature={handleAddFeature}
                 addingFeature={addingFeature}
+                onDeleteFeature={isAdmin ? handleDeleteFeature : undefined}
               />
 
               <div className="animate-fade-in mt-4 flex items-center justify-between rounded-2xl border border-navy/10 bg-white p-4 shadow-sm">

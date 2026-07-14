@@ -4,7 +4,12 @@ import { useState } from "react";
 import { apiFetch } from "@/app/lib/api";
 import { useToast } from "@/app/components/ToastProvider";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
-import type { AccessType, ApartmentType } from "../../apartments/ApartmentForm";
+import {
+  ACCESS_TYPE_LABEL,
+  APARTMENT_TYPE_LABEL,
+  type AccessType,
+  type ApartmentType,
+} from "../../apartments/ApartmentForm";
 import type { BuildingSearchInput, BuildingSummary } from "./types";
 
 const inputClass =
@@ -114,18 +119,21 @@ export default function BuildingCreateCard({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Loại</label>
+            <label className={labelClass}>Loại căn hộ</label>
             <select
               value={apartmentType}
               onChange={(e) => setApartmentType(e.target.value as ApartmentType)}
               className={inputClass}
             >
-              <option value="APARTMENT">Apartment</option>
-              <option value="SERVICED_APARTMENT">Serviced Apartment</option>
+              {Object.entries(APARTMENT_TYPE_LABEL).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
             </select>
           </div>
           <div>
-            <label className={labelClass}>Access *</label>
+            <label className={labelClass}>Thang bộ / thang máy *</label>
             <select
               value={accessType}
               onChange={(e) => setAccessType(e.target.value as AccessType)}
@@ -134,9 +142,11 @@ export default function BuildingCreateCard({
               <option value="" disabled>
                 -- Chọn --
               </option>
-              <option value="STAIRS">Thang bộ</option>
-              <option value="ELEVATOR">Thang máy</option>
-              <option value="BOTH">Cả hai</option>
+              {Object.entries(ACCESS_TYPE_LABEL).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
             </select>
           </div>
         </div>

@@ -6,6 +6,17 @@ import LoadingOverlay from "@/app/components/LoadingOverlay";
 export type AccessType = "STAIRS" | "ELEVATOR" | "BOTH";
 export type ApartmentType = "APARTMENT" | "SERVICED_APARTMENT";
 
+export const ACCESS_TYPE_LABEL: Record<AccessType, string> = {
+  STAIRS: "Cầu thang bộ",
+  ELEVATOR: "Thang máy",
+  BOTH: "Cả hai",
+};
+
+export const APARTMENT_TYPE_LABEL: Record<ApartmentType, string> = {
+  APARTMENT: "Chung cư",
+  SERVICED_APARTMENT: "Căn hộ dịch vụ",
+};
+
 export interface ApartmentFormValues {
   houseNumber: string;
   street: string;

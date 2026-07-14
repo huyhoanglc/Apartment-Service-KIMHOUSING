@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apiFetch } from "@/app/lib/api";
 import { HCMC_DISTRICTS } from "@/app/lib/hcmcDistricts";
-import BuildingCardSkeleton from "./Skeleton";
+import { APARTMENT_TYPE_LABEL } from "../../apartments/ApartmentForm";
 import type { BuildingSearchInput, BuildingSummary } from "./types";
 
 const inputClass =
@@ -46,97 +47,187 @@ function BuildingIcon() {
   );
 }
 
-const APARTMENT_TYPE_LABEL: Record<string, string> = {
-  APARTMENT: "Chung cư",
-  SERVICED_APARTMENT: "Serviced Apartment",
-};
+function BuildingSmallIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="mt-0.5 h-4 w-4 shrink-0 text-navy/40">
+      <rect x="4" y="2" width="12" height="16" rx="1" />
+      <path d="M7 6h1M12 6h1M7 9.5h1M12 9.5h1M7 13h1M12 13h1" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function BuildingSearchCard({
-  status,
-  building,
-  onSearch,
   onContinue,
   onCreateNew,
 }: {
-  status: "idle" | "loading" | "found" | "not-found";
-  building: BuildingSummary | null;
-  onSearch: (input: BuildingSearchInput) => void;
-  onContinue: () => void;
-  onCreateNew: () => void;
+  onContinue: (building: BuildingSummary) => void;
+  onCreateNew: (input: BuildingSearchInput) => void;
 }) {
+  const [allApartments, setAllApartments] = useState<BuildingSummary[]>([]);
+  const [loadingList, setLoadingList] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
   const [houseNumber, setHouseNumber] = useState("");
   const [street, setStreet] = useState("");
   const [district, setDistrict] = useState("");
   const [touched, setTouched] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [found, setFound] = useState<BuildingSummary | null>(null);
+  const [notFound, setNotFound] = useState(false);
 
-  const valid = houseNumber.trim() && street.trim() && district;
+  useEffect(() => {
+    let ignore = false;
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    (async () => {
+      try {
+        const res = await apiFetch("/api/apartments");
+        const data = await res.json();
+        if (ignore) return;
+        if (!res.ok) {
+          setLoadError(data.message ?? "Không tải được danh sách dự án");
+          return;
+        }
+        setAllApartments(data);
+      } catch {
+        if (!ignore) setLoadError("Không thể kết nối đến máy chủ");
+      } finally {
+        if (!ignore) setLoadingList(false);
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const suggestions = houseNumber.trim()
+    ? allApartments
+        .filter((apt) => apt.houseNumber.toLowerCase().includes(houseNumber.trim().toLowerCase()))
+        .slice(0, 6)
+    : [];
+
+  function resetResult() {
+    setFound(null);
+    setNotFound(false);
+  }
+
+  function handlePickSuggestion(apt: BuildingSummary) {
+    setHouseNumber(apt.houseNumber);
+    setStreet(apt.street);
+    setDistrict(apt.district);
+    setShowSuggestions(false);
+    setFound(apt);
+    setNotFound(false);
+  }
+
+  function handleCheck(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setTouched(true);
-    if (!valid) return;
-    onSearch({ houseNumber: houseNumber.trim(), street: street.trim(), district });
+    setShowSuggestions(false);
+    if (!houseNumber.trim() || !street.trim() || !district) return;
+
+    const match = allApartments.find(
+      (apt) =>
+        apt.houseNumber.trim().toLowerCase() === houseNumber.trim().toLowerCase() &&
+        apt.street.trim().toLowerCase() === street.trim().toLowerCase()
+    );
+
+    if (match) {
+      setFound(match);
+      setNotFound(false);
+    } else {
+      setFound(null);
+      setNotFound(true);
+    }
   }
 
   return (
     <div className="animate-fade-in rounded-2xl border border-navy/10 bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-base font-semibold text-navy">Thông tin dự án</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleCheck} className="space-y-4">
+        <div className="relative">
+          <label className={labelClass}>Số nhà *</label>
+          <input
+            value={houseNumber}
+            onChange={(e) => {
+              setHouseNumber(e.target.value);
+              setShowSuggestions(true);
+              resetResult();
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
+            placeholder={loadingList ? "Đang tải danh sách dự án..." : "VD: 244 (gõ để tìm dự án có sẵn)"}
+            className={`${inputClass} ${touched && !houseNumber.trim() ? "border-red-400" : ""}`}
+            autoComplete="off"
+          />
+
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-navy/10 bg-white py-1 shadow-lg">
+              {suggestions.map((apt) => (
+                <button
+                  key={apt.id}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handlePickSuggestion(apt)}
+                  className="flex w-full items-start gap-2 px-3 py-2 text-left text-sm text-navy transition-colors duration-150 hover:bg-navy/5"
+                >
+                  <BuildingSmallIcon />
+                  <span>
+                    {apt.houseNumber} {apt.street}, {apt.district}
+                    {apt.buildingName ? ` (${apt.buildingName})` : ""}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className={labelClass}>Số nhà *</label>
-            <input
-              value={houseNumber}
-              onChange={(e) => setHouseNumber(e.target.value)}
-              className={`${inputClass} ${touched && !houseNumber.trim() ? "border-red-400" : ""}`}
-              placeholder="VD: 244"
-            />
-          </div>
           <div>
             <label className={labelClass}>Tên đường *</label>
             <input
               value={street}
-              onChange={(e) => setStreet(e.target.value)}
+              onChange={(e) => {
+                setStreet(e.target.value);
+                resetResult();
+              }}
               className={`${inputClass} ${touched && !street.trim() ? "border-red-400" : ""}`}
               placeholder="VD: Bình Tiên"
             />
           </div>
-        </div>
-
-        <div>
-          <label className={labelClass}>Quận *</label>
-          <select
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
-            className={`${inputClass} ${touched && !district ? "border-red-400" : ""}`}
-          >
-            <option value="">-- Chọn quận --</option>
-            {HCMC_DISTRICTS.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className={labelClass}>Quận *</label>
+            <select
+              value={district}
+              onChange={(e) => {
+                setDistrict(e.target.value);
+                resetResult();
+              }}
+              className={`${inputClass} ${touched && !district ? "border-red-400" : ""}`}
+            >
+              <option value="">-- Chọn quận --</option>
+              {HCMC_DISTRICTS.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <button
           type="submit"
-          disabled={status === "loading"}
-          className="flex w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2.5 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2.5 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
         >
           <SearchIcon />
-          {status === "loading" ? "Đang kiểm tra..." : "Kiểm tra dự án"}
+          Kiểm tra dự án
         </button>
       </form>
 
-      {status === "loading" && (
-        <div className="mt-5">
-          <BuildingCardSkeleton />
-        </div>
-      )}
+      {loadError && <p className="mt-3 text-sm text-red-600">{loadError}</p>}
 
-      {status === "found" && building && (
+      {found && (
         <div className="animate-fade-in mt-5">
           <div className="mb-3 flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
             <CheckCircleIcon />
@@ -150,35 +241,35 @@ export default function BuildingSearchCard({
               </span>
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-navy">
-                  {building.buildingName || `${building.houseNumber} ${building.street}`}
+                  {found.buildingName || `${found.houseNumber} ${found.street}`}
                 </p>
                 <p className="text-xs text-navy/60">
-                  {building.houseNumber} {building.street}
+                  {found.houseNumber} {found.street}
                 </p>
-                <p className="text-xs text-navy/60">{building.district}</p>
+                <p className="text-xs text-navy/60">{found.district}</p>
               </div>
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
               <span className="rounded-full bg-navy/5 px-2.5 py-1 font-medium text-navy/70">
-                {building.rooms.length} phòng
+                {found.rooms.length} phòng
               </span>
               <span className="rounded-full bg-navy/5 px-2.5 py-1 font-medium text-navy/70">
-                {APARTMENT_TYPE_LABEL[building.apartmentType] ?? building.apartmentType}
+                {APARTMENT_TYPE_LABEL[found.apartmentType]}
               </span>
             </div>
 
             <div className="mt-3 border-t border-navy/10 pt-3 text-xs text-navy/60">
               <p className="font-medium text-navy/70">Quản lý</p>
               <p>
-                {building.managerName} · {building.managerPhone}
+                {found.managerName} · {found.managerPhone}
               </p>
             </div>
           </div>
 
           <button
             type="button"
-            onClick={onContinue}
+            onClick={() => onContinue(found)}
             className="mt-4 w-full rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-navy-light"
           >
             Tiếp tục tạo phòng
@@ -186,7 +277,7 @@ export default function BuildingSearchCard({
         </div>
       )}
 
-      {status === "not-found" && (
+      {notFound && (
         <div className="animate-fade-in mt-5">
           <div className="flex items-start gap-2 rounded-lg bg-amber-50 px-3 py-2.5 text-sm text-amber-800">
             <WarningIcon />
@@ -195,7 +286,7 @@ export default function BuildingSearchCard({
 
           <button
             type="button"
-            onClick={onCreateNew}
+            onClick={() => onCreateNew({ houseNumber: houseNumber.trim(), street: street.trim(), district })}
             className="mt-4 w-full rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2.5 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
           >
             Tạo dự án

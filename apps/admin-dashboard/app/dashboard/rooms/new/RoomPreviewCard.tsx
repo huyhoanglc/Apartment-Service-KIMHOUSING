@@ -42,7 +42,7 @@ export default function RoomPreviewCard({
   return (
     <div className="sticky top-6 overflow-hidden rounded-[20px] border border-navy/10 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl">
       <div className="group relative w-full bg-navy/5">
-        <PhotoGalleryGrid images={imageUrls} heightClass="h-56" />
+        <PhotoGalleryGrid images={imageUrls} heightClass="h-80" />
 
         <span
           className={`absolute top-3 left-3 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm ${ROOM_STATUS_BADGE[status]}`}

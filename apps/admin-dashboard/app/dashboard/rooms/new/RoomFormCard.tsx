@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { formatThousands, stripThousands } from "@/app/lib/formatNumber";
+import { ROOM_TYPE_LABEL, ROOM_STATUS_LABEL } from "../../apartments/RoomCard";
 import ChipToggleGroup from "./ChipToggleGroup";
 import ImageDropzone, { type StagedImage } from "./ImageDropzone";
 import type { RoomFieldErrors, WizardRoomValues } from "./types";
@@ -25,6 +27,7 @@ export default function RoomFormCard({
   featuresError,
   onAddFeature,
   addingFeature,
+  onDeleteFeature,
 }: {
   values: WizardRoomValues;
   onChange: <K extends keyof WizardRoomValues>(key: K, value: WizardRoomValues[K]) => void;
@@ -35,6 +38,7 @@ export default function RoomFormCard({
   featuresError: string | null;
   onAddFeature: (name: string) => void;
   addingFeature: boolean;
+  onDeleteFeature?: (id: string) => void;
 }) {
   const [newFeatureName, setNewFeatureName] = useState("");
 
@@ -93,11 +97,11 @@ export default function RoomFormCard({
                 <option value="" disabled>
                   -- Chọn --
                 </option>
-                <option value="STUDIO">Studio</option>
-                <option value="DUPLEX">Duplex</option>
-                <option value="ONE_BEDROOM">1 Bedroom</option>
-                <option value="TWO_BEDROOM">2 Bedroom</option>
-                <option value="THREE_BEDROOM">3 Bedroom</option>
+                {Object.entries(ROOM_TYPE_LABEL).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
               </select>
               {errors.roomType && <p className="mt-1 text-xs text-red-600">{errors.roomType}</p>}
             </div>
@@ -117,22 +121,24 @@ export default function RoomFormCard({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>Giá chủ nhà *</label>
+              <label className={labelClass}>Giá chủ nhà (đ) *</label>
               <input
-                type="number"
-                min={0}
-                value={values.basePrice}
-                onChange={(e) => onChange("basePrice", e.target.value)}
+                type="text"
+                inputMode="numeric"
+                value={formatThousands(values.basePrice)}
+                onChange={(e) => onChange("basePrice", stripThousands(e.target.value))}
+                placeholder="VD: 11.000.000"
                 className={`${inputClass} ${errors.price ? errorInputClass : ""}`}
               />
             </div>
             <div>
-              <label className={labelClass}>Giá public *</label>
+              <label className={labelClass}>Giá công khai (đ) *</label>
               <input
-                type="number"
-                min={0}
-                value={values.publicPrice}
-                onChange={(e) => onChange("publicPrice", e.target.value)}
+                type="text"
+                inputMode="numeric"
+                value={formatThousands(values.publicPrice)}
+                onChange={(e) => onChange("publicPrice", stripThousands(e.target.value))}
+                placeholder="VD: 12.500.000"
                 className={`${inputClass} ${errors.price ? errorInputClass : ""}`}
               />
             </div>
@@ -146,10 +152,11 @@ export default function RoomFormCard({
               onChange={(e) => onChange("status", e.target.value as WizardRoomValues["status"])}
               className={inputClass}
             >
-              <option value="AVAILABLE">Available</option>
-              <option value="ABOUT_TO_VACATE">About to vacate</option>
-              <option value="RENTED">Rented</option>
-              <option value="HIDDEN">Hidden</option>
+              {Object.entries(ROOM_STATUS_LABEL).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -164,13 +171,14 @@ export default function RoomFormCard({
           options={features.map((f) => ({ id: f.id, label: f.name }))}
           selected={values.featureIds}
           onToggle={toggleFeature}
+          onDelete={onDeleteFeature}
         />
 
         <div className="mt-3 flex gap-2">
           <input
             value={newFeatureName}
             onChange={(e) => setNewFeatureName(e.target.value)}
-            placeholder="Thêm tiện ích mới, VD: Smart Lock"
+            placeholder="Thêm tiện ích mới, VD: Khoá thông minh"
             className={inputClass}
           />
           <button
