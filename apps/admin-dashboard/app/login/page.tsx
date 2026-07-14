@@ -147,7 +147,7 @@ export default function LoginPage() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 12% 8%, #12294a 0%, #0a192f 45%, #050d1a 100%), radial-gradient(45% 40% at 90% 90%, rgba(212,175,55,0.10), transparent)",
+            "radial-gradient(150% 110% at 5% -5%, #2c4d7c 0%, #17335c 22%, #0a192f 55%, #050b14 100%), radial-gradient(45% 40% at 90% 90%, rgba(212,175,55,0.10), transparent)",
         }}
       />
 
@@ -160,7 +160,7 @@ export default function LoginPage() {
             width={468}
             height={196}
             priority
-            className="h-11 w-auto object-contain"
+            className="h-24 w-auto object-contain"
           />
 
           <div>
@@ -186,7 +186,7 @@ export default function LoginPage() {
                 width={468}
                 height={196}
                 priority
-                className="mb-4 h-8 w-auto object-contain md:hidden"
+                className="mb-4 h-12 w-auto object-contain md:hidden"
               />
               <h1 className="text-xl font-semibold text-white">Đăng nhập</h1>
               <p className="mt-1 text-sm text-white/60">Đăng nhập vào hệ thống quản lý</p>
