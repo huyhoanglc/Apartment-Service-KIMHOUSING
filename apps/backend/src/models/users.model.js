@@ -21,11 +21,11 @@ async function updatePassword(email, hashedPassword) {
   });
 }
 
-async function updateAvatar(id, avatarUrl) {
+async function updateProfile(id, data) {
   return prisma.user.update({
     where: { id },
-    data: { avatarUrl },
+    data,
   });
 }
 
-module.exports = { findByEmail, findById, create, updatePassword, updateAvatar };
+module.exports = { findByEmail, findById, create, updatePassword, updateProfile };

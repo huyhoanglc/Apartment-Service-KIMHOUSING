@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const usersModel = require('../models/users.model');
+const employeesModel = require('../models/employees.model');
 const otpModel = require('../models/otp.model');
 const { sendOtpEmail } = require('../config/email');
 const { ok, created, fail } = require('../utils/response');
@@ -85,7 +86,8 @@ async function googleLogin(req, res, next) {
       return fail(res, 401, 'Email Google chưa được xác minh');
     }
 
-    let profileName = null;
+    // Chỉ lấy email + avatar từ Google. Họ tên tiếng Việt lấy từ Employee (đồng bộ từ Google
+    // Sheet HR) vì tên Google trả về không theo đúng thứ tự Họ-Tên chuẩn Việt Nam.
     let profilePicture = null;
     try {
       const profileRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -93,31 +95,36 @@ async function googleLogin(req, res, next) {
       });
       if (profileRes.ok) {
         const profile = await profileRes.json();
-        profileName = profile.name || null;
         profilePicture = profile.picture || null;
       }
     } catch {
-      // name/avatar chỉ để hiển thị, không chặn đăng nhập nếu lấy thất bại
+      // avatar chỉ để hiển thị, không chặn đăng nhập nếu lấy thất bại
     }
 
-    const payload = { email: tokenInfo.email, name: profileName, picture: profilePicture };
+    const email = tokenInfo.email;
+    const employee = await employeesModel.findByEmail(email);
+    const resolvedName = employee?.fullName || email;
 
-    let user = await usersModel.findByEmail(payload.email);
+    let user = await usersModel.findByEmail(email);
     if (!user) {
       // Chưa có tài khoản -> tự tạo mới với role SALE (quyết định nghiệp vụ: cho tự onboard,
       // đổi lại nếu cần siết quyền chỉ tài khoản có sẵn mới đăng nhập Google được)
       const randomPassword = crypto.randomBytes(32).toString('hex');
       const hashedPassword = await bcrypt.hash(randomPassword, 10);
       user = await usersModel.create({
-        name: payload.name || payload.email,
-        email: payload.email,
+        name: resolvedName,
+        email,
         password: hashedPassword,
         role: 'SALE',
-        avatarUrl: payload.picture,
+        avatarUrl: profilePicture,
       });
-    } else if (payload.picture && payload.picture !== user.avatarUrl) {
-      // Ảnh Google có thể đổi theo thời gian -> đồng bộ lại avatar mới nhất mỗi lần login
-      user = await usersModel.updateAvatar(user.id, payload.picture);
+    } else {
+      const changes = {};
+      if (profilePicture && profilePicture !== user.avatarUrl) changes.avatarUrl = profilePicture;
+      if (employee?.fullName && employee.fullName !== user.name) changes.name = employee.fullName;
+      if (Object.keys(changes).length > 0) {
+        user = await usersModel.updateProfile(user.id, changes);
+      }
     }
 
     const token = signToken(user);

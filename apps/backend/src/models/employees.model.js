@@ -13,4 +13,8 @@ async function findAllEmployeeCodes() {
   return new Set(rows.map((r) => r.employeeCode));
 }
 
-module.exports = { upsert, findAllEmployeeCodes };
+async function findByEmail(email) {
+  return prisma.employee.findFirst({ where: { email } });
+}
+
+module.exports = { upsert, findAllEmployeeCodes, findByEmail };
