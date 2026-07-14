@@ -13,6 +13,10 @@ async function findByRoom(roomId) {
   });
 }
 
+async function countByRoom(roomId) {
+  return prisma.media.count({ where: { roomId } });
+}
+
 async function findById(id) {
   return prisma.media.findUnique({ where: { id } });
 }
@@ -21,4 +25,4 @@ async function remove(id) {
   return prisma.media.delete({ where: { id } });
 }
 
-module.exports = { create, findByRoom, findById, remove };
+module.exports = { create, findByRoom, countByRoom, findById, remove };

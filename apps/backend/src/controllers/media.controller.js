@@ -8,14 +8,18 @@ async function uploadMedia(req, res, next) {
       return res.status(400).json({ message: 'Chưa chọn file để upload' });
     }
 
+    const existingCount = await mediaModel.countByRoom(roomId);
+
     const results = [];
-    for (const file of req.files) {
+    for (const [index, file] of req.files.entries()) {
       const isVideo = file.mimetype.startsWith('video');
       const media = await mediaModel.create({
         roomId,
         url: file.path, // multer-storage-cloudinary trả URL ở đây
         publicId: file.filename, // và public_id ở đây
         type: isVideo ? 'VIDEO' : 'IMAGE',
+        // Giữ đúng thứ tự file trong 1 lần upload (kể cả khi đã có ảnh từ trước)
+        order: existingCount + index,
       });
       results.push(media);
     }

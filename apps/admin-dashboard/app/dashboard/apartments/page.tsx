@@ -116,12 +116,18 @@ export default function ApartmentsPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-end">
+      <div className="mb-6 flex items-center justify-end gap-4">
         <Link
           href="/dashboard/apartments/new"
+          className="text-sm text-navy/50 underline transition-colors duration-300 hover:text-gold-to"
+        >
+          Chỉ tạo dự án
+        </Link>
+        <Link
+          href="/dashboard/rooms/new"
           className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
         >
-          + Thêm Apartment
+          + Thêm Phòng
         </Link>
       </div>
 

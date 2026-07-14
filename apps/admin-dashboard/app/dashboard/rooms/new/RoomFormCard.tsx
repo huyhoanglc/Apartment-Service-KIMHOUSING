@@ -1,0 +1,192 @@
+"use client";
+
+import { useState } from "react";
+import ChipToggleGroup from "./ChipToggleGroup";
+import ImageDropzone, { type StagedImage } from "./ImageDropzone";
+import type { RoomFieldErrors, WizardRoomValues } from "./types";
+
+export interface Feature {
+  id: string;
+  name: string;
+}
+
+const inputClass =
+  "w-full rounded-lg border border-navy/15 px-3 py-2.5 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-sm font-medium text-navy/70";
+const errorInputClass = "border-red-400";
+
+export default function RoomFormCard({
+  values,
+  onChange,
+  images,
+  onImagesChange,
+  errors,
+  features,
+  featuresError,
+  onAddFeature,
+  addingFeature,
+}: {
+  values: WizardRoomValues;
+  onChange: <K extends keyof WizardRoomValues>(key: K, value: WizardRoomValues[K]) => void;
+  images: StagedImage[];
+  onImagesChange: (images: StagedImage[]) => void;
+  errors: RoomFieldErrors;
+  features: Feature[];
+  featuresError: string | null;
+  onAddFeature: (name: string) => void;
+  addingFeature: boolean;
+}) {
+  const [newFeatureName, setNewFeatureName] = useState("");
+
+  function toggleFeature(id: string) {
+    onChange(
+      "featureIds",
+      values.featureIds.includes(id)
+        ? values.featureIds.filter((f) => f !== id)
+        : [...values.featureIds, id]
+    );
+  }
+
+  function handleAddFeatureClick() {
+    const name = newFeatureName.trim();
+    if (!name) return;
+    onAddFeature(name);
+    setNewFeatureName("");
+  }
+
+  return (
+    <div className="animate-fade-in space-y-5 rounded-2xl border border-navy/10 bg-white p-6 shadow-sm">
+      <div>
+        <h2 className="mb-4 text-base font-semibold text-navy">Thông tin phòng</h2>
+
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Mã phòng *</label>
+              <input
+                value={values.code}
+                onChange={(e) => onChange("code", e.target.value)}
+                placeholder="VD: A-301"
+                className={`${inputClass} ${errors.code ? errorInputClass : ""}`}
+              />
+              {errors.code && <p className="mt-1 text-xs text-red-600">{errors.code}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>Slug</label>
+              <input
+                value={values.slug}
+                onChange={(e) => onChange("slug", e.target.value)}
+                placeholder="tự sinh từ mã phòng"
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Loại phòng *</label>
+              <select
+                value={values.roomType}
+                onChange={(e) => onChange("roomType", e.target.value as WizardRoomValues["roomType"])}
+                className={`${inputClass} ${errors.roomType ? errorInputClass : ""}`}
+              >
+                <option value="" disabled>
+                  -- Chọn --
+                </option>
+                <option value="STUDIO">Studio</option>
+                <option value="DUPLEX">Duplex</option>
+                <option value="ONE_BEDROOM">1 Bedroom</option>
+                <option value="TWO_BEDROOM">2 Bedroom</option>
+                <option value="THREE_BEDROOM">3 Bedroom</option>
+              </select>
+              {errors.roomType && <p className="mt-1 text-xs text-red-600">{errors.roomType}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>Diện tích (m²)</label>
+              <input
+                type="number"
+                min={0}
+                step="0.1"
+                value={values.area}
+                onChange={(e) => onChange("area", e.target.value)}
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Giá chủ nhà *</label>
+              <input
+                type="number"
+                min={0}
+                value={values.basePrice}
+                onChange={(e) => onChange("basePrice", e.target.value)}
+                className={`${inputClass} ${errors.price ? errorInputClass : ""}`}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Giá public *</label>
+              <input
+                type="number"
+                min={0}
+                value={values.publicPrice}
+                onChange={(e) => onChange("publicPrice", e.target.value)}
+                className={`${inputClass} ${errors.price ? errorInputClass : ""}`}
+              />
+            </div>
+          </div>
+          {errors.price && <p className="text-xs text-red-600">{errors.price}</p>}
+
+          <div>
+            <label className={labelClass}>Trạng thái</label>
+            <select
+              value={values.status}
+              onChange={(e) => onChange("status", e.target.value as WizardRoomValues["status"])}
+              className={inputClass}
+            >
+              <option value="AVAILABLE">Available</option>
+              <option value="ABOUT_TO_VACATE">About to vacate</option>
+              <option value="RENTED">Rented</option>
+              <option value="HIDDEN">Hidden</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-navy/10 pt-5">
+        <span className={labelClass}>Tiện ích</span>
+
+        {featuresError && <p className="mb-2 text-sm text-red-600">{featuresError}</p>}
+
+        <ChipToggleGroup
+          options={features.map((f) => ({ id: f.id, label: f.name }))}
+          selected={values.featureIds}
+          onToggle={toggleFeature}
+        />
+
+        <div className="mt-3 flex gap-2">
+          <input
+            value={newFeatureName}
+            onChange={(e) => setNewFeatureName(e.target.value)}
+            placeholder="Thêm tiện ích mới, VD: Smart Lock"
+            className={inputClass}
+          />
+          <button
+            type="button"
+            disabled={addingFeature}
+            onClick={handleAddFeatureClick}
+            className="whitespace-nowrap rounded-lg border border-navy/15 px-3 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to disabled:opacity-50"
+          >
+            + Thêm
+          </button>
+        </div>
+      </div>
+
+      <div className="border-t border-navy/10 pt-5">
+        <span className={labelClass}>Hình ảnh *</span>
+        <ImageDropzone images={images} onChange={onImagesChange} error={errors.images} />
+      </div>
+    </div>
+  );
+}

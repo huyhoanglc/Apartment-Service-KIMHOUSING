@@ -7,7 +7,13 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Tổng quan", exact: true, icon: HomeIcon },
   { href: "/dashboard/feed", label: "Bảng tin", exact: false, icon: TagIcon },
-  { href: "/dashboard/apartments", label: "Kho rổ hàng", exact: false, icon: InboxIcon },
+  {
+    href: "/dashboard/apartments",
+    label: "Kho rổ hàng",
+    exact: false,
+    icon: InboxIcon,
+    matchPrefixes: ["/dashboard/apartments", "/dashboard/rooms"],
+  },
   { href: "/dashboard/my-sources", label: "Nguồn của tôi", exact: false, icon: ShareIcon },
   { href: "/dashboard/source-updates", label: "Nguồn căn cập nhật", exact: false, icon: AlertIcon, badge: 26 },
   { href: "/dashboard/update-history", label: "Lịch sử cập nhật", exact: false, icon: HistoryIcon },
@@ -131,7 +137,8 @@ export default function Sidebar() {
 
       <nav className="flex-1 space-y-1 px-3 py-2">
         {NAV_ITEMS.map((item) => {
-          const active = item.exact ? pathname === item.href : pathname?.startsWith(item.href);
+          const prefixes = "matchPrefixes" in item && item.matchPrefixes ? item.matchPrefixes : [item.href];
+          const active = item.exact ? pathname === item.href : prefixes.some((p) => pathname?.startsWith(p));
           const Icon = item.icon;
           return (
             <Link

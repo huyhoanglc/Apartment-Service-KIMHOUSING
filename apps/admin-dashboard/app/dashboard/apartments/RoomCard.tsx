@@ -35,7 +35,7 @@ export const ROOM_STATUS_LABEL: Record<RoomStatus, string> = {
   HIDDEN: "Ẩn",
 };
 
-const ROOM_STATUS_BADGE: Record<RoomStatus, string> = {
+export const ROOM_STATUS_BADGE: Record<RoomStatus, string> = {
   AVAILABLE: "bg-emerald-500 text-white",
   ABOUT_TO_VACATE: "bg-amber-500 text-white",
   RENTED: "bg-navy/70 text-white",
