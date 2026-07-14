@@ -77,6 +77,14 @@ function LogoutIcon() {
   );
 }
 
+function MenuIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M3 5h14M3 10h14M3 15h14" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function MenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: string; onClick: () => void }) {
   return (
     <button
@@ -90,7 +98,17 @@ function MenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: stri
   );
 }
 
-function Header({ user, onLogout, onComingSoon }: { user: AuthUser; onLogout: () => void; onComingSoon: () => void }) {
+function Header({
+  user,
+  onLogout,
+  onComingSoon,
+  onMenuClick,
+}: {
+  user: AuthUser;
+  onLogout: () => void;
+  onComingSoon: () => void;
+  onMenuClick: () => void;
+}) {
   const title = useHeaderTitle();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -114,8 +132,18 @@ function Header({ user, onLogout, onComingSoon }: { user: AuthUser; onLogout: ()
     .toUpperCase();
 
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-navy/10 bg-white px-6">
-      <h1 className="truncate text-lg font-semibold text-navy">{title}</h1>
+    <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-navy/10 bg-white px-4 sm:px-6">
+      <div className="flex min-w-0 items-center gap-3">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          aria-label="Mở menu"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-navy/70 transition-colors duration-200 hover:bg-navy/5 hover:text-navy md:hidden"
+        >
+          <MenuIcon />
+        </button>
+        <h1 className="truncate text-lg font-semibold text-navy">{title}</h1>
+      </div>
 
       <div className="flex shrink-0 items-center gap-2">
         <button
@@ -170,6 +198,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const { showToast } = useToast();
   const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
+  // Sidebar tự đóng khi bấm vào 1 mục điều hướng (xem onClick trong Sidebar), effect theo
+  // pathname là dư thừa và bị lint chặn (set-state-in-effect) nên không cần thêm ở đây.
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   function notifyComingSoon() {
     showToast("Tính năng đang được phát triển", "info");
@@ -191,10 +222,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <PageTitleProvider>
       <div className="flex flex-1">
-        <Sidebar />
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <div className="flex flex-1 flex-col">
-          <Header user={user} onLogout={handleLogout} onComingSoon={notifyComingSoon} />
-          <main className="flex flex-1 flex-col bg-background p-6">{children}</main>
+          <Header
+            user={user}
+            onLogout={handleLogout}
+            onComingSoon={notifyComingSoon}
+            onMenuClick={() => setSidebarOpen(true)}
+          />
+          <main className="flex flex-1 flex-col bg-background p-4 sm:p-6">{children}</main>
         </div>
       </div>
     </PageTitleProvider>

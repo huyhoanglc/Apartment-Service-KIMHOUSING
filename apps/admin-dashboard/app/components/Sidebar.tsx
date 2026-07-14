@@ -119,57 +119,91 @@ function SettingsIcon() {
   );
 }
 
-export default function Sidebar() {
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M5 5l10 10M15 5 5 15" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export default function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col overflow-y-auto bg-navy text-white">
-      <Link href="/" className="flex items-center px-5 py-6 transition-opacity duration-200 hover:opacity-80">
-        <Image
-          src="/Logo_navbar.png"
-          alt="Kim Housing"
-          width={468}
-          height={196}
-          priority
-          className="h-12 w-auto object-contain"
-        />
-      </Link>
+    <>
+      {/* Lớp phủ mờ phía sau sidebar khi mở trên mobile, tap để đóng lại */}
+      <div
+        onClick={onClose}
+        aria-hidden="true"
+        className={`fixed inset-0 z-30 bg-navy/50 backdrop-blur-[1px] transition-opacity duration-300 md:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
 
-      <nav className="flex-1 space-y-1 px-3 py-2">
-        {NAV_ITEMS.map((item) => {
-          const prefixes = "matchPrefixes" in item && item.matchPrefixes ? item.matchPrefixes : [item.href];
-          const active = item.exact ? pathname === item.href : prefixes.some((p) => pathname?.startsWith(p));
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-200 ${
-                active
-                  ? "bg-linear-to-r from-gold-from via-gold-via to-gold-to text-navy"
-                  : "text-white/70 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              <Icon />
-              <span className="flex-1">{item.label}</span>
-              {item.badge && (
-                <span
-                  className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold ${
-                    active ? "bg-navy text-white" : "bg-gold text-navy"
-                  }`}
-                >
-                  {item.badge}
-                </span>
-              )}
-              {item.dot && <span className="h-2 w-2 shrink-0 rounded-full bg-red-500" />}
-            </Link>
-          );
-        })}
-      </nav>
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col overflow-y-auto bg-navy text-white transition-transform duration-300 ease-in-out md:static md:z-auto md:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between px-5 py-6">
+          <Link href="/" className="flex items-center transition-opacity duration-200 hover:opacity-80">
+            <Image
+              src="/Logo_navbar.png"
+              alt="Kim Housing"
+              width={468}
+              height={196}
+              priority
+              className="h-12 w-auto object-contain"
+            />
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Đóng menu"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-white/60 transition-colors duration-200 hover:bg-white/10 hover:text-white md:hidden"
+          >
+            <CloseIcon />
+          </button>
+        </div>
 
-      <div className="border-t border-white/10 px-5 py-4 text-xs text-white/40">
-        Kim Housing © {new Date().getFullYear()}
-      </div>
-    </aside>
+        <nav className="flex-1 space-y-1 px-3 py-2">
+          {NAV_ITEMS.map((item) => {
+            const prefixes = "matchPrefixes" in item && item.matchPrefixes ? item.matchPrefixes : [item.href];
+            const active = item.exact ? pathname === item.href : prefixes.some((p) => pathname?.startsWith(p));
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onClose}
+                className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-200 ${
+                  active
+                    ? "bg-linear-to-r from-gold-from via-gold-via to-gold-to text-navy"
+                    : "text-white/70 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                <Icon />
+                <span className="flex-1">{item.label}</span>
+                {item.badge && (
+                  <span
+                    className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold ${
+                      active ? "bg-navy text-white" : "bg-gold text-navy"
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+                {item.dot && <span className="h-2 w-2 shrink-0 rounded-full bg-red-500" />}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="border-t border-white/10 px-5 py-4 text-xs text-white/40">
+          Kim Housing © {new Date().getFullYear()}
+        </div>
+      </aside>
+    </>
   );
 }
