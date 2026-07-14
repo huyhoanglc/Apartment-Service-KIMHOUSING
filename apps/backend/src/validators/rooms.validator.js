@@ -2,7 +2,10 @@ const { z } = require('zod');
 
 const createRoomSchema = z.object({
   apartmentId: z.string().min(1, 'apartmentId không được để trống'),
-  code: z.string().min(1, 'Mã phòng không được để trống'),
+  code: z
+    .string()
+    .min(1, 'Mã phòng không được để trống')
+    .regex(/^[A-Za-z0-9_-]+$/, 'Mã phòng chỉ được chứa chữ, số, gạch dưới, gạch ngang'),
   slug: z.string().min(1, 'Slug không được để trống'),
   roomType: z.enum(['DUPLEX', 'STUDIO', 'ONE_BEDROOM', 'TWO_BEDROOM', 'THREE_BEDROOM']),
   area: z.number('Diện tích phải là số').positive('Diện tích phải lớn hơn 0'),

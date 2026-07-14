@@ -42,18 +42,25 @@ async function findById(id) {
 async function create(data) {
   const { featureIds, ...apartmentData } = data;
 
+  // apartmentCode là field bắt buộc nên phải biết trước apartmentSeq trước khi create (không
+  // thể create() thiếu rồi update() sau như autoincrement thông thường) -> lấy trực tiếp giá
+  // trị tiếp theo của sequence Postgres đứng sau cột apartmentSeq.
+  const [{ nextval }] = await prisma.$queryRaw`SELECT nextval('"apartments_apartmentSeq_seq"') AS nextval`;
+  const apartmentSeq = Number(nextval);
+  const apartmentCode = `A${String(apartmentSeq).padStart(6, '0')}`;
+
   return prisma.apartment.create({
     data: {
       ...apartmentData,
+      apartmentSeq,
+      apartmentCode,
       features: featureIds
         ? {
             create: featureIds.map((featureId) => ({ featureId })),
           }
         : undefined,
     },
-    include: {
-      features: { include: { feature: true } },
-    },
+    include: { features: { include: { feature: true } } },
   });
 }
 

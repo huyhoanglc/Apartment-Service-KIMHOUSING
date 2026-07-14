@@ -10,6 +10,7 @@ async function uploadMedia(req, res, next) {
     }
 
     const existingCount = await mediaModel.countByRoom(roomId);
+    const { cloudinaryFolder } = await req._roomFolderPromise;
 
     const results = [];
     for (const [index, file] of req.files.entries()) {
@@ -21,6 +22,8 @@ async function uploadMedia(req, res, next) {
         type: isVideo ? 'VIDEO' : 'IMAGE',
         // Giữ đúng thứ tự file trong 1 lần upload (kể cả khi đã có ảnh từ trước)
         order: existingCount + index,
+        cloudinaryFolder,
+        sizeBytes: file.size,
       });
       results.push(media);
     }

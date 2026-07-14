@@ -6,10 +6,23 @@ const { fail } = require('../utils/response');
 function errorHandler(err, req, res, next) {
   console.error(err);
 
+  // Lỗi tự throw từ middleware ngoài luồng Express bình thường (vd upload.js khi thiếu
+  // roomId) mang sẵn err.status - trả đúng status thay vì rơi xuống 500 mặc định.
+  if (err.status) {
+    return fail(res, err.status, err.message);
+  }
+
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
-      const fields = Array.isArray(err.meta?.target) ? err.meta.target.join(', ') : err.meta?.target;
-      return fail(res, 409, `Dữ liệu bị trùng${fields ? ` (${fields})` : ''}`);
+      const target = err.meta?.target;
+      const fields = Array.isArray(target) ? target : typeof target === 'string' ? [target] : [];
+      if (fields.includes('code') && fields.includes('apartmentId')) {
+        return fail(res, 409, 'Mã phòng đã tồn tại trong tòa nhà này');
+      }
+      if (fields.includes('apartmentCode')) {
+        return fail(res, 409, 'Mã căn hộ đã tồn tại');
+      }
+      return fail(res, 409, `Dữ liệu bị trùng${fields.length ? ` (${fields.join(', ')})` : ''}`);
     }
     if (err.code === 'P2025') {
       return fail(res, 404, 'Không tìm thấy dữ liệu');

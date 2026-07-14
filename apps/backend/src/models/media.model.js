@@ -1,8 +1,16 @@
 const prisma = require('../config/prisma');
 
-async function create({ roomId, url, publicId, type, order }) {
+async function create({ roomId, url, publicId, type, order, cloudinaryFolder, sizeBytes }) {
   return prisma.media.create({
-    data: { roomId, url, publicId, type, order: order || 0 },
+    data: {
+      roomId,
+      url,
+      publicId,
+      type,
+      order: order || 0,
+      cloudinaryFolder,
+      sizeBytes,
+    },
   });
 }
 
