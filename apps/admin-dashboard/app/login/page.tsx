@@ -273,25 +273,37 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <div className="flex flex-1 justify-center">
-                {GOOGLE_CLIENT_ID ? (
-                  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale="vi">
-                    <GoogleLogin
-                      onSuccess={handleGoogleSuccess}
-                      onError={() => setError("Đăng nhập Google thất bại")}
-                      width="180"
-                    />
-                  </GoogleOAuthProvider>
-                ) : (
-                  <button
-                    type="button"
-                    disabled
-                    className="flex w-full items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/40"
-                  >
-                    Google
-                  </button>
-                )}
-              </div>
+              {GOOGLE_CLIENT_ID ? (
+                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale="vi">
+                  <div className="relative flex flex-1">
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      aria-hidden
+                      className="pointer-events-none flex w-full items-center justify-center gap-2 rounded-md border border-white/15 bg-white px-4 py-2 text-sm font-medium text-navy transition-colors duration-300"
+                    >
+                      <Image src="/Google_logo.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" />
+                      Google
+                    </button>
+                    <div className="absolute inset-0 overflow-hidden rounded-md opacity-0">
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => setError("Đăng nhập Google thất bại")}
+                        width="400"
+                      />
+                    </div>
+                  </div>
+                </GoogleOAuthProvider>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="flex flex-1 items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/40"
+                >
+                  <Image src="/Google_logo.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0 opacity-40" />
+                  Google
+                </button>
+              )}
 
               <button
                 type="button"
