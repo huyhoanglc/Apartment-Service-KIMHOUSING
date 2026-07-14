@@ -22,6 +22,15 @@ function SearchIcon() {
   );
 }
 
+function BellIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
+      <path d="M5 8a5 5 0 0 1 10 0c0 3.2 1 4.5 1.5 5.2a.6.6 0 0 1-.5 1H4a.6.6 0 0 1-.5-1C4 12.5 5 11.2 5 8Z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.2 16.5a1.8 1.8 0 0 0 3.6 0" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function ChevronIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-3.5 w-3.5">
@@ -141,39 +150,50 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             />
           </div>
 
-          <div className="relative shrink-0" ref={menuRef}>
+          <div className="flex shrink-0 items-center gap-2">
             <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors duration-200 hover:bg-navy/5"
+              type="button"
+              onClick={() => alert("Tính năng đang được phát triển")}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
+              aria-label="Thông báo"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy">
-                {initials}
-              </span>
-              <span className="hidden text-sm text-navy/70 sm:inline">
-                {user.name} <span className="text-navy/40">({user.role})</span>
-              </span>
-              <ChevronIcon />
+              <BellIcon />
             </button>
 
-            {menuOpen && (
-              <div className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-navy/10 bg-white py-2 shadow-lg">
-                <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
-                  Xin chào, {user.name}
-                </p>
-                <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" />
-                <MenuItem icon={<SettingsIcon />} label="Cài đặt" />
-                <MenuItem icon={<ActivityIcon />} label="Hoạt động" />
-                <MenuItem icon={<SupportIcon />} label="Hỗ trợ" />
-                <div className="my-1 border-t border-navy/10" />
-                <button
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-red-600 transition-colors duration-200 hover:bg-red-50"
-                >
-                  <LogoutIcon />
-                  Đăng xuất
-                </button>
-              </div>
-            )}
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors duration-200 hover:bg-navy/5"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy">
+                  {initials}
+                </span>
+                <span className="hidden text-sm text-navy/70 sm:inline">
+                  {user.name} <span className="text-navy/40">({user.role})</span>
+                </span>
+                <ChevronIcon />
+              </button>
+
+              {menuOpen && (
+                <div className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-navy/10 bg-white py-2 shadow-lg">
+                  <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
+                    Xin chào, {user.name}
+                  </p>
+                  <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" />
+                  <MenuItem icon={<SettingsIcon />} label="Cài đặt" />
+                  <MenuItem icon={<ActivityIcon />} label="Hoạt động" />
+                  <MenuItem icon={<SupportIcon />} label="Hỗ trợ" />
+                  <div className="my-1 border-t border-navy/10" />
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-red-600 transition-colors duration-200 hover:bg-red-50"
+                  >
+                    <LogoutIcon />
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
         <main className="flex flex-1 flex-col bg-background p-6">{children}</main>
