@@ -5,6 +5,7 @@ export interface AuthUser {
   name: string;
   email: string;
   role: Role;
+  avatarUrl?: string | null;
 }
 
 const TOKEN_KEY = "kimhousing_admin_token";

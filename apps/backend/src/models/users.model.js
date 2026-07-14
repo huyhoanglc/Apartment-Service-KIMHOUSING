@@ -8,9 +8,9 @@ async function findById(id) {
   return prisma.user.findUnique({ where: { id } });
 }
 
-async function create({ name, email, password, role }) {
+async function create({ name, email, password, role, avatarUrl }) {
   return prisma.user.create({
-    data: { name, email, password, role },
+    data: { name, email, password, role, avatarUrl },
   });
 }
 
@@ -21,4 +21,11 @@ async function updatePassword(email, hashedPassword) {
   });
 }
 
-module.exports = { findByEmail, findById, create, updatePassword };
+async function updateAvatar(id, avatarUrl) {
+  return prisma.user.update({
+    where: { id },
+    data: { avatarUrl },
+  });
+}
+
+module.exports = { findByEmail, findById, create, updatePassword, updateAvatar };

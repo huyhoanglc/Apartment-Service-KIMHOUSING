@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Sidebar from "@/app/components/Sidebar";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
 import { useToast } from "@/app/components/ToastProvider";
@@ -98,6 +99,37 @@ function MenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: stri
   );
 }
 
+function Avatar({ user, className }: { user: AuthUser; className?: string }) {
+  const initials = user.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(-2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+
+  if (user.avatarUrl) {
+    return (
+      <Image
+        src={user.avatarUrl}
+        alt={user.name}
+        width={32}
+        height={32}
+        className={`rounded-full object-cover ${className ?? ""}`}
+        unoptimized
+      />
+    );
+  }
+
+  return (
+    <span
+      className={`flex items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy ${className ?? ""}`}
+    >
+      {initials}
+    </span>
+  );
+}
+
 function Header({
   user,
   onLogout,
@@ -122,14 +154,6 @@ function Header({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const initials = user.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(-2)
-    .map((p) => p[0])
-    .join("")
-    .toUpperCase();
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-navy/10 bg-white px-4 sm:px-6">
@@ -160,9 +184,7 @@ function Header({
             onClick={() => setMenuOpen((v) => !v)}
             className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors duration-200 hover:bg-navy/5"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy">
-              {initials}
-            </span>
+            <Avatar user={user} className="h-8 w-8" />
             <span className="hidden text-sm text-navy/70 sm:inline">
               {user.name} <span className="text-navy/40">({user.role})</span>
             </span>

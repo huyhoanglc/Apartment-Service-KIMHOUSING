@@ -86,6 +86,7 @@ async function googleLogin(req, res, next) {
     }
 
     let profileName = null;
+    let profilePicture = null;
     try {
       const profileRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -93,12 +94,13 @@ async function googleLogin(req, res, next) {
       if (profileRes.ok) {
         const profile = await profileRes.json();
         profileName = profile.name || null;
+        profilePicture = profile.picture || null;
       }
     } catch {
-      // name chỉ để hiển thị, không chặn đăng nhập nếu lấy thất bại
+      // name/avatar chỉ để hiển thị, không chặn đăng nhập nếu lấy thất bại
     }
 
-    const payload = { email: tokenInfo.email, name: profileName };
+    const payload = { email: tokenInfo.email, name: profileName, picture: profilePicture };
 
     let user = await usersModel.findByEmail(payload.email);
     if (!user) {
@@ -111,7 +113,11 @@ async function googleLogin(req, res, next) {
         email: payload.email,
         password: hashedPassword,
         role: 'SALE',
+        avatarUrl: payload.picture,
       });
+    } else if (payload.picture && payload.picture !== user.avatarUrl) {
+      // Ảnh Google có thể đổi theo thời gian -> đồng bộ lại avatar mới nhất mỗi lần login
+      user = await usersModel.updateAvatar(user.id, payload.picture);
     }
 
     const token = signToken(user);
