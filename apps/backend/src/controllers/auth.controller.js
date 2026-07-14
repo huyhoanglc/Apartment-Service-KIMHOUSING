@@ -1,13 +1,10 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { OAuth2Client } = require('google-auth-library');
 const usersModel = require('../models/users.model');
 const otpModel = require('../models/otp.model');
 const { sendOtpEmail } = require('../config/email');
 const { ok, created, fail } = require('../utils/response');
-
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 function signToken(user) {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
@@ -65,22 +62,43 @@ async function login(req, res, next) {
 
 async function googleLogin(req, res, next) {
   try {
-    const { idToken } = req.body;
+    const { accessToken } = req.body;
 
-    let payload;
+    // access_token đến từ luồng OAuth phía browser (useGoogleLogin), không phải idToken,
+    // nên phải tự verify qua endpoint tokeninfo của Google (check đúng aud = client app này)
+    // thay vì google-auth-library's verifyIdToken.
+    let tokenInfo;
     try {
-      const ticket = await googleClient.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-      payload = ticket.getPayload();
+      const tokenInfoRes = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?access_token=${encodeURIComponent(accessToken)}`
+      );
+      if (!tokenInfoRes.ok) throw new Error('tokeninfo request failed');
+      tokenInfo = await tokenInfoRes.json();
     } catch {
       return fail(res, 401, 'Token Google không hợp lệ');
     }
 
-    if (!payload.email_verified) {
+    if (tokenInfo.aud !== process.env.GOOGLE_CLIENT_ID) {
+      return fail(res, 401, 'Token Google không hợp lệ');
+    }
+    if (tokenInfo.email_verified !== 'true' && tokenInfo.email_verified !== true) {
       return fail(res, 401, 'Email Google chưa được xác minh');
     }
+
+    let profileName = null;
+    try {
+      const profileRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (profileRes.ok) {
+        const profile = await profileRes.json();
+        profileName = profile.name || null;
+      }
+    } catch {
+      // name chỉ để hiển thị, không chặn đăng nhập nếu lấy thất bại
+    }
+
+    const payload = { email: tokenInfo.email, name: profileName };
 
     let user = await usersModel.findByEmail(payload.email);
     if (!user) {

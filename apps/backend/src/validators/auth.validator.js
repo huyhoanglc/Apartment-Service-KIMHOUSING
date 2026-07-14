@@ -13,7 +13,7 @@ const loginSchema = z.object({
 });
 
 const googleLoginSchema = z.object({
-  idToken: z.string().min(1, 'idToken không được để trống'),
+  accessToken: z.string().min(1, 'accessToken không được để trống'),
 });
 
 const forgotPasswordSchema = z.object({

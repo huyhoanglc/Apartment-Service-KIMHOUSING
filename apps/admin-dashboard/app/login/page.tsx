@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { API_URL } from "@/app/lib/api";
 import { saveSession } from "@/app/lib/auth";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
@@ -69,6 +69,30 @@ function ZaloIcon() {
   );
 }
 
+function GoogleLoginButton({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (accessToken: string) => void;
+  onError: () => void;
+}) {
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => onSuccess(tokenResponse.access_token),
+    onError,
+  });
+
+  return (
+    <button
+      type="button"
+      onClick={() => login()}
+      className="flex flex-1 items-center justify-center gap-2 rounded-md border border-white/15 bg-white px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+    >
+      <Image src="/Google_logo.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" />
+      Google
+    </button>
+  );
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -107,12 +131,7 @@ export default function LoginPage() {
     }
   }
 
-  async function handleGoogleSuccess(credentialResponse: CredentialResponse) {
-    if (!credentialResponse.credential) {
-      setError("Đăng nhập Google thất bại");
-      return;
-    }
-
+  async function handleGoogleSuccess(accessToken: string) {
     setError(null);
     setLoading(true);
 
@@ -120,7 +139,7 @@ export default function LoginPage() {
       const res = await fetch(`${API_URL}/api/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken: credentialResponse.credential }),
+        body: JSON.stringify({ accessToken }),
       });
 
       const result = await res.json();
@@ -274,25 +293,11 @@ export default function LoginPage() {
 
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               {GOOGLE_CLIENT_ID ? (
-                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale="vi">
-                  <div className="relative flex flex-1">
-                    <button
-                      type="button"
-                      tabIndex={-1}
-                      aria-hidden
-                      className="pointer-events-none flex w-full items-center justify-center gap-2 rounded-md border border-white/15 bg-white px-4 py-2 text-sm font-medium text-navy transition-colors duration-300"
-                    >
-                      <Image src="/Google_logo.png" alt="" width={16} height={16} className="h-4 w-4 shrink-0" />
-                      Google
-                    </button>
-                    <div className="absolute inset-0 overflow-hidden rounded-md opacity-0">
-                      <GoogleLogin
-                        onSuccess={handleGoogleSuccess}
-                        onError={() => setError("Đăng nhập Google thất bại")}
-                        width="400"
-                      />
-                    </div>
-                  </div>
+                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                  <GoogleLoginButton
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => setError("Đăng nhập Google thất bại")}
+                  />
                 </GoogleOAuthProvider>
               ) : (
                 <button
