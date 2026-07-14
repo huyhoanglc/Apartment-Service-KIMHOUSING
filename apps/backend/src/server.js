@@ -13,10 +13,13 @@ app.use('/api/apartments', require('./routes/apartments.routes'));
 app.use('/api/rooms', require('./routes/rooms.routes'));
 app.use('/api/features', require('./routes/features.routes'));
 app.use('/api/media', require('./routes/media.routes'));
+app.use('/api/employees', require('./routes/employees.routes'));
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 app.use(require('./middlewares/error.middleware'));
+
+require('./jobs/employeeSync.job').registerEmployeeSyncJob();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));

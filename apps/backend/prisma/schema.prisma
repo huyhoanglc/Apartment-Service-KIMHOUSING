@@ -169,3 +169,28 @@ model OtpCode {
   @@index([email])
   @@map("otp_codes")
 }
+
+model Employee {
+  id           String @id @default(cuid())
+  employeeCode String @unique
+
+  fullName          String?
+  email             String?
+  dateOfBirth       DateTime? @db.Date
+  phone             String?
+  position          String?
+  startDate         DateTime? @db.Date
+  managerName       String?
+  employmentType    String?
+  bankAccountNumber String?
+  bankName          String?
+  salaryInfo        String?
+  employmentStatus  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([phone])
+  @@map("employees")
+}
