@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 import ApartmentForm, { type ApartmentFormValues } from "../../ApartmentForm";
 
 export default function EditApartmentPage() {
+  usePageTitle("Sửa Apartment");
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [initialValues, setInitialValues] = useState<ApartmentFormValues | null>(null);
@@ -33,6 +35,7 @@ export default function EditApartmentPage() {
           managerName: data.managerName,
           managerPhone: data.managerPhone,
           accessType: data.accessType,
+          apartmentType: data.apartmentType ?? "APARTMENT",
           totalRooms: String(data.totalRooms),
         });
       } catch {
@@ -56,6 +59,7 @@ export default function EditApartmentPage() {
         managerName: values.managerName,
         managerPhone: values.managerPhone,
         accessType: values.accessType,
+        apartmentType: values.apartmentType,
         totalRooms: Number(values.totalRooms),
       }),
     });

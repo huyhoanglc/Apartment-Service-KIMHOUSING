@@ -7,6 +7,7 @@ import { apiFetch } from "@/app/lib/api";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
 import { useConfirm } from "@/app/components/ConfirmProvider";
 import { useToast } from "@/app/components/ToastProvider";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 
 interface Media {
   id: string;
@@ -18,11 +19,11 @@ interface Media {
 interface RoomDetail {
   id: string;
   code: string;
-  roomType: "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM";
+  roomType: "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM" | "THREE_BEDROOM";
   area: number;
   basePrice?: number;
   publicPrice: number;
-  status: "AVAILABLE" | "RENTED" | "HIDDEN";
+  status: "AVAILABLE" | "ABOUT_TO_VACATE" | "RENTED" | "HIDDEN";
   features: { feature: { id: string; name: string } }[];
   media: Media[];
   apartment: {
@@ -38,10 +39,12 @@ const ROOM_TYPE_LABEL: Record<RoomDetail["roomType"], string> = {
   DUPLEX: "Duplex",
   ONE_BEDROOM: "1 phòng ngủ",
   TWO_BEDROOM: "2 phòng ngủ",
+  THREE_BEDROOM: "3 phòng ngủ",
 };
 
 const ROOM_STATUS_LABEL: Record<RoomDetail["status"], string> = {
   AVAILABLE: "Còn trống",
+  ABOUT_TO_VACATE: "Sắp trống",
   RENTED: "Đã thuê",
   HIDDEN: "Ẩn",
 };
@@ -51,6 +54,7 @@ export default function RoomDetailPage() {
   const { showToast } = useToast();
   const params = useParams<{ id: string; roomId: string }>();
   const [room, setRoom] = useState<RoomDetail | null>(null);
+  usePageTitle(room ? `Phòng ${room.code}` : "Chi tiết phòng");
   const [error, setError] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);

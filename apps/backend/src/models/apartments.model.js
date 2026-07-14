@@ -1,8 +1,11 @@
 const prisma = require('../config/prisma');
 
-async function findAll({ district }) {
+async function findAll({ district, apartmentType }) {
   return prisma.apartment.findMany({
-    where: district ? { district } : {},
+    where: {
+      ...(district && { district }),
+      ...(apartmentType && { apartmentType }),
+    },
     include: {
       features: { include: { feature: true } },
       rooms: true,

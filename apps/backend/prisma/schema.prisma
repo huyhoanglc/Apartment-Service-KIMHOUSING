@@ -24,12 +24,19 @@ enum RoomType {
   STUDIO
   ONE_BEDROOM
   TWO_BEDROOM
+  THREE_BEDROOM
 }
 
 enum RoomStatus {
   AVAILABLE
+  ABOUT_TO_VACATE
   RENTED
   HIDDEN
+}
+
+enum ApartmentType {
+  APARTMENT
+  SERVICED_APARTMENT
 }
 
 enum MediaType {
@@ -60,8 +67,9 @@ model Apartment {
   managerName  String
   managerPhone String
 
-  accessType AccessType
-  totalRooms Int
+  accessType    AccessType
+  apartmentType ApartmentType @default(APARTMENT)
+  totalRooms    Int
 
   createdById String
   createdBy   User   @relation("CreatedBy", fields: [createdById], references: [id])

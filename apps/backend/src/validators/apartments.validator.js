@@ -8,6 +8,7 @@ const createApartmentSchema = z.object({
   managerName: z.string().min(1, 'Tên quản lý không được để trống'),
   managerPhone: z.string().min(1, 'SĐT quản lý không được để trống'),
   accessType: z.enum(['STAIRS', 'ELEVATOR', 'BOTH']),
+  apartmentType: z.enum(['APARTMENT', 'SERVICED_APARTMENT']).optional(),
   totalRooms: z.number().int('Tổng số phòng phải là số nguyên').positive('Tổng số phòng phải lớn hơn 0'),
   featureIds: z.array(z.string()).optional(),
 });

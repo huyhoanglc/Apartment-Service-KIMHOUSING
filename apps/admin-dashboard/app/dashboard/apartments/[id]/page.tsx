@@ -2,21 +2,22 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
 import { getUser } from "@/app/lib/auth";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
 import { useConfirm } from "@/app/components/ConfirmProvider";
 import { useToast } from "@/app/components/ToastProvider";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 
 interface Room {
   id: string;
   code: string;
-  roomType: "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM";
+  roomType: "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM" | "THREE_BEDROOM";
   area: number;
   basePrice?: number;
   publicPrice: number;
-  status: "AVAILABLE" | "RENTED" | "HIDDEN";
+  status: "AVAILABLE" | "ABOUT_TO_VACATE" | "RENTED" | "HIDDEN";
   features: { feature: { id: string; name: string } }[];
 }
 
@@ -44,10 +45,12 @@ const ROOM_TYPE_LABEL: Record<Room["roomType"], string> = {
   DUPLEX: "Duplex",
   ONE_BEDROOM: "1 phòng ngủ",
   TWO_BEDROOM: "2 phòng ngủ",
+  THREE_BEDROOM: "3 phòng ngủ",
 };
 
 const ROOM_STATUS_LABEL: Record<Room["status"], string> = {
   AVAILABLE: "Còn trống",
+  ABOUT_TO_VACATE: "Sắp trống",
   RENTED: "Đã thuê",
   HIDDEN: "Ẩn",
 };
@@ -55,8 +58,10 @@ const ROOM_STATUS_LABEL: Record<Room["status"], string> = {
 export default function ApartmentDetailPage() {
   const confirmDialog = useConfirm();
   const { showToast } = useToast();
+  const router = useRouter();
   const params = useParams<{ id: string }>();
   const [apartment, setApartment] = useState<ApartmentDetail | null>(null);
+  usePageTitle(apartment ? `${apartment.houseNumber} ${apartment.street}` : "Chi tiết Apartment");
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const isAdmin = getUser()?.role === "ADMIN";
@@ -109,6 +114,31 @@ export default function ApartmentDetailPage() {
     }
   }
 
+  async function handleDeleteApartment() {
+    if (!apartment) return;
+    const ok = await confirmDialog({
+      title: "Xoá apartment?",
+      description: "Toàn bộ phòng và dữ liệu liên quan sẽ bị xoá. Hành động này không thể hoàn tác.",
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
+
+    setDeleting(true);
+    try {
+      const res = await apiFetch(`/api/apartments/${apartment.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        showToast(data.message ?? "Xoá thất bại", "error");
+        return;
+      }
+      showToast("Đã xoá apartment", "success");
+      router.push("/dashboard/apartments");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   if (error) return <p className="text-sm text-red-600">{error}</p>;
   if (!apartment) return <p className="text-sm text-navy/60">Đang tải...</p>;
 
@@ -127,12 +157,22 @@ export default function ApartmentDetailPage() {
             {apartment.managerPhone}
           </p>
         </div>
-        <Link
-          href={`/dashboard/apartments/${apartment.id}/edit`}
-          className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
-        >
-          Sửa Apartment
-        </Link>
+        <div className="flex shrink-0 gap-2">
+          <Link
+            href={`/dashboard/apartments/${apartment.id}/edit`}
+            className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+          >
+            Sửa Apartment
+          </Link>
+          {isAdmin && (
+            <button
+              onClick={handleDeleteApartment}
+              className="rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition-colors duration-300 hover:border-red-400 hover:bg-red-50"
+            >
+              Xoá Apartment
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm">

@@ -2,9 +2,11 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 import RoomForm, { type RoomFormValues } from "../RoomForm";
 
 export default function NewRoomPage() {
+  usePageTitle("Thêm phòng");
   const router = useRouter();
   const params = useParams<{ id: string }>();
 

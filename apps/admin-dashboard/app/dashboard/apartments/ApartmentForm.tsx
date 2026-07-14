@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
 
 export type AccessType = "STAIRS" | "ELEVATOR" | "BOTH";
+export type ApartmentType = "APARTMENT" | "SERVICED_APARTMENT";
 
 export interface ApartmentFormValues {
   houseNumber: string;
@@ -13,6 +14,7 @@ export interface ApartmentFormValues {
   managerName: string;
   managerPhone: string;
   accessType: AccessType | "";
+  apartmentType: ApartmentType;
   totalRooms: string;
 }
 
@@ -24,6 +26,7 @@ export const emptyApartmentFormValues: ApartmentFormValues = {
   managerName: "",
   managerPhone: "",
   accessType: "",
+  apartmentType: "APARTMENT",
   totalRooms: "",
 };
 
@@ -167,19 +170,35 @@ export default function ApartmentForm({
           </select>
         </div>
         <div>
-          <label htmlFor="totalRooms" className={labelClass}>
-            Tổng số phòng
+          <label htmlFor="apartmentType" className={labelClass}>
+            Dạng căn hộ
           </label>
-          <input
-            id="totalRooms"
-            type="number"
-            min={1}
+          <select
+            id="apartmentType"
             required
-            value={values.totalRooms}
-            onChange={(e) => update("totalRooms", e.target.value)}
+            value={values.apartmentType}
+            onChange={(e) => update("apartmentType", e.target.value as ApartmentType)}
             className={inputClass}
-          />
+          >
+            <option value="APARTMENT">Chung cư</option>
+            <option value="SERVICED_APARTMENT">Căn hộ dịch vụ</option>
+          </select>
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="totalRooms" className={labelClass}>
+          Tổng số phòng
+        </label>
+        <input
+          id="totalRooms"
+          type="number"
+          min={1}
+          required
+          value={values.totalRooms}
+          onChange={(e) => update("totalRooms", e.target.value)}
+          className={inputClass}
+        />
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}

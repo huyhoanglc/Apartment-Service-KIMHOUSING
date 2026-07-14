@@ -4,8 +4,8 @@ import { useEffect, useState, type FormEvent } from "react";
 import { apiFetch } from "@/app/lib/api";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
 
-export type RoomType = "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM";
-export type RoomStatus = "AVAILABLE" | "RENTED" | "HIDDEN";
+export type RoomType = "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM" | "THREE_BEDROOM";
+export type RoomStatus = "AVAILABLE" | "ABOUT_TO_VACATE" | "RENTED" | "HIDDEN";
 
 export interface Feature {
   id: string;
@@ -185,6 +185,7 @@ export default function RoomForm({
             <option value="DUPLEX">Duplex</option>
             <option value="ONE_BEDROOM">1 phòng ngủ</option>
             <option value="TWO_BEDROOM">2 phòng ngủ</option>
+            <option value="THREE_BEDROOM">3 phòng ngủ</option>
           </select>
         </div>
         <div>
@@ -246,6 +247,7 @@ export default function RoomForm({
           className={inputClass}
         >
           <option value="AVAILABLE">Còn trống</option>
+          <option value="ABOUT_TO_VACATE">Sắp trống</option>
           <option value="RENTED">Đã thuê</option>
           <option value="HIDDEN">Ẩn</option>
         </select>

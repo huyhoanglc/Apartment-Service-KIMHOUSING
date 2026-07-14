@@ -66,6 +66,7 @@ export default async function HomePage({
               <option value="DUPLEX">Duplex</option>
               <option value="ONE_BEDROOM">1 phòng ngủ</option>
               <option value="TWO_BEDROOM">2 phòng ngủ</option>
+              <option value="THREE_BEDROOM">3 phòng ngủ</option>
             </select>
           </div>
 

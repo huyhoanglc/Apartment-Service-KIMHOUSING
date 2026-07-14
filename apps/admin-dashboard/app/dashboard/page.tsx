@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
 import { getUser, type AuthUser } from "@/app/lib/auth";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 
 function subscribeNoop() {
   return () => {};
@@ -81,6 +82,7 @@ const STAT_CARDS: {
 ];
 
 export default function DashboardPage() {
+  usePageTitle("Tổng quan");
   const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);

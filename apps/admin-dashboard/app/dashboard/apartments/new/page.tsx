@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 import ApartmentForm, { type ApartmentFormValues } from "../ApartmentForm";
 
 export default function NewApartmentPage() {
+  usePageTitle("Thêm Apartment");
   const router = useRouter();
 
   async function handleCreate(values: ApartmentFormValues): Promise<string | null> {
@@ -18,6 +20,7 @@ export default function NewApartmentPage() {
         managerName: values.managerName,
         managerPhone: values.managerPhone,
         accessType: values.accessType,
+        apartmentType: values.apartmentType,
         totalRooms: Number(values.totalRooms),
       }),
     });

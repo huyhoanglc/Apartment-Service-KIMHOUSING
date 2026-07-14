@@ -10,7 +10,7 @@ function hideBasePriceIfNeeded(room, req) {
 
 async function getRooms(req, res, next) {
   try {
-    const { apartmentId, status, minPrice, maxPrice, roomType, district, featureId } = req.query;
+    const { apartmentId, status, minPrice, maxPrice, roomType, district, apartmentType, featureId } = req.query;
     const rooms = await roomsModel.findAll({
       apartmentId,
       status,
@@ -18,6 +18,7 @@ async function getRooms(req, res, next) {
       maxPrice,
       roomType,
       district,
+      apartmentType,
       featureId,
     });
 

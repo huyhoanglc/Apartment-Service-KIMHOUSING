@@ -3,40 +3,68 @@
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
-import { getUser } from "@/app/lib/auth";
-import LoadingOverlay from "@/app/components/LoadingOverlay";
-import { useConfirm } from "@/app/components/ConfirmProvider";
-import { useToast } from "@/app/components/ToastProvider";
+import { usePageTitle } from "@/app/components/PageTitleContext";
+import { HCMC_DISTRICTS } from "@/app/lib/hcmcDistricts";
+import RoomCard, { type RoomListItem, type RoomStatus, type RoomType } from "./RoomCard";
+import PriceRangeSlider from "./PriceRangeSlider";
 
-interface Apartment {
-  id: string;
-  houseNumber: string;
-  street: string;
+type ApartmentType = "APARTMENT" | "SERVICED_APARTMENT";
+
+interface Filters {
   district: string;
-  buildingName: string | null;
-  managerName: string;
-  managerPhone: string;
-  accessType: "STAIRS" | "ELEVATOR" | "BOTH";
-  totalRooms: number;
-  rooms: { id: string }[];
+  roomType: RoomType | "";
+  apartmentType: ApartmentType | "";
+  status: RoomStatus | "";
+  priceRange: [number, number];
 }
 
-const ACCESS_TYPE_LABEL: Record<Apartment["accessType"], string> = {
-  STAIRS: "Cầu thang bộ",
-  ELEVATOR: "Thang máy",
-  BOTH: "Cả hai",
+const PRICE_MIN = 0;
+const PRICE_MAX = 30_000_000;
+const PRICE_STEP = 500_000;
+
+const DEFAULT_FILTERS: Filters = {
+  district: "",
+  roomType: "",
+  apartmentType: "",
+  status: "",
+  priceRange: [PRICE_MIN, PRICE_MAX],
 };
 
+const inputClass =
+  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
+const labelClass = "mb-1 block text-xs font-medium text-navy/60";
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
+      <circle cx="9" cy="9" r="6" />
+      <path d="m17 17-3.5-3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function buildQuery(filters: Filters): string {
+  const params = new URLSearchParams();
+  if (filters.district) params.set("district", filters.district);
+  if (filters.roomType) params.set("roomType", filters.roomType);
+  if (filters.apartmentType) params.set("apartmentType", filters.apartmentType);
+  if (filters.status) params.set("status", filters.status);
+  if (filters.priceRange[0] > PRICE_MIN) params.set("minPrice", String(filters.priceRange[0]));
+  if (filters.priceRange[1] < PRICE_MAX) params.set("maxPrice", String(filters.priceRange[1]));
+  const query = params.toString();
+  return query ? `?${query}` : "";
+}
+
 export default function ApartmentsPage() {
-  const confirmDialog = useConfirm();
-  const { showToast } = useToast();
-  const [apartments, setApartments] = useState<Apartment[]>([]);
-  const [districtInput, setDistrictInput] = useState("");
-  const [district, setDistrict] = useState("");
+  usePageTitle("Rổ Hàng Kim Housing");
+
+  const [rooms, setRooms] = useState<RoomListItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isAdmin = getUser()?.role === "ADMIN";
+
+  const [search, setSearch] = useState("");
+  const [draftFilters, setDraftFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [appliedFilters, setAppliedFilters] = useState<Filters>(DEFAULT_FILTERS);
 
   useEffect(() => {
     let ignore = false;
@@ -45,16 +73,15 @@ export default function ApartmentsPage() {
       setLoading(true);
       setError(null);
       try {
-        const query = district ? `?district=${encodeURIComponent(district)}` : "";
-        const res = await apiFetch(`/api/apartments${query}`);
+        const res = await apiFetch(`/api/rooms${buildQuery(appliedFilters)}`);
         const data = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setError(data.message ?? "Không tải được danh sách");
+          setError(data.message ?? "Không tải được danh sách phòng");
           return;
         }
-        setApartments(data);
+        setRooms(data);
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");
       } finally {
@@ -65,43 +92,31 @@ export default function ApartmentsPage() {
     return () => {
       ignore = true;
     };
-  }, [district]);
+  }, [appliedFilters]);
 
   function handleFilterSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setDistrict(districtInput.trim());
+    setAppliedFilters(draftFilters);
   }
 
-  async function handleDelete(id: string) {
-    const ok = await confirmDialog({
-      title: "Xoá apartment?",
-      description: "Hành động này không thể hoàn tác.",
-      confirmText: "Xoá",
-      danger: true,
-    });
-    if (!ok) return;
-
-    setDeleting(true);
-    try {
-      const res = await apiFetch(`/api/apartments/${id}`, { method: "DELETE" });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        showToast(data.message ?? "Xoá thất bại", "error");
-        return;
-      }
-      setApartments((prev) => prev.filter((a) => a.id !== id));
-      showToast("Đã xoá apartment", "success");
-    } finally {
-      setDeleting(false);
-    }
+  function handleClearFilters() {
+    setDraftFilters(DEFAULT_FILTERS);
+    setAppliedFilters(DEFAULT_FILTERS);
+    setSearch("");
   }
+
+  const keyword = search.trim().toLowerCase();
+  const visibleRooms = keyword
+    ? rooms.filter((room) => {
+        const haystack =
+          `${room.apartment.houseNumber} ${room.apartment.street} ${room.apartment.district} ${room.code}`.toLowerCase();
+        return haystack.includes(keyword);
+      })
+    : rooms;
 
   return (
     <div>
-      <LoadingOverlay show={deleting} label="Đang xoá..." />
-
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-navy">Apartments</h1>
+      <div className="mb-6 flex items-center justify-end">
         <Link
           href="/dashboard/apartments/new"
           className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
@@ -110,91 +125,127 @@ export default function ApartmentsPage() {
         </Link>
       </div>
 
-      <div className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm">
-        <form onSubmit={handleFilterSubmit} className="mb-4 flex gap-2">
+      <form
+        onSubmit={handleFilterSubmit}
+        className="mb-6 space-y-4 rounded-lg border border-navy/10 bg-white p-5 shadow-sm"
+      >
+        <div className="relative">
+          <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
+            <SearchIcon />
+          </span>
           <input
-            value={districtInput}
-            onChange={(e) => setDistrictInput(e.target.value)}
-            placeholder="Lọc theo quận/huyện"
-            className="w-64 rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm theo địa chỉ hoặc mã phòng..."
+            className={`${inputClass} pl-9`}
           />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div>
+            <label className={labelClass}>Quận</label>
+            <select
+              value={draftFilters.district}
+              onChange={(e) => setDraftFilters((f) => ({ ...f, district: e.target.value }))}
+              className={inputClass}
+            >
+              <option value="">Tất cả</option>
+              {HCMC_DISTRICTS.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className={labelClass}>Dạng phòng</label>
+            <select
+              value={draftFilters.roomType}
+              onChange={(e) => setDraftFilters((f) => ({ ...f, roomType: e.target.value as RoomType | "" }))}
+              className={inputClass}
+            >
+              <option value="">Tất cả</option>
+              <option value="STUDIO">Studio</option>
+              <option value="DUPLEX">Duplex</option>
+              <option value="ONE_BEDROOM">1 Phòng Ngủ</option>
+              <option value="TWO_BEDROOM">2 Phòng Ngủ</option>
+              <option value="THREE_BEDROOM">3 Phòng Ngủ</option>
+            </select>
+          </div>
+
+          <div>
+            <label className={labelClass}>Dạng Căn Hộ</label>
+            <select
+              value={draftFilters.apartmentType}
+              onChange={(e) =>
+                setDraftFilters((f) => ({ ...f, apartmentType: e.target.value as ApartmentType | "" }))
+              }
+              className={inputClass}
+            >
+              <option value="">Tất cả</option>
+              <option value="APARTMENT">Chung cư</option>
+              <option value="SERVICED_APARTMENT">Căn hộ dịch vụ</option>
+            </select>
+          </div>
+
+          <div>
+            <label className={labelClass}>Trạng thái</label>
+            <select
+              value={draftFilters.status}
+              onChange={(e) => setDraftFilters((f) => ({ ...f, status: e.target.value as RoomStatus | "" }))}
+              className={inputClass}
+            >
+              <option value="">Tất cả</option>
+              <option value="AVAILABLE">Còn Trống</option>
+              <option value="ABOUT_TO_VACATE">Sắp Trống</option>
+              <option value="RENTED">Đã lock</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="max-w-sm">
+          <label className={labelClass}>Khoảng giá</label>
+          <PriceRangeSlider
+            min={PRICE_MIN}
+            max={PRICE_MAX}
+            step={PRICE_STEP}
+            value={draftFilters.priceRange}
+            onChange={(priceRange) => setDraftFilters((f) => ({ ...f, priceRange }))}
+          />
+        </div>
+
+        <div className="flex gap-2">
           <button
             type="submit"
-            className="rounded-md border border-navy/15 px-4 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+            className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
           >
             Lọc
           </button>
-        </form>
+          <button
+            type="button"
+            onClick={handleClearFilters}
+            className="rounded-full border border-navy/15 px-5 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
+          >
+            Xoá lọc
+          </button>
+        </div>
+      </form>
 
-        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
-        {loading && <p className="text-sm text-navy/60">Đang tải...</p>}
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+      {loading && <p className="text-sm text-navy/60">Đang tải...</p>}
 
-        {!loading && !error && apartments.length === 0 && (
-          <p className="text-sm text-navy/60">Chưa có apartment nào.</p>
-        )}
+      {!loading && !error && visibleRooms.length === 0 && (
+        <p className="text-sm text-navy/60">Không tìm thấy phòng phù hợp.</p>
+      )}
 
-        {!loading && apartments.length > 0 && (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="border-b border-navy/10 text-left text-navy/50">
-                  <th className="py-2 pr-4 font-medium">Địa chỉ</th>
-                  <th className="py-2 pr-4 font-medium">Quận</th>
-                  <th className="py-2 pr-4 font-medium">Quản lý</th>
-                  <th className="py-2 pr-4 font-medium">Thang</th>
-                  <th className="py-2 pr-4 font-medium">Số phòng</th>
-                  <th className="py-2 pr-4 font-medium">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {apartments.map((apt) => (
-                  <tr
-                    key={apt.id}
-                    className="border-b border-navy/5 text-navy transition-colors duration-200 hover:bg-navy/2"
-                  >
-                    <td className="py-3 pr-4">
-                      {apt.houseNumber} {apt.street}
-                      {apt.buildingName ? ` (${apt.buildingName})` : ""}
-                    </td>
-                    <td className="py-3 pr-4">{apt.district}</td>
-                    <td className="py-3 pr-4">
-                      {apt.managerName} - {apt.managerPhone}
-                    </td>
-                    <td className="py-3 pr-4">{ACCESS_TYPE_LABEL[apt.accessType]}</td>
-                    <td className="py-3 pr-4">
-                      {apt.rooms.length}/{apt.totalRooms}
-                    </td>
-                    <td className="py-3 pr-4">
-                      <div className="flex gap-3">
-                        <Link
-                          href={`/dashboard/apartments/${apt.id}`}
-                          className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to"
-                        >
-                          Phòng
-                        </Link>
-                        <Link
-                          href={`/dashboard/apartments/${apt.id}/edit`}
-                          className="text-navy/60 underline transition-colors duration-300 hover:text-gold-to"
-                        >
-                          Sửa
-                        </Link>
-                        {isAdmin && (
-                          <button
-                            onClick={() => handleDelete(apt.id)}
-                            className="text-red-600 underline transition-colors duration-300 hover:text-red-700"
-                          >
-                            Xoá
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      {!loading && visibleRooms.length > 0 && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {visibleRooms.map((room) => (
+            <RoomCard key={room.id} room={room} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

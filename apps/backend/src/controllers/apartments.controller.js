@@ -2,8 +2,8 @@ const apartmentsModel = require('../models/apartments.model');
 
 async function getApartments(req, res, next) {
   try {
-    const { district } = req.query;
-    const apartments = await apartmentsModel.findAll({ district });
+    const { district, apartmentType } = req.query;
+    const apartments = await apartmentsModel.findAll({ district, apartmentType });
     res.json(apartments);
   } catch (err) {
     next(err);

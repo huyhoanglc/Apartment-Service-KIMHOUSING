@@ -2,7 +2,7 @@
 // tránh bị inline cứng vào bundle lúc build, giữ cấu hình được ở runtime (VD: đổi qua docker-compose)
 export const API_URL = process.env.API_URL ?? "http://localhost:5000";
 
-export type RoomType = "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM";
+export type RoomType = "DUPLEX" | "STUDIO" | "ONE_BEDROOM" | "TWO_BEDROOM" | "THREE_BEDROOM";
 
 export interface Feature {
   id: string;

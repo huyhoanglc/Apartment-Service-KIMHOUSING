@@ -7,6 +7,7 @@ const ROOM_TYPE_LABEL: Record<RoomListItem["roomType"], string> = {
   DUPLEX: "Duplex",
   ONE_BEDROOM: "1 phòng ngủ",
   TWO_BEDROOM: "2 phòng ngủ",
+  THREE_BEDROOM: "3 phòng ngủ",
 };
 
 export default function RoomCard({ room }: { room: RoomListItem }) {

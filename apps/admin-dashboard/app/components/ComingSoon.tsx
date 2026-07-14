@@ -1,3 +1,7 @@
+"use client";
+
+import { usePageTitle } from "@/app/components/PageTitleContext";
+
 function ToolIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
@@ -7,6 +11,8 @@ function ToolIcon() {
 }
 
 export default function ComingSoon({ title, description }: { title: string; description?: string }) {
+  usePageTitle(title);
+
   return (
     <div>
       <h1 className="mb-6 text-xl font-semibold text-navy">{title}</h1>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Sidebar from "@/app/components/Sidebar";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
 import { useToast } from "@/app/components/ToastProvider";
+import { PageTitleProvider, useHeaderTitle } from "@/app/components/PageTitleContext";
 
 function subscribeNoop() {
   return () => {};
@@ -12,15 +13,6 @@ function subscribeNoop() {
 
 function getServerSnapshot(): AuthUser | null {
   return null;
-}
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-      <circle cx="9" cy="9" r="6" />
-      <path d="m17 17-3.5-3.5" strokeLinecap="round" />
-    </svg>
-  );
 }
 
 function BellIcon() {
@@ -98,22 +90,10 @@ function MenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: stri
   );
 }
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const { showToast } = useToast();
-  const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
+function Header({ user, onLogout, onComingSoon }: { user: AuthUser; onLogout: () => void; onComingSoon: () => void }) {
+  const title = useHeaderTitle();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  function notifyComingSoon() {
-    showToast("Tính năng đang được phát triển", "info");
-  }
-
-  useEffect(() => {
-    if (!getToken()) {
-      router.replace("/login");
-    }
-  }, [router]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -125,13 +105,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleLogout() {
-    clearSession();
-    router.replace("/login");
-  }
-
-  if (!user) return null;
-
   const initials = user.name
     .split(" ")
     .filter(Boolean)
@@ -141,69 +114,89 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     .toUpperCase();
 
   return (
-    <div className="flex flex-1">
-      <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-navy/10 bg-white px-6">
-          <div className="relative w-full max-w-xs">
-            <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
-              <SearchIcon />
+    <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-navy/10 bg-white px-6">
+      <h1 className="truncate text-lg font-semibold text-navy">{title}</h1>
+
+      <div className="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          onClick={onComingSoon}
+          className="flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
+          aria-label="Thông báo"
+        >
+          <BellIcon />
+        </button>
+
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors duration-200 hover:bg-navy/5"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy">
+              {initials}
             </span>
-            <input
-              type="search"
-              placeholder="Tìm kiếm..."
-              className="w-full rounded-md border border-navy/15 bg-background py-2 pl-9 pr-3 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold"
-            />
-          </div>
+            <span className="hidden text-sm text-navy/70 sm:inline">
+              {user.name} <span className="text-navy/40">({user.role})</span>
+            </span>
+            <ChevronIcon />
+          </button>
 
-          <div className="flex shrink-0 items-center gap-2">
-            <button
-              type="button"
-              onClick={notifyComingSoon}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
-              aria-label="Thông báo"
-            >
-              <BellIcon />
-            </button>
-
-            <div className="relative" ref={menuRef}>
+          {menuOpen && (
+            <div className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-navy/10 bg-white py-2 shadow-lg">
+              <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
+                Xin chào, {user.name}
+              </p>
+              <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" onClick={onComingSoon} />
+              <MenuItem icon={<SettingsIcon />} label="Cài đặt" onClick={onComingSoon} />
+              <MenuItem icon={<ActivityIcon />} label="Hoạt động" onClick={onComingSoon} />
+              <MenuItem icon={<SupportIcon />} label="Hỗ trợ" onClick={onComingSoon} />
+              <div className="my-1 border-t border-navy/10" />
               <button
-                onClick={() => setMenuOpen((v) => !v)}
-                className="flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors duration-200 hover:bg-navy/5"
+                onClick={onLogout}
+                className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-red-600 transition-colors duration-200 hover:bg-red-50"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-xs font-semibold text-navy">
-                  {initials}
-                </span>
-                <span className="hidden text-sm text-navy/70 sm:inline">
-                  {user.name} <span className="text-navy/40">({user.role})</span>
-                </span>
-                <ChevronIcon />
+                <LogoutIcon />
+                Đăng xuất
               </button>
-
-              {menuOpen && (
-                <div className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-navy/10 bg-white py-2 shadow-lg">
-                  <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
-                    Xin chào, {user.name}
-                  </p>
-                  <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" onClick={notifyComingSoon} />
-                  <MenuItem icon={<SettingsIcon />} label="Cài đặt" onClick={notifyComingSoon} />
-                  <MenuItem icon={<ActivityIcon />} label="Hoạt động" onClick={notifyComingSoon} />
-                  <MenuItem icon={<SupportIcon />} label="Hỗ trợ" onClick={notifyComingSoon} />
-                  <div className="my-1 border-t border-navy/10" />
-                  <button
-                    onClick={handleLogout}
-                    className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-red-600 transition-colors duration-200 hover:bg-red-50"
-                  >
-                    <LogoutIcon />
-                    Đăng xuất
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
-        </header>
-        <main className="flex flex-1 flex-col bg-background p-6">{children}</main>
+          )}
+        </div>
       </div>
-    </div>
+    </header>
+  );
+}
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { showToast } = useToast();
+  const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
+
+  function notifyComingSoon() {
+    showToast("Tính năng đang được phát triển", "info");
+  }
+
+  useEffect(() => {
+    if (!getToken()) {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  function handleLogout() {
+    clearSession();
+    router.replace("/login");
+  }
+
+  if (!user) return null;
+
+  return (
+    <PageTitleProvider>
+      <div className="flex flex-1">
+        <Sidebar />
+        <div className="flex flex-1 flex-col">
+          <Header user={user} onLogout={handleLogout} onComingSoon={notifyComingSoon} />
+          <main className="flex flex-1 flex-col bg-background p-6">{children}</main>
+        </div>
+      </div>
+    </PageTitleProvider>
   );
 }

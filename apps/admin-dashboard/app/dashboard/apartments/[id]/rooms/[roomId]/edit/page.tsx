@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { usePageTitle } from "@/app/components/PageTitleContext";
 import RoomForm, { type RoomFormValues } from "../../RoomForm";
 
 export default function EditRoomPage() {
+  usePageTitle("Sửa phòng");
   const router = useRouter();
   const params = useParams<{ id: string; roomId: string }>();
   const [initialValues, setInitialValues] = useState<RoomFormValues | null>(null);

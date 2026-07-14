@@ -1,12 +1,17 @@
 const prisma = require('../config/prisma');
 
-async function findAll({ apartmentId, status, minPrice, maxPrice, roomType, district, featureId }) {
+async function findAll({ apartmentId, status, minPrice, maxPrice, roomType, district, apartmentType, featureId }) {
   return prisma.room.findMany({
     where: {
       ...(apartmentId && { apartmentId }),
       ...(status && { status }),
       ...(roomType && { roomType }),
-      ...(district && { apartment: { district } }),
+      ...((district || apartmentType) && {
+        apartment: {
+          ...(district && { district }),
+          ...(apartmentType && { apartmentType }),
+        },
+      }),
       ...(featureId && { features: { some: { featureId } } }),
       ...(minPrice || maxPrice
         ? {
