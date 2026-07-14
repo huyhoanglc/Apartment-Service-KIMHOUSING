@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
+import { useConfirm } from "@/app/components/ConfirmProvider";
+import { useToast } from "@/app/components/ToastProvider";
 
 interface Media {
   id: string;
@@ -45,6 +47,8 @@ const ROOM_STATUS_LABEL: Record<RoomDetail["status"], string> = {
 };
 
 export default function RoomDetailPage() {
+  const confirmDialog = useConfirm();
+  const { showToast } = useToast();
   const params = useParams<{ id: string; roomId: string }>();
   const [room, setRoom] = useState<RoomDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -111,15 +115,22 @@ export default function RoomDetailPage() {
   }
 
   async function handleDeleteMedia(id: string) {
-    if (!confirm("Xoá ảnh/video này?")) return;
+    const ok = await confirmDialog({
+      title: "Xoá ảnh/video?",
+      description: "Hành động này không thể hoàn tác.",
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
 
     const res = await apiFetch(`/api/media/${id}`, { method: "DELETE" });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      alert(data.message ?? "Xoá thất bại");
+      showToast(data.message ?? "Xoá thất bại", "error");
       return;
     }
     setRoom((prev) => (prev ? { ...prev, media: prev.media.filter((m) => m.id !== id) } : prev));
+    showToast("Đã xoá ảnh/video", "success");
   }
 
   function buildRoomText(r: RoomDetail): string {

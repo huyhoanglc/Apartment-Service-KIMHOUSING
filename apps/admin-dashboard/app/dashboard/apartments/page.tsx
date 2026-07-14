@@ -5,6 +5,8 @@ import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
 import { getUser } from "@/app/lib/auth";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
+import { useConfirm } from "@/app/components/ConfirmProvider";
+import { useToast } from "@/app/components/ToastProvider";
 
 interface Apartment {
   id: string;
@@ -26,6 +28,8 @@ const ACCESS_TYPE_LABEL: Record<Apartment["accessType"], string> = {
 };
 
 export default function ApartmentsPage() {
+  const confirmDialog = useConfirm();
+  const { showToast } = useToast();
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [districtInput, setDistrictInput] = useState("");
   const [district, setDistrict] = useState("");
@@ -69,17 +73,24 @@ export default function ApartmentsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Xoá apartment này? Hành động không thể hoàn tác.")) return;
+    const ok = await confirmDialog({
+      title: "Xoá apartment?",
+      description: "Hành động này không thể hoàn tác.",
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
 
     setDeleting(true);
     try {
       const res = await apiFetch(`/api/apartments/${id}`, { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        alert(data.message ?? "Xoá thất bại");
+        showToast(data.message ?? "Xoá thất bại", "error");
         return;
       }
       setApartments((prev) => prev.filter((a) => a.id !== id));
+      showToast("Đã xoá apartment", "success");
     } finally {
       setDeleting(false);
     }

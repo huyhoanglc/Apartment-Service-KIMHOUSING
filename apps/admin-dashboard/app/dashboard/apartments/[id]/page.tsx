@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
 import { getUser } from "@/app/lib/auth";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
+import { useConfirm } from "@/app/components/ConfirmProvider";
+import { useToast } from "@/app/components/ToastProvider";
 
 interface Room {
   id: string;
@@ -51,6 +53,8 @@ const ROOM_STATUS_LABEL: Record<Room["status"], string> = {
 };
 
 export default function ApartmentDetailPage() {
+  const confirmDialog = useConfirm();
+  const { showToast } = useToast();
   const params = useParams<{ id: string }>();
   const [apartment, setApartment] = useState<ApartmentDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -82,17 +86,24 @@ export default function ApartmentDetailPage() {
   }, [params.id]);
 
   async function handleDeleteRoom(roomId: string) {
-    if (!confirm("Xoá phòng này? Hành động không thể hoàn tác.")) return;
+    const ok = await confirmDialog({
+      title: "Xoá phòng?",
+      description: "Hành động này không thể hoàn tác.",
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
 
     setDeleting(true);
     try {
       const res = await apiFetch(`/api/rooms/${roomId}`, { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        alert(data.message ?? "Xoá thất bại");
+        showToast(data.message ?? "Xoá thất bại", "error");
         return;
       }
       setApartment((prev) => (prev ? { ...prev, rooms: prev.rooms.filter((r) => r.id !== roomId) } : prev));
+      showToast("Đã xoá phòng", "success");
     } finally {
       setDeleting(false);
     }

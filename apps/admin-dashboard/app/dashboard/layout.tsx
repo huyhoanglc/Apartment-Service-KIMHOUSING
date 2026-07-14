@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/app/components/Sidebar";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
+import { useToast } from "@/app/components/ToastProvider";
 
 function subscribeNoop() {
   return () => {};
@@ -84,11 +85,11 @@ function LogoutIcon() {
   );
 }
 
-function MenuItem({ icon, label }: { icon: React.ReactNode; label: string }) {
+function MenuItem({ icon, label, onClick }: { icon: React.ReactNode; label: string; onClick: () => void }) {
   return (
     <button
       type="button"
-      onClick={() => alert("Tính năng đang được phát triển")}
+      onClick={onClick}
       className="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm text-navy/70 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
     >
       {icon}
@@ -99,9 +100,14 @@ function MenuItem({ icon, label }: { icon: React.ReactNode; label: string }) {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const { showToast } = useToast();
   const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  function notifyComingSoon() {
+    showToast("Tính năng đang được phát triển", "info");
+  }
 
   useEffect(() => {
     if (!getToken()) {
@@ -153,7 +159,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
-              onClick={() => alert("Tính năng đang được phát triển")}
+              onClick={notifyComingSoon}
               className="flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
               aria-label="Thông báo"
             >
@@ -179,10 +185,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
                     Xin chào, {user.name}
                   </p>
-                  <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" />
-                  <MenuItem icon={<SettingsIcon />} label="Cài đặt" />
-                  <MenuItem icon={<ActivityIcon />} label="Hoạt động" />
-                  <MenuItem icon={<SupportIcon />} label="Hỗ trợ" />
+                  <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" onClick={notifyComingSoon} />
+                  <MenuItem icon={<SettingsIcon />} label="Cài đặt" onClick={notifyComingSoon} />
+                  <MenuItem icon={<ActivityIcon />} label="Hoạt động" onClick={notifyComingSoon} />
+                  <MenuItem icon={<SupportIcon />} label="Hỗ trợ" onClick={notifyComingSoon} />
                   <div className="my-1 border-t border-navy/10" />
                   <button
                     onClick={handleLogout}
