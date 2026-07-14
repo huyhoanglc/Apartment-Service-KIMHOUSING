@@ -65,13 +65,13 @@ export default function RoomForm({
     (async () => {
       try {
         const res = await apiFetch("/api/features");
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
         if (!res.ok) {
-          setFeaturesError(data.message ?? "Không tải được danh sách tiện ích");
+          setFeaturesError(result.message ?? "Không tải được danh sách tiện ích");
           return;
         }
-        setFeatures(data);
+        setFeatures(result.data);
       } catch {
         if (!ignore) setFeaturesError("Không thể kết nối đến máy chủ");
       }
@@ -106,15 +106,15 @@ export default function RoomForm({
         method: "POST",
         body: JSON.stringify({ name }),
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setFeaturesError(data.message ?? "Không thêm được tiện ích");
+        setFeaturesError(result.message ?? "Không thêm được tiện ích");
         return;
       }
 
-      setFeatures((prev) => [...prev, data]);
-      update("featureIds", [...values.featureIds, data.id]);
+      setFeatures((prev) => [...prev, result.data]);
+      update("featureIds", [...values.featureIds, result.data.id]);
       setNewFeatureName("");
     } catch {
       setFeaturesError("Không thể kết nối đến máy chủ");

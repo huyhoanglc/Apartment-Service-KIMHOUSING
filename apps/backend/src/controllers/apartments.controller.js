@@ -1,12 +1,13 @@
 const apartmentsModel = require('../models/apartments.model');
 const { parsePagination } = require('../utils/pagination');
+const { ok, created, paginated, noContent, fail } = require('../utils/response');
 
 async function getApartments(req, res, next) {
   try {
     const { district, apartmentType } = req.query;
     const { page, pageSize } = parsePagination(req.query);
     const result = await apartmentsModel.findAll({ district, apartmentType, page, pageSize });
-    res.json(result);
+    paginated(res, result);
   } catch (err) {
     next(err);
   }
@@ -16,9 +17,9 @@ async function getApartmentById(req, res, next) {
   try {
     const apartment = await apartmentsModel.findById(req.params.id);
     if (!apartment) {
-      return res.status(404).json({ message: 'Apartment not found' });
+      return fail(res, 404, 'Apartment not found');
     }
-    res.json(apartment);
+    ok(res, apartment);
   } catch (err) {
     next(err);
   }
@@ -30,7 +31,7 @@ async function createApartment(req, res, next) {
       ...req.body,
       createdById: req.user.id, // sẽ có sau khi làm module auth
     });
-    res.status(201).json(apartment);
+    created(res, apartment);
   } catch (err) {
     next(err);
   }
@@ -39,7 +40,7 @@ async function createApartment(req, res, next) {
 async function updateApartment(req, res, next) {
   try {
     const apartment = await apartmentsModel.update(req.params.id, req.body);
-    res.json(apartment);
+    ok(res, apartment);
   } catch (err) {
     next(err);
   }
@@ -48,7 +49,7 @@ async function updateApartment(req, res, next) {
 async function deleteApartment(req, res, next) {
   try {
     await apartmentsModel.remove(req.params.id);
-    res.status(204).send();
+    noContent(res);
   } catch (err) {
     next(err);
   }

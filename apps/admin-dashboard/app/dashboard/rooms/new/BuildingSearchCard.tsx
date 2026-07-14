@@ -81,13 +81,13 @@ export default function BuildingSearchCard({
     (async () => {
       try {
         const res = await apiFetch("/api/apartments?pageSize=100");
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
         if (!res.ok) {
-          setLoadError(data.message ?? "Không tải được danh sách dự án");
+          setLoadError(result.message ?? "Không tải được danh sách dự án");
           return;
         }
-        setAllApartments(data.data ?? []);
+        setAllApartments(result.data ?? []);
       } catch {
         if (!ignore) setLoadError("Không thể kết nối đến máy chủ");
       } finally {

@@ -1,5 +1,6 @@
 const roomsModel = require('../models/rooms.model');
 const { parsePagination } = require('../utils/pagination');
+const { ok, created, paginated, noContent, fail } = require('../utils/response');
 
 function hideBasePriceIfNeeded(room, req) {
   const isInternal = req.user && ['ADMIN', 'SALE'].includes(req.user.role);
@@ -27,7 +28,7 @@ async function getRooms(req, res, next) {
     });
 
     result.data = result.data.map((room) => hideBasePriceIfNeeded(room, req));
-    res.json(result);
+    paginated(res, result);
   } catch (err) {
     next(err);
   }
@@ -37,9 +38,9 @@ async function getRoomById(req, res, next) {
   try {
     const room = await roomsModel.findById(req.params.id);
     if (!room) {
-      return res.status(404).json({ message: 'Room not found' });
+      return fail(res, 404, 'Room not found');
     }
-    res.json(hideBasePriceIfNeeded(room, req));
+    ok(res, hideBasePriceIfNeeded(room, req));
   } catch (err) {
     next(err);
   }
@@ -49,9 +50,9 @@ async function getRoomBySlug(req, res, next) {
   try {
     const room = await roomsModel.findBySlug(req.params.slug);
     if (!room) {
-      return res.status(404).json({ message: 'Room not found' });
+      return fail(res, 404, 'Room not found');
     }
-    res.json(hideBasePriceIfNeeded(room, req));
+    ok(res, hideBasePriceIfNeeded(room, req));
   } catch (err) {
     next(err);
   }
@@ -60,7 +61,7 @@ async function getRoomBySlug(req, res, next) {
 async function createRoom(req, res, next) {
   try {
     const room = await roomsModel.create(req.body);
-    res.status(201).json(room);
+    created(res, room);
   } catch (err) {
     next(err);
   }
@@ -69,7 +70,7 @@ async function createRoom(req, res, next) {
 async function updateRoom(req, res, next) {
   try {
     const room = await roomsModel.update(req.params.id, req.body);
-    res.json(room);
+    ok(res, room);
   } catch (err) {
     next(err);
   }
@@ -78,7 +79,7 @@ async function updateRoom(req, res, next) {
 async function deleteRoom(req, res, next) {
   try {
     await roomsModel.remove(req.params.id);
-    res.status(204).send();
+    noContent(res);
   } catch (err) {
     next(err);
   }

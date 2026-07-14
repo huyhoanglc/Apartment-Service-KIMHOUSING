@@ -5,6 +5,7 @@ const { OAuth2Client } = require('google-auth-library');
 const usersModel = require('../models/users.model');
 const otpModel = require('../models/otp.model');
 const { sendOtpEmail } = require('../config/email');
+const { ok, created, fail } = require('../utils/response');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -20,7 +21,7 @@ async function register(req, res, next) {
 
     const existing = await usersModel.findByEmail(email);
     if (existing) {
-      return res.status(400).json({ message: 'Email đã được sử dụng' });
+      return fail(res, 409, 'Email đã được sử dụng');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,7 +34,7 @@ async function register(req, res, next) {
     });
 
     const { password: _, ...userWithoutPassword } = user;
-    res.status(201).json(userWithoutPassword);
+    created(res, userWithoutPassword, 'Đăng ký thành công');
   } catch (err) {
     next(err);
   }
@@ -45,18 +46,18 @@ async function login(req, res, next) {
 
     const user = await usersModel.findByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
+      return fail(res, 401, 'Email hoặc mật khẩu không đúng');
     }
 
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
+      return fail(res, 401, 'Email hoặc mật khẩu không đúng');
     }
 
     const token = signToken(user);
 
     const { password: _, ...userWithoutPassword } = user;
-    res.json({ token, user: userWithoutPassword });
+    ok(res, { token, user: userWithoutPassword }, 'Đăng nhập thành công');
   } catch (err) {
     next(err);
   }
@@ -74,11 +75,11 @@ async function googleLogin(req, res, next) {
       });
       payload = ticket.getPayload();
     } catch {
-      return res.status(401).json({ message: 'Token Google không hợp lệ' });
+      return fail(res, 401, 'Token Google không hợp lệ');
     }
 
     if (!payload.email_verified) {
-      return res.status(401).json({ message: 'Email Google chưa được xác minh' });
+      return fail(res, 401, 'Email Google chưa được xác minh');
     }
 
     let user = await usersModel.findByEmail(payload.email);
@@ -98,7 +99,7 @@ async function googleLogin(req, res, next) {
     const token = signToken(user);
 
     const { password: _, ...userWithoutPassword } = user;
-    res.json({ token, user: userWithoutPassword });
+    ok(res, { token, user: userWithoutPassword }, 'Đăng nhập thành công');
   } catch (err) {
     next(err);
   }
@@ -114,14 +115,14 @@ async function forgotPassword(req, res, next) {
 
     const user = await usersModel.findByEmail(email);
     if (!user) {
-      return res.json({ message: 'Nếu email tồn tại, mã OTP đã được gửi' });
+      return ok(res, null, 'Nếu email tồn tại, mã OTP đã được gửi');
     }
 
     const otp = generateOtp();
     await otpModel.create(email, otp);
     await sendOtpEmail(email, otp);
 
-    res.json({ message: 'Nếu email tồn tại, mã OTP đã được gửi' });
+    ok(res, null, 'Nếu email tồn tại, mã OTP đã được gửi');
   } catch (err) {
     next(err);
   }
@@ -133,14 +134,14 @@ async function resetPassword(req, res, next) {
 
     const validOtp = await otpModel.findValidOtp(email, otp);
     if (!validOtp) {
-      return res.status(400).json({ message: 'Mã OTP không đúng hoặc đã hết hạn' });
+      return fail(res, 400, 'Mã OTP không đúng hoặc đã hết hạn');
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await usersModel.updatePassword(email, hashedPassword);
     await otpModel.markUsed(validOtp.id);
 
-    res.json({ message: 'Đặt lại mật khẩu thành công' });
+    ok(res, null, 'Đặt lại mật khẩu thành công');
   } catch (err) {
     next(err);
   }

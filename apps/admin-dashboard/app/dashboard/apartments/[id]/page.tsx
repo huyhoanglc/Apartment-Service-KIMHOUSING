@@ -72,14 +72,14 @@ export default function ApartmentDetailPage() {
     (async () => {
       try {
         const res = await apiFetch(`/api/apartments/${params.id}`);
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setError(data.message ?? "Không tải được apartment");
+          setError(result.message ?? "Không tải được apartment");
           return;
         }
-        setApartment(data);
+        setApartment(result.data);
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");
       }

@@ -113,8 +113,8 @@ export default function ApartmentsPage() {
           return;
         }
         setRooms(result.data ?? []);
-        setTotal(result.total ?? 0);
-        setTotalPages(result.totalPages ?? 1);
+        setTotal(result.pagination?.total ?? 0);
+        setTotalPages(result.pagination?.totalPages ?? 1);
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");
       } finally {

@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import RoomForm, { type RoomFormValues } from "../RoomForm";
 
@@ -26,13 +27,10 @@ export default function NewRoomPage() {
       }),
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     if (!res.ok) {
-      if (Array.isArray(data.errors) && data.errors.length > 0) {
-        return data.errors.map((e: { field: string; message: string }) => e.message).join(", ");
-      }
-      return data.message ?? "Tạo phòng thất bại";
+      return extractErrorMessage(result, "Tạo phòng thất bại");
     }
 
     router.push(`/dashboard/apartments/${params.id}`);

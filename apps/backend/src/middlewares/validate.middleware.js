@@ -1,17 +1,18 @@
+const { fail } = require('../utils/response');
+
 // Middleware validate req[source] (mặc định 'body') bằng một Zod schema.
-// Trả 400 kèm danh sách lỗi nếu không hợp lệ, thay vì để Prisma throw lỗi khó hiểu.
+// Trả 422 kèm map lỗi theo field nếu không hợp lệ, thay vì để Prisma throw lỗi khó hiểu.
 function validate(schema, source = 'body') {
   return (req, res, next) => {
     const result = schema.safeParse(req[source]);
 
     if (!result.success) {
-      return res.status(400).json({
-        message: 'Dữ liệu không hợp lệ',
-        errors: result.error.issues.map((issue) => ({
-          field: issue.path.join('.'),
-          message: issue.message,
-        })),
-      });
+      const errors = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path.join('.') || source;
+        if (!errors[field]) errors[field] = issue.message;
+      }
+      return fail(res, 422, 'Dữ liệu không hợp lệ', errors);
     }
 
     req[source] = result.data;

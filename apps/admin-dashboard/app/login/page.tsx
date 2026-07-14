@@ -91,14 +91,14 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setError(data.message ?? "Đăng nhập thất bại");
+        setError(result.message ?? "Đăng nhập thất bại");
         return;
       }
 
-      saveSession(data.token, data.user);
+      saveSession(result.data.token, result.data.user);
       router.push("/dashboard");
     } catch {
       setError("Không thể kết nối đến máy chủ");
@@ -123,14 +123,14 @@ export default function LoginPage() {
         body: JSON.stringify({ idToken: credentialResponse.credential }),
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setError(data.message ?? "Đăng nhập Google thất bại");
+        setError(result.message ?? "Đăng nhập Google thất bại");
         return;
       }
 
-      saveSession(data.token, data.user);
+      saveSession(result.data.token, result.data.user);
       router.push("/dashboard");
     } catch {
       setError("Không thể kết nối đến máy chủ");

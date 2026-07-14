@@ -118,10 +118,10 @@ export default function DashboardPage() {
 
         setApartments(aptList.data ?? []);
         setStats({
-          apartments: aptCount.total ?? 0,
-          rooms: roomCount.total ?? 0,
-          available: available.total ?? 0,
-          rented: rented.total ?? 0,
+          apartments: aptCount.pagination?.total ?? 0,
+          rooms: roomCount.pagination?.total ?? 0,
+          available: available.pagination?.total ?? 0,
+          rented: rented.pagination?.total ?? 0,
         });
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");

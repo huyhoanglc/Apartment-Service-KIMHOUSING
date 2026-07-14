@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import ApartmentForm, { type ApartmentFormValues } from "../ApartmentForm";
 
@@ -26,13 +27,10 @@ export default function NewApartmentPage() {
       }),
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     if (!res.ok) {
-      if (Array.isArray(data.errors) && data.errors.length > 0) {
-        return data.errors.map((e: { field: string; message: string }) => e.message).join(", ");
-      }
-      return data.message ?? "Tạo apartment thất bại";
+      return extractErrorMessage(result, "Tạo apartment thất bại");
     }
 
     router.push("/dashboard/apartments");

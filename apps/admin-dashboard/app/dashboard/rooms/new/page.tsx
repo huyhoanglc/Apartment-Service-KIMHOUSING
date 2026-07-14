@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { API_URL, apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { getToken, getUser } from "@/app/lib/auth";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import { useToast } from "@/app/components/ToastProvider";
@@ -97,13 +98,13 @@ export default function NewRoomWizardPage() {
     (async () => {
       try {
         const res = await apiFetch("/api/features");
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
         if (!res.ok) {
-          setFeaturesError(data.message ?? "Không tải được danh sách tiện ích");
+          setFeaturesError(result.message ?? "Không tải được danh sách tiện ích");
           return;
         }
-        setFeatures(data);
+        setFeatures(result.data);
       } catch {
         if (!ignore) setFeaturesError("Không thể kết nối đến máy chủ");
       }
@@ -122,15 +123,15 @@ export default function NewRoomWizardPage() {
         method: "POST",
         body: JSON.stringify({ name }),
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setFeaturesError(data.message ?? "Không thêm được tiện ích");
+        setFeaturesError(result.message ?? "Không thêm được tiện ích");
         return;
       }
 
-      setFeatures((prev) => [...prev, data]);
-      setRoomValues((prev) => ({ ...prev, featureIds: [...prev.featureIds, data.id] }));
+      setFeatures((prev) => [...prev, result.data]);
+      setRoomValues((prev) => ({ ...prev, featureIds: [...prev.featureIds, result.data.id] }));
     } catch {
       setFeaturesError("Không thể kết nối đến máy chủ");
     } finally {
@@ -245,18 +246,14 @@ export default function NewRoomWizardPage() {
           featureIds: roomValues.featureIds,
         }),
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        if (Array.isArray(data.errors) && data.errors.length > 0) {
-          showToast(data.errors.map((e: { message: string }) => e.message).join(", "), "error");
-        } else {
-          showToast(data.message ?? "Tạo phòng thất bại", "error");
-        }
+        showToast(extractErrorMessage(result, "Tạo phòng thất bại"), "error");
         return;
       }
 
-      const roomId: string = data.id;
+      const roomId: string = result.data.id;
 
       if (images.length > 0) {
         setUploadProgress(0);

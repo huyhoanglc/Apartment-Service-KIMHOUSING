@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import RoomForm, { type RoomFormValues } from "../../RoomForm";
 
@@ -19,14 +20,15 @@ export default function EditRoomPage() {
     (async () => {
       try {
         const res = await apiFetch(`/api/rooms/${params.roomId}`);
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setLoadError(data.message ?? "Không tải được phòng");
+          setLoadError(result.message ?? "Không tải được phòng");
           return;
         }
 
+        const data = result.data;
         setInitialValues({
           code: data.code,
           slug: data.slug,
@@ -64,13 +66,10 @@ export default function EditRoomPage() {
       }),
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     if (!res.ok) {
-      if (Array.isArray(data.errors) && data.errors.length > 0) {
-        return data.errors.map((e: { field: string; message: string }) => e.message).join(", ");
-      }
-      return data.message ?? "Cập nhật phòng thất bại";
+      return extractErrorMessage(result, "Cập nhật phòng thất bại");
     }
 
     router.push(`/dashboard/apartments/${params.id}`);

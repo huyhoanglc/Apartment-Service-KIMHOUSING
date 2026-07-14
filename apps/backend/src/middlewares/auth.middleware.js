@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
+const { fail } = require('../utils/response');
 
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Chưa đăng nhập' });
+    return fail(res, 401, 'Chưa đăng nhập');
   }
 
   const token = authHeader.split(' ')[1];
@@ -14,7 +15,7 @@ function authenticate(req, res, next) {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Token không hợp lệ hoặc đã hết hạn' });
+    return fail(res, 401, 'Token không hợp lệ hoặc đã hết hạn');
   }
 }
 
@@ -37,7 +38,7 @@ function optionalAuthenticate(req, res, next) {
 function requireRole(roles) {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'Không có quyền truy cập' });
+      return fail(res, 403, 'Không có quyền truy cập');
     }
     next();
   };

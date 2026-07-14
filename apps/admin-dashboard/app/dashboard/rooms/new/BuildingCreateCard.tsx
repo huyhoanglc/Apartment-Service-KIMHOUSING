@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { useToast } from "@/app/components/ToastProvider";
 import LoadingOverlay from "@/app/components/LoadingOverlay";
 import {
@@ -60,19 +61,15 @@ export default function BuildingCreateCard({
           totalRooms: Number(totalRooms),
         }),
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        if (Array.isArray(data.errors) && data.errors.length > 0) {
-          setError(data.errors.map((e: { message: string }) => e.message).join(", "));
-        } else {
-          setError(data.message ?? "Tạo dự án thất bại");
-        }
+        setError(extractErrorMessage(result, "Tạo dự án thất bại"));
         return;
       }
 
       showToast("Đã tạo dự án thành công", "success");
-      onCreated({ ...data, rooms: [] });
+      onCreated({ ...result.data, rooms: [] });
     } catch {
       setError("Không thể kết nối đến máy chủ");
     } finally {

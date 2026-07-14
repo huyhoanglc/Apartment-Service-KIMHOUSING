@@ -67,14 +67,14 @@ export default function RoomDetailPage() {
     (async () => {
       try {
         const res = await apiFetch(`/api/rooms/${params.roomId}`);
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setError(data.message ?? "Không tải được phòng");
+          setError(result.message ?? "Không tải được phòng");
           return;
         }
-        setRoom(data);
+        setRoom(result.data);
       } catch {
         if (!ignore) setError("Không thể kết nối đến máy chủ");
       }
@@ -102,14 +102,14 @@ export default function RoomDetailPage() {
         method: "POST",
         body: formData,
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setUploadError(data.message ?? "Tải lên thất bại");
+        setUploadError(result.message ?? "Tải lên thất bại");
         return;
       }
 
-      setRoom((prev) => (prev ? { ...prev, media: [...prev.media, ...data] } : prev));
+      setRoom((prev) => (prev ? { ...prev, media: [...prev.media, ...result.data] } : prev));
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch {
       setUploadError("Không thể kết nối đến máy chủ");

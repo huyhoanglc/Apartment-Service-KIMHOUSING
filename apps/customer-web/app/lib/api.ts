@@ -52,6 +52,8 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
+// Backend trả envelope { success, message, data, pagination }. Hai hàm dưới tự bóc lớp envelope
+// và trả lại đúng shape PaginatedResponse<T>/Feature[]/T mà các trang gọi đang mong đợi.
 export async function getRooms(filters: RoomFilters): Promise<PaginatedResponse<RoomListItem>> {
   const query = new URLSearchParams();
   // customer-web chỉ hiển thị phòng còn trống, không cho khách chọn xem phòng đã thuê/ẩn
@@ -67,18 +69,27 @@ export async function getRooms(filters: RoomFilters): Promise<PaginatedResponse<
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Không tải được danh sách phòng");
-  return res.json();
+  const result = await res.json();
+  return {
+    data: result.data,
+    total: result.pagination.total,
+    page: result.pagination.page,
+    pageSize: result.pagination.limit,
+    totalPages: result.pagination.totalPages,
+  };
 }
 
 export async function getFeatures(): Promise<Feature[]> {
   const res = await fetch(`${API_URL}/api/features`, { cache: "no-store" });
   if (!res.ok) throw new Error("Không tải được danh sách tiện ích");
-  return res.json();
+  const result = await res.json();
+  return result.data;
 }
 
 export async function getRoomBySlug(slug: string): Promise<RoomListItem | null> {
   const res = await fetch(`${API_URL}/api/rooms/slug/${slug}`, { cache: "no-store" });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error("Không tải được thông tin phòng");
-  return res.json();
+  const result = await res.json();
+  return result.data;
 }

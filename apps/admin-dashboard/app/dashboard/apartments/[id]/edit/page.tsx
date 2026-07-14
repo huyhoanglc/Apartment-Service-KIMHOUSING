@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/app/lib/api";
+import { extractErrorMessage } from "@/app/lib/apiError";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import ApartmentForm, { type ApartmentFormValues } from "../../ApartmentForm";
 
@@ -19,14 +20,15 @@ export default function EditApartmentPage() {
     (async () => {
       try {
         const res = await apiFetch(`/api/apartments/${params.id}`);
-        const data = await res.json();
+        const result = await res.json();
         if (ignore) return;
 
         if (!res.ok) {
-          setLoadError(data.message ?? "Không tải được apartment");
+          setLoadError(result.message ?? "Không tải được apartment");
           return;
         }
 
+        const data = result.data;
         setInitialValues({
           houseNumber: data.houseNumber,
           street: data.street,
@@ -66,13 +68,10 @@ export default function EditApartmentPage() {
       }),
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     if (!res.ok) {
-      if (Array.isArray(data.errors) && data.errors.length > 0) {
-        return data.errors.map((e: { field: string; message: string }) => e.message).join(", ");
-      }
-      return data.message ?? "Cập nhật apartment thất bại";
+      return extractErrorMessage(result, "Cập nhật apartment thất bại");
     }
 
     router.push("/dashboard/apartments");
