@@ -8,9 +8,22 @@ function ImagePlaceholderIcon() {
   );
 }
 
-function Thumb({ url, showBadge, extraCount }: { url: string; showBadge: boolean; extraCount: number }) {
+function Thumb({
+  url,
+  showBadge,
+  extraCount,
+  onClick,
+}: {
+  url: string;
+  showBadge: boolean;
+  extraCount: number;
+  onClick?: () => void;
+}) {
   return (
-    <div className="relative h-full overflow-hidden">
+    <div
+      className={`relative h-full overflow-hidden ${onClick ? "cursor-pointer" : ""}`}
+      onClick={onClick}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
       <img src={url} alt="" className="h-full w-full object-cover" />
       {showBadge && extraCount > 0 && (
@@ -30,9 +43,11 @@ function Thumb({ url, showBadge, extraCount }: { url: string; showBadge: boolean
 export default function PhotoGalleryGrid({
   images,
   heightClass = "h-48",
+  onImageClick,
 }: {
   images: string[];
   heightClass?: string;
+  onImageClick?: (index: number) => void;
 }) {
   const [main, ...rest] = images;
 
@@ -54,7 +69,10 @@ export default function PhotoGalleryGrid({
   return (
     <div className={`flex ${heightClass} w-full flex-col gap-0.5`}>
       <div className={`flex w-full gap-0.5 ${hasBottom ? "h-[68%]" : "h-full"}`}>
-        <div className={`relative h-full overflow-hidden ${hasRight ? "w-[65%]" : "w-full"}`}>
+        <div
+          className={`relative h-full overflow-hidden ${hasRight ? "w-[65%]" : "w-full"} ${onImageClick ? "cursor-pointer" : ""}`}
+          onClick={onImageClick ? () => onImageClick(0) : undefined}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
           <img
             src={main}
@@ -67,7 +85,12 @@ export default function PhotoGalleryGrid({
           <div className="flex h-full w-[35%] flex-col gap-0.5">
             {topStack.map((url, i) => (
               <div key={url} className={topStack.length === 2 ? "h-1/2" : "h-full"}>
-                <Thumb url={url} showBadge={!hasBottom && i === topStack.length - 1} extraCount={extraCount} />
+                <Thumb
+                  url={url}
+                  showBadge={!hasBottom && i === topStack.length - 1}
+                  extraCount={extraCount}
+                  onClick={onImageClick ? () => onImageClick(1 + i) : undefined}
+                />
               </div>
             ))}
           </div>
@@ -78,7 +101,12 @@ export default function PhotoGalleryGrid({
         <div className="flex h-[32%] w-full gap-0.5">
           {bottomRow.map((url, i) => (
             <div key={url} className="h-full flex-1">
-              <Thumb url={url} showBadge={i === bottomRow.length - 1} extraCount={extraCount} />
+              <Thumb
+                url={url}
+                showBadge={i === bottomRow.length - 1}
+                extraCount={extraCount}
+                onClick={onImageClick ? () => onImageClick(1 + topStack.length + i) : undefined}
+              />
             </div>
           ))}
         </div>

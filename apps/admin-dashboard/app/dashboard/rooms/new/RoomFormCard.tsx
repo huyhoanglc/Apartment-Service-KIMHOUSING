@@ -28,6 +28,7 @@ export default function RoomFormCard({
   onAddFeature,
   addingFeature,
   onDeleteFeature,
+  onImageClick,
 }: {
   values: WizardRoomValues;
   onChange: <K extends keyof WizardRoomValues>(key: K, value: WizardRoomValues[K]) => void;
@@ -39,6 +40,7 @@ export default function RoomFormCard({
   onAddFeature: (name: string) => void;
   addingFeature: boolean;
   onDeleteFeature?: (id: string) => void;
+  onImageClick?: (index: number) => void;
 }) {
   const [newFeatureName, setNewFeatureName] = useState("");
 
@@ -76,18 +78,6 @@ export default function RoomFormCard({
               {errors.code && <p className="mt-1 text-xs text-red-600">{errors.code}</p>}
             </div>
             <div>
-              <label className={labelClass}>Slug</label>
-              <input
-                value={values.slug}
-                onChange={(e) => onChange("slug", e.target.value)}
-                placeholder="tự sinh từ mã phòng"
-                className={inputClass}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
               <label className={labelClass}>Loại phòng *</label>
               <select
                 value={values.roomType}
@@ -105,6 +95,9 @@ export default function RoomFormCard({
               </select>
               {errors.roomType && <p className="mt-1 text-xs text-red-600">{errors.roomType}</p>}
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Diện tích (m²) *</label>
               <input
@@ -116,6 +109,20 @@ export default function RoomFormCard({
                 className={`${inputClass} ${errors.area ? errorInputClass : ""}`}
               />
               {errors.area && <p className="mt-1 text-xs text-red-600">{errors.area}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>Trạng thái</label>
+              <select
+                value={values.status}
+                onChange={(e) => onChange("status", e.target.value as WizardRoomValues["status"])}
+                className={inputClass}
+              >
+                {Object.entries(ROOM_STATUS_LABEL).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -144,21 +151,6 @@ export default function RoomFormCard({
             </div>
           </div>
           {errors.price && <p className="text-xs text-red-600">{errors.price}</p>}
-
-          <div>
-            <label className={labelClass}>Trạng thái</label>
-            <select
-              value={values.status}
-              onChange={(e) => onChange("status", e.target.value as WizardRoomValues["status"])}
-              className={inputClass}
-            >
-              {Object.entries(ROOM_STATUS_LABEL).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       </div>
 
@@ -194,7 +186,7 @@ export default function RoomFormCard({
 
       <div className="border-t border-navy/10 pt-5">
         <span className={labelClass}>Hình ảnh *</span>
-        <ImageDropzone images={images} onChange={onImagesChange} error={errors.images} />
+        <ImageDropzone images={images} onChange={onImagesChange} error={errors.images} onImageClick={onImageClick} />
       </div>
     </div>
   );

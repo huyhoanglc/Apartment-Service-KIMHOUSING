@@ -37,10 +37,12 @@ export default function ImageDropzone({
   images,
   onChange,
   error,
+  onImageClick,
 }: {
   images: StagedImage[];
   onChange: (images: StagedImage[]) => void;
   error?: string;
+  onImageClick?: (index: number) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -119,7 +121,12 @@ export default function ImageDropzone({
               className="group relative aspect-square cursor-grab overflow-hidden rounded-lg border border-navy/10 bg-navy/5 active:cursor-grabbing"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- preview ảnh local (blob URL) trước khi upload lên Cloudinary */}
-              <img src={img.previewUrl} alt="" className="h-full w-full object-cover" />
+              <img
+                src={img.previewUrl}
+                alt=""
+                onClick={onImageClick ? () => onImageClick(index) : undefined}
+                className={`h-full w-full object-cover ${onImageClick ? "cursor-zoom-in" : ""}`}
+              />
               {index === 0 ? (
                 <span className="absolute top-1.5 left-1.5 rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-2 py-0.5 text-[10px] font-semibold text-navy shadow-sm">
                   Ảnh bìa

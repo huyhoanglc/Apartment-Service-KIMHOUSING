@@ -8,6 +8,7 @@ import { getToken, getUser } from "@/app/lib/auth";
 import { usePageTitle } from "@/app/components/PageTitleContext";
 import { useToast } from "@/app/components/ToastProvider";
 import { useConfirm } from "@/app/components/ConfirmProvider";
+import ImageLightbox from "@/app/components/ImageLightbox";
 import { slugify } from "@/app/lib/slugify";
 import Stepper, { type WizardStep } from "./Stepper";
 import BuildingSearchCard from "./BuildingSearchCard";
@@ -24,15 +25,6 @@ import {
 } from "./types";
 
 type Phase = "search" | "create-building" | "create-room" | "done";
-
-function BuildingIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
-      <rect x="4" y="2" width="12" height="16" rx="1" />
-      <path d="M7 6h1M12 6h1M7 9.5h1M12 9.5h1M7 13h1M12 13h1" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function CheckCircleBigIcon() {
   return (
@@ -89,6 +81,7 @@ export default function NewRoomWizardPage() {
   const [images, setImages] = useState<StagedImage[]>([]);
   const [errors, setErrors] = useState<RoomFieldErrors>({});
   const [saving, setSaving] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [createdRoom, setCreatedRoom] = useState<{ id: string; apartmentId: string } | null>(null);
 
@@ -329,15 +322,7 @@ export default function NewRoomWizardPage() {
   return (
     <div>
       <div className="mb-8 flex flex-col items-center gap-5">
-        <div className="flex w-full items-start gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-gold-from via-gold-via to-gold-to text-navy">
-            <BuildingIcon />
-          </span>
-          <div>
-            <h1 className="text-lg font-semibold text-navy">Thêm phòng mới</h1>
-            <p className="text-sm text-navy/50">Kiểm tra dự án trước khi tạo phòng mới.</p>
-          </div>
-        </div>
+        <p className="text-sm text-navy/50">Kiểm tra dự án trước khi tạo phòng mới.</p>
         <Stepper current={step} />
       </div>
 
@@ -370,6 +355,7 @@ export default function NewRoomWizardPage() {
                 onAddFeature={handleAddFeature}
                 addingFeature={addingFeature}
                 onDeleteFeature={isAdmin ? handleDeleteFeature : undefined}
+                onImageClick={setLightboxIndex}
               />
 
               <div className="animate-fade-in mt-4 flex items-center justify-between rounded-2xl border border-navy/10 bg-white p-4 shadow-sm">
@@ -408,9 +394,17 @@ export default function NewRoomWizardPage() {
             featureLabels={features
               .filter((f) => roomValues.featureIds.includes(f.id))
               .map((f) => f.name)}
+            onImageClick={setLightboxIndex}
           />
         </div>
       </div>
+
+      <ImageLightbox
+        images={images.map((img) => img.previewUrl)}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+      />
     </div>
   );
 }

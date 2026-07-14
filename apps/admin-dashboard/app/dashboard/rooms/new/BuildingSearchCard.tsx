@@ -71,7 +71,7 @@ export default function BuildingSearchCard({
   const [street, setStreet] = useState("");
   const [district, setDistrict] = useState("");
   const [touched, setTouched] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeField, setActiveField] = useState<"houseNumber" | "street" | null>(null);
   const [found, setFound] = useState<BuildingSummary | null>(null);
   const [notFound, setNotFound] = useState(false);
 
@@ -100,11 +100,18 @@ export default function BuildingSearchCard({
     };
   }, []);
 
-  const suggestions = houseNumber.trim()
-    ? allApartments
-        .filter((apt) => apt.houseNumber.toLowerCase().includes(houseNumber.trim().toLowerCase()))
-        .slice(0, 6)
-    : [];
+  const suggestions =
+    houseNumber.trim() || street.trim() || district
+      ? allApartments
+          .filter((apt) => {
+            const matchesHouse =
+              !houseNumber.trim() || apt.houseNumber.toLowerCase().includes(houseNumber.trim().toLowerCase());
+            const matchesStreet = !street.trim() || apt.street.toLowerCase().includes(street.trim().toLowerCase());
+            const matchesDistrict = !district || apt.district === district;
+            return matchesHouse && matchesStreet && matchesDistrict;
+          })
+          .slice(0, 6)
+      : [];
 
   function resetResult() {
     setFound(null);
@@ -115,7 +122,7 @@ export default function BuildingSearchCard({
     setHouseNumber(apt.houseNumber);
     setStreet(apt.street);
     setDistrict(apt.district);
-    setShowSuggestions(false);
+    setActiveField(null);
     setFound(apt);
     setNotFound(false);
   }
@@ -123,7 +130,7 @@ export default function BuildingSearchCard({
   function handleCheck(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setTouched(true);
-    setShowSuggestions(false);
+    setActiveField(null);
     if (!houseNumber.trim() || !street.trim() || !district) return;
 
     const match = allApartments.find(
@@ -145,6 +152,8 @@ export default function BuildingSearchCard({
     <div className="animate-fade-in rounded-2xl border border-navy/10 bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-base font-semibold text-navy">Thông tin dự án</h2>
 
+      <p className="mb-3 text-xs text-navy/40">Gõ vào bất kỳ ô nào để lọc theo dự án có sẵn.</p>
+
       <form onSubmit={handleCheck} className="space-y-4">
         <div className="relative">
           <label className={labelClass}>Số nhà *</label>
@@ -152,17 +161,17 @@ export default function BuildingSearchCard({
             value={houseNumber}
             onChange={(e) => {
               setHouseNumber(e.target.value);
-              setShowSuggestions(true);
+              setActiveField("houseNumber");
               resetResult();
             }}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setShowSuggestions(false)}
-            placeholder={loadingList ? "Đang tải danh sách dự án..." : "VD: 244 (gõ để tìm dự án có sẵn)"}
+            onFocus={() => setActiveField("houseNumber")}
+            onBlur={() => setActiveField(null)}
+            placeholder={loadingList ? "Đang tải danh sách dự án..." : "VD: 244"}
             className={`${inputClass} ${touched && !houseNumber.trim() ? "border-red-400" : ""}`}
             autoComplete="off"
           />
 
-          {showSuggestions && suggestions.length > 0 && (
+          {activeField === "houseNumber" && suggestions.length > 0 && (
             <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-navy/10 bg-white py-1 shadow-lg">
               {suggestions.map((apt) => (
                 <button
@@ -184,17 +193,41 @@ export default function BuildingSearchCard({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="relative">
             <label className={labelClass}>Tên đường *</label>
             <input
               value={street}
               onChange={(e) => {
                 setStreet(e.target.value);
+                setActiveField("street");
                 resetResult();
               }}
+              onFocus={() => setActiveField("street")}
+              onBlur={() => setActiveField(null)}
               className={`${inputClass} ${touched && !street.trim() ? "border-red-400" : ""}`}
               placeholder="VD: Bình Tiên"
+              autoComplete="off"
             />
+
+            {activeField === "street" && suggestions.length > 0 && (
+              <div className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-navy/10 bg-white py-1 shadow-lg">
+                {suggestions.map((apt) => (
+                  <button
+                    key={apt.id}
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handlePickSuggestion(apt)}
+                    className="flex w-full items-start gap-2 px-3 py-2 text-left text-sm text-navy transition-colors duration-150 hover:bg-navy/5"
+                  >
+                    <BuildingSmallIcon />
+                    <span>
+                      {apt.houseNumber} {apt.street}, {apt.district}
+                      {apt.buildingName ? ` (${apt.buildingName})` : ""}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <div>
             <label className={labelClass}>Quận *</label>
