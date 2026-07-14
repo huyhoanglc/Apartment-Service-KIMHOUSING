@@ -8,9 +8,24 @@ function ImagePlaceholderIcon() {
   );
 }
 
+function Thumb({ url, showBadge, extraCount }: { url: string; showBadge: boolean; extraCount: number }) {
+  return (
+    <div className="relative h-full overflow-hidden">
+      {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
+      <img src={url} alt="" className="h-full w-full object-cover" />
+      {showBadge && extraCount > 0 && (
+        <div className="absolute inset-0 flex items-center justify-center bg-navy/60 text-xs font-semibold text-white">
+          +{extraCount}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /**
- * 1 ảnh chính bên trái + lưới 3x2 (6 ô) bên phải.
- * Ô cuối cùng (góc phải dưới) hiện overlay "+n" khi còn ảnh chưa hiển thị hết.
+ * 1 ảnh chính bên trái (65%) + cột 2 ảnh nhỏ xếp chồng bên phải (35%),
+ * và 1 hàng ngang 3 ảnh nhỏ bên dưới. Ảnh nhỏ cuối cùng (góc phải dưới
+ * cùng) hiện overlay "+n" khi còn ảnh chưa hiển thị hết.
  */
 export default function PhotoGalleryGrid({
   images,
@@ -20,8 +35,6 @@ export default function PhotoGalleryGrid({
   heightClass?: string;
 }) {
   const [main, ...rest] = images;
-  const thumbs = rest.slice(0, 6);
-  const extraCount = Math.max(0, rest.length - thumbs.length);
 
   if (!main) {
     return (
@@ -32,24 +45,40 @@ export default function PhotoGalleryGrid({
     );
   }
 
+  const topStack = rest.slice(0, 2);
+  const bottomRow = rest.slice(2, 5);
+  const hasRight = topStack.length > 0;
+  const hasBottom = bottomRow.length > 0;
+  const extraCount = Math.max(0, rest.length - (topStack.length + bottomRow.length));
+
   return (
-    <div className={`flex ${heightClass} w-full gap-0.5`}>
-      <div className={`relative h-full overflow-hidden ${thumbs.length > 0 ? "w-3/5" : "w-full"}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
-        <img src={main} alt="" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+    <div className={`flex ${heightClass} w-full flex-col gap-0.5`}>
+      <div className={`flex w-full gap-0.5 ${hasBottom ? "h-[68%]" : "h-full"}`}>
+        <div className={`relative h-full overflow-hidden ${hasRight ? "w-[65%]" : "w-full"}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
+          <img
+            src={main}
+            alt=""
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+
+        {hasRight && (
+          <div className="flex h-full w-[35%] flex-col gap-0.5">
+            {topStack.map((url, i) => (
+              <div key={url} className={topStack.length === 2 ? "h-1/2" : "h-full"}>
+                <Thumb url={url} showBadge={!hasBottom && i === topStack.length - 1} extraCount={extraCount} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {thumbs.length > 0 && (
-        <div className="grid w-2/5 grid-cols-3 grid-rows-2 gap-0.5">
-          {thumbs.map((url, i) => (
-            <div key={i} className="relative overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element -- ảnh Cloudinary/blob URL, không nằm trong danh sách domain tối ưu hoá tĩnh */}
-              <img src={url} alt="" className="h-full w-full object-cover" />
-              {i === thumbs.length - 1 && extraCount > 0 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-navy/60 text-xs font-semibold text-white">
-                  +{extraCount}
-                </div>
-              )}
+      {hasBottom && (
+        <div className="flex h-[32%] w-full gap-0.5">
+          {bottomRow.map((url, i) => (
+            <div key={url} className="h-full flex-1">
+              <Thumb url={url} showBadge={i === bottomRow.length - 1} extraCount={extraCount} />
             </div>
           ))}
         </div>
