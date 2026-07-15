@@ -93,7 +93,12 @@ async function create(data) {
 async function update(id, data) {
   const { featureIds, ...roomData } = data;
 
-  return prisma.room.update({
+  // Frontend luôn PUT nguyên cả form (kể cả khi user không đụng vào status), nên phải so với
+  // status hiện tại trong DB mới biết có thực sự đổi trạng thái hay không.
+  const current = await prisma.room.findUnique({ where: { id }, select: { status: true, apartmentId: true } });
+  const statusChanged = Boolean(data.status && current && data.status !== current.status);
+
+  const room = await prisma.room.update({
     where: { id },
     data: {
       ...roomData,
@@ -108,6 +113,16 @@ async function update(id, data) {
       features: { include: { feature: true } },
     },
   });
+
+  if (statusChanged) {
+    // Đổi trạng thái phòng = "còn hoạt động" trên tin -> reset lại timer 3 ngày của apartment
+    await prisma.apartment.update({
+      where: { id: current.apartmentId },
+      data: { lastActivityAt: new Date(), lastNotifiedAt: null },
+    });
+  }
+
+  return room;
 }
 
 async function remove(id) {

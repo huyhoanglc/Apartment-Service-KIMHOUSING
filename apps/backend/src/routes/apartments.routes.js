@@ -6,6 +6,7 @@ const validate = require('../middlewares/validate.middleware');
 const { createApartmentSchema, updateApartmentSchema } = require('../validators/apartments.validator');
 
 router.get('/', controller.getApartments); // public - customer xem được
+router.get('/mine', authenticate, requireRole(['ADMIN', 'SALE']), controller.getMyApartments); // trước /:id để không bị nuốt path
 router.get('/:id', controller.getApartmentById); // public
 
 router.post(

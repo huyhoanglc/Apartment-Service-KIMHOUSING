@@ -1,6 +1,9 @@
 const prisma = require('../config/prisma');
 const { buildPageResult } = require('../utils/pagination');
 
+const OVERDUE_DAYS = 3;
+const OVERDUE_MS = OVERDUE_DAYS * 24 * 60 * 60 * 1000;
+
 async function findAll({ district, apartmentType, page, pageSize }) {
   const where = {
     ...(district && { district }),
@@ -75,4 +78,41 @@ async function remove(id) {
   return prisma.apartment.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, create, update, remove };
+// Apartment do chính user đó tạo, kèm trạng thái "quá hạn 3 ngày chưa cập nhật phòng" - dùng
+// cho tab "Nguồn Của Tôi".
+async function findMine(userId, { page, pageSize }) {
+  const where = { createdById: userId };
+
+  const [data, total] = await Promise.all([
+    prisma.apartment.findMany({
+      where,
+      include: { _count: { select: { rooms: true } } },
+      orderBy: { lastActivityAt: 'asc' }, // cũ nhất (dễ quá hạn nhất) lên đầu
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.apartment.count({ where }),
+  ]);
+
+  const now = Date.now();
+  const enriched = data.map((apartment) => {
+    const dueAt = new Date(apartment.lastActivityAt.getTime() + OVERDUE_MS);
+    return { ...apartment, dueAt, isOverdue: dueAt.getTime() < now };
+  });
+
+  return buildPageResult({ data: enriched, total, page, pageSize });
+}
+
+// Apartment đã quá hạn 3 ngày và chưa được gửi thông báo cho lần quá hạn này.
+async function findOverdueUnnotified() {
+  const threshold = new Date(Date.now() - OVERDUE_MS);
+  return prisma.apartment.findMany({
+    where: { lastActivityAt: { lt: threshold }, lastNotifiedAt: null },
+  });
+}
+
+async function markNotified(id) {
+  return prisma.apartment.update({ where: { id }, data: { lastNotifiedAt: new Date() } });
+}
+
+module.exports = { findAll, findById, create, update, remove, findMine, findOverdueUnnotified, markNotified };

@@ -7,6 +7,7 @@ import Sidebar from "@/app/components/Sidebar";
 import { getToken, getUser, clearSession, type AuthUser } from "@/app/lib/auth";
 import { useToast } from "@/app/components/ToastProvider";
 import { PageTitleProvider, useHeaderTitle } from "@/app/components/PageTitleContext";
+import { apiFetch } from "@/app/lib/api";
 
 function subscribeNoop() {
   return () => {};
@@ -130,6 +131,167 @@ function Avatar({ user, className }: { user: AuthUser; className?: string }) {
   );
 }
 
+interface NotificationItem {
+  id: string;
+  message: string;
+  isRead: boolean;
+  apartmentId: string | null;
+  timeLabel: string;
+}
+
+// Tính "x phút trước" tại thời điểm fetch (không gọi Date.now() lúc render).
+function formatTimeAgo(iso: string, now: number): string {
+  const diffMs = now - new Date(iso).getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  if (minutes < 1) return "Vừa xong";
+  if (minutes < 60) return `${minutes} phút trước`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} giờ trước`;
+  const days = Math.floor(hours / 24);
+  return `${days} ngày trước`;
+}
+
+function NotificationBell() {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<NotificationItem[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/api/notifications/unread-count");
+        const result = await res.json();
+        if (!ignore && res.ok) setUnreadCount(result.data.count);
+      } catch {
+        // badge chỉ để hiển thị, lỗi không cần báo lỗi cho user
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open || loaded) return;
+    let ignore = false;
+
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await apiFetch("/api/notifications?pageSize=20");
+        const result = await res.json();
+        if (ignore) return;
+        if (res.ok) {
+          const now = Date.now();
+          const raw = result.data as Array<{
+            id: string;
+            message: string;
+            isRead: boolean;
+            apartmentId: string | null;
+            createdAt: string;
+          }>;
+          setItems(
+            raw.map((n) => ({
+              id: n.id,
+              message: n.message,
+              isRead: n.isRead,
+              apartmentId: n.apartmentId,
+              timeLabel: formatTimeAgo(n.createdAt, now),
+            }))
+          );
+          setLoaded(true);
+        }
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
+  }, [open, loaded]);
+
+  function handleItemClick(item: NotificationItem) {
+    setOpen(false);
+    if (!item.isRead) {
+      setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, isRead: true } : i)));
+      setUnreadCount((c) => Math.max(0, c - 1));
+      apiFetch(`/api/notifications/${item.id}/read`, { method: "PATCH" }).catch(() => {});
+    }
+    if (item.apartmentId) router.push(`/dashboard/apartments/${item.apartmentId}`);
+  }
+
+  function handleMarkAllRead() {
+    setItems((prev) => prev.map((i) => ({ ...i, isRead: true })));
+    setUnreadCount(0);
+    apiFetch("/api/notifications/read-all", { method: "PATCH" }).catch(() => {});
+  }
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="relative flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
+        aria-label="Thông báo"
+      >
+        <BellIcon />
+        {unreadCount > 0 && (
+          <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute right-0 z-20 mt-2 w-80 rounded-md border border-navy/10 bg-white py-2 shadow-lg">
+          <div className="flex items-center justify-between px-4 pb-2">
+            <p className="text-xs font-medium tracking-wide text-navy/40 uppercase">Thông báo</p>
+            {unreadCount > 0 && (
+              <button type="button" onClick={handleMarkAllRead} className="text-xs text-gold-to hover:underline">
+                Đánh dấu đã đọc tất cả
+              </button>
+            )}
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {loading && <p className="px-4 py-3 text-sm text-navy/50">Đang tải...</p>}
+            {!loading && items.length === 0 && (
+              <p className="px-4 py-3 text-sm text-navy/50">Không có thông báo nào.</p>
+            )}
+            {!loading &&
+              items.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleItemClick(item)}
+                  className={`block w-full px-4 py-2.5 text-left text-sm transition-colors duration-200 hover:bg-navy/5 ${
+                    item.isRead ? "text-navy/60" : "font-medium text-navy"
+                  }`}
+                >
+                  <p>{item.message}</p>
+                  <p className="mt-0.5 text-xs text-navy/40">{item.timeLabel}</p>
+                </button>
+              ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Header({
   user,
   onLogout,
@@ -171,14 +333,7 @@ function Header({
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        <button
-          type="button"
-          onClick={onComingSoon}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-navy/60 transition-colors duration-200 hover:bg-navy/5 hover:text-navy"
-          aria-label="Thông báo"
-        >
-          <BellIcon />
-        </button>
+        <NotificationBell />
 
         <div className="relative" ref={menuRef}>
           <button

@@ -1,4 +1,6 @@
 const apartmentsModel = require('../models/apartments.model');
+const usersModel = require('../models/users.model');
+const employeesModel = require('../models/employees.model');
 const { parsePagination } = require('../utils/pagination');
 const { ok, created, paginated, noContent, fail } = require('../utils/response');
 
@@ -27,11 +29,27 @@ async function getApartmentById(req, res, next) {
 
 async function createApartment(req, res, next) {
   try {
+    // Gắn mã nhân viên của người tạo (khớp qua email User <-> Employee, giống trang hồ sơ cá
+    // nhân) - lưu snapshot lúc tạo, không tra cứu lại sau này.
+    const user = await usersModel.findById(req.user.id);
+    const employee = user ? await employeesModel.findByEmail(user.email) : null;
+
     const apartment = await apartmentsModel.create({
       ...req.body,
-      createdById: req.user.id, // sẽ có sau khi làm module auth
+      createdById: req.user.id,
+      createdByEmployeeCode: employee?.employeeCode || null,
     });
     created(res, apartment);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getMyApartments(req, res, next) {
+  try {
+    const { page, pageSize } = parsePagination(req.query);
+    const result = await apartmentsModel.findMine(req.user.id, { page, pageSize });
+    paginated(res, result);
   } catch (err) {
     next(err);
   }
@@ -59,6 +77,7 @@ module.exports = {
   getApartments,
   getApartmentById,
   createApartment,
+  getMyApartments,
   updateApartment,
   deleteApartment,
 };

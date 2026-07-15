@@ -28,4 +28,8 @@ async function updateProfile(id, data) {
   });
 }
 
-module.exports = { findByEmail, findById, create, updatePassword, updateProfile };
+async function findAdmins() {
+  return prisma.user.findMany({ where: { role: 'ADMIN' } });
+}
+
+module.exports = { findByEmail, findById, create, updatePassword, updateProfile, findAdmins };

@@ -44,6 +44,10 @@ enum MediaType {
   VIDEO
 }
 
+enum NotificationType {
+  APARTMENT_OVERDUE
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -54,7 +58,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  apartments Apartment[] @relation("CreatedBy")
+  apartments    Apartment[]    @relation("CreatedBy")
+  notifications Notification[]
 
   @@map("users")
 }
@@ -76,11 +81,16 @@ model Apartment {
   isNewProject  Boolean       @default(false)
   totalRooms    Int
 
-  createdById String
-  createdBy   User   @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById            String
+  createdBy              User    @relation("CreatedBy", fields: [createdById], references: [id])
+  createdByEmployeeCode  String?
 
-  features ApartmentFeature[]
-  rooms    Room[]
+  lastActivityAt DateTime  @default(now())
+  lastNotifiedAt DateTime?
+
+  features      ApartmentFeature[]
+  rooms         Room[]
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -166,6 +176,23 @@ model Media {
   @@index([roomId])
   @@index([cloudinaryFolder])
   @@map("media")
+}
+
+model Notification {
+  id     String           @id @default(cuid())
+  userId String
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type   NotificationType
+
+  message     String
+  apartmentId String?
+  apartment   Apartment? @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+  @@map("notifications")
 }
 
 model OtpCode {
