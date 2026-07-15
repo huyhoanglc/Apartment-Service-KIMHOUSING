@@ -28,13 +28,16 @@ async function findAll({ search, position, employmentStatus, managerName, page, 
   return buildPageResult({ data, total, page, pageSize });
 }
 
-// Danh sách Team Leader (dùng làm option cho filter "Team" - lọc nhân viên theo managerName)
-async function findTeamLeaders() {
-  return prisma.employee.findMany({
-    where: { position: 'Team Leader' },
-    select: { employeeCode: true, fullName: true },
-    orderBy: { fullName: 'asc' },
+// Danh sách "team" = các tên đang thực sự xuất hiện ở cột managerName của ai đó, không dựa vào
+// position (vd K001 quản lý 4 người nhưng position của K001 lại đang để trống trên sheet).
+async function findTeams() {
+  const rows = await prisma.employee.findMany({
+    where: { managerName: { not: null } },
+    select: { managerName: true },
+    distinct: ['managerName'],
+    orderBy: { managerName: 'asc' },
   });
+  return rows.map((r) => r.managerName);
 }
 
 async function upsert(employeeCode, data) {
@@ -54,4 +57,4 @@ async function findByEmail(email) {
   return prisma.employee.findFirst({ where: { email } });
 }
 
-module.exports = { findAll, findTeamLeaders, upsert, findAllEmployeeCodes, findByEmail };
+module.exports = { findAll, findTeams, upsert, findAllEmployeeCodes, findByEmail };

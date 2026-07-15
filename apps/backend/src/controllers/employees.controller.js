@@ -14,9 +14,9 @@ async function listEmployees(req, res, next) {
   }
 }
 
-async function listTeamLeaders(req, res, next) {
+async function listTeams(req, res, next) {
   try {
-    const teams = await employeesModel.findTeamLeaders();
+    const teams = await employeesModel.findTeams();
     ok(res, teams);
   } catch (err) {
     next(err);
@@ -35,4 +35,4 @@ async function syncEmployees(req, res, next) {
   }
 }
 
-module.exports = { listEmployees, listTeamLeaders, syncEmployees };
+module.exports = { listEmployees, listTeams, syncEmployees };

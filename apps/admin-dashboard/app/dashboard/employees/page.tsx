@@ -8,11 +8,6 @@ import { usePageTitle } from "@/app/components/PageTitleContext";
 import { useToast } from "@/app/components/ToastProvider";
 import { getUser, type AuthUser } from "@/app/lib/auth";
 
-interface TeamLeader {
-  employeeCode: string;
-  fullName: string | null;
-}
-
 interface Employee {
   id: string;
   employeeCode: string;
@@ -80,7 +75,7 @@ export default function EmployeesPage() {
   const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [teams, setTeams] = useState<TeamLeader[]>([]);
+  const [teams, setTeams] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
@@ -233,8 +228,8 @@ export default function EmployeesPage() {
         >
           <option value="">Tất cả team</option>
           {teams.map((t) => (
-            <option key={t.employeeCode} value={t.fullName ?? ""}>
-              Team {t.fullName}
+            <option key={t} value={t}>
+              Team {t}
             </option>
           ))}
         </select>
