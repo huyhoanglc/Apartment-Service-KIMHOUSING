@@ -136,6 +136,22 @@ async function googleLogin(req, res, next) {
   }
 }
 
+async function me(req, res, next) {
+  try {
+    const user = await usersModel.findById(req.user.id);
+    if (!user) {
+      return fail(res, 404, 'Không tìm thấy người dùng');
+    }
+
+    const employee = await employeesModel.findByEmail(user.email);
+
+    const { password: _, ...userWithoutPassword } = user;
+    ok(res, { user: userWithoutPassword, employee: employee || null });
+  } catch (err) {
+    next(err);
+  }
+}
+
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
@@ -178,4 +194,4 @@ async function resetPassword(req, res, next) {
   }
 }
 
-module.exports = { register, login, googleLogin, forgotPassword, resetPassword };
+module.exports = { register, login, googleLogin, me, forgotPassword, resetPassword };

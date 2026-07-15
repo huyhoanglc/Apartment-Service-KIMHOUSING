@@ -141,6 +141,7 @@ function Header({
   onComingSoon: () => void;
   onMenuClick: () => void;
 }) {
+  const router = useRouter();
   const title = useHeaderTitle();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -196,7 +197,14 @@ function Header({
               <p className="px-4 pb-2 text-xs font-medium tracking-wide text-navy/40 uppercase">
                 Xin chào, {user.name}
               </p>
-              <MenuItem icon={<ProfileIcon />} label="Hồ sơ của tôi" onClick={onComingSoon} />
+              <MenuItem
+                icon={<ProfileIcon />}
+                label="Hồ sơ của tôi"
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push("/dashboard/profile");
+                }}
+              />
               <MenuItem icon={<SettingsIcon />} label="Cài đặt" onClick={onComingSoon} />
               <MenuItem icon={<ActivityIcon />} label="Hoạt động" onClick={onComingSoon} />
               <MenuItem icon={<SupportIcon />} label="Hỗ trợ" onClick={onComingSoon} />

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/auth.controller');
 const validate = require('../middlewares/validate.middleware');
+const { authenticate } = require('../middlewares/auth.middleware');
 const { forgotPasswordIpLimiter, forgotPasswordEmailLimiter } = require('../middlewares/rateLimiter.middleware');
 const {
   registerSchema,
@@ -14,6 +15,7 @@ const {
 router.post('/register', validate(registerSchema), controller.register);
 router.post('/login', validate(loginSchema), controller.login);
 router.post('/google', validate(googleLoginSchema), controller.googleLogin);
+router.get('/me', authenticate, controller.me);
 router.post(
   '/forgot-password',
   forgotPasswordIpLimiter,
