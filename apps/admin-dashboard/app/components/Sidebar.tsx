@@ -1,8 +1,10 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { getUser, type AuthUser } from "@/app/lib/auth";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Tổng quan", exact: true, icon: HomeIcon },
@@ -18,10 +20,19 @@ const NAV_ITEMS = [
   { href: "/dashboard/source-updates", label: "Nguồn căn cập nhật", exact: false, icon: AlertIcon, badge: 26 },
   { href: "/dashboard/update-history", label: "Lịch sử cập nhật", exact: false, icon: HistoryIcon },
   { href: "/dashboard/customers", label: "Khách hàng", exact: false, icon: UsersIcon },
+  { href: "/dashboard/employees", label: "Quản lý nhân viên", exact: false, icon: BadgeIcon, adminOnly: true },
   { href: "/dashboard/reports", label: "Báo cáo thống kê", exact: false, icon: ChartIcon },
   { href: "/dashboard/messages", label: "Tin nhắn nội bộ", exact: false, icon: ChatIcon, dot: true },
   { href: "/dashboard/settings", label: "Cài đặt hệ thống", exact: false, icon: SettingsIcon },
 ];
+
+function subscribeNoop() {
+  return () => {};
+}
+
+function getServerSnapshot(): AuthUser | null {
+  return null;
+}
 
 function HomeIcon() {
   return (
@@ -110,6 +121,15 @@ function ChatIcon() {
   );
 }
 
+function BadgeIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 shrink-0">
+      <circle cx="10" cy="7.5" r="3" />
+      <path d="M7 10.2 5.5 17l4.5-2.3 4.5 2.3-1.5-6.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function SettingsIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 shrink-0">
@@ -129,6 +149,8 @@ function CloseIcon() {
 
 export default function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
+  const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
+  const navItems = NAV_ITEMS.filter((item) => !("adminOnly" in item && item.adminOnly) || user?.role === "ADMIN");
 
   return (
     <>
@@ -168,7 +190,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose: () 
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-2">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const prefixes = "matchPrefixes" in item && item.matchPrefixes ? item.matchPrefixes : [item.href];
             const active = item.exact ? pathname === item.href : prefixes.some((p) => pathname?.startsWith(p));
             const Icon = item.icon;

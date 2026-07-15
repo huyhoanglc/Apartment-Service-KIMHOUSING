@@ -1,5 +1,18 @@
 const employeeSyncService = require('../services/employeeSync.service');
-const { ok, fail } = require('../utils/response');
+const employeesModel = require('../models/employees.model');
+const { parsePagination } = require('../utils/pagination');
+const { ok, paginated, fail } = require('../utils/response');
+
+async function listEmployees(req, res, next) {
+  try {
+    const { search, position, employmentStatus } = req.query;
+    const { page, pageSize } = parsePagination(req.query);
+    const result = await employeesModel.findAll({ search, position, employmentStatus, page, pageSize });
+    paginated(res, result);
+  } catch (err) {
+    next(err);
+  }
+}
 
 async function syncEmployees(req, res, next) {
   try {
@@ -13,4 +26,4 @@ async function syncEmployees(req, res, next) {
   }
 }
 
-module.exports = { syncEmployees };
+module.exports = { listEmployees, syncEmployees };
