@@ -8,6 +8,11 @@ import { usePageTitle } from "@/app/components/PageTitleContext";
 import { useToast } from "@/app/components/ToastProvider";
 import { getUser, type AuthUser } from "@/app/lib/auth";
 
+interface TeamLeader {
+  employeeCode: string;
+  fullName: string | null;
+}
+
 interface Employee {
   id: string;
   employeeCode: string;
@@ -75,11 +80,13 @@ export default function EmployeesPage() {
   const user = useSyncExternalStore(subscribeNoop, getUser, getServerSnapshot);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [teams, setTeams] = useState<TeamLeader[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [team, setTeam] = useState("");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -98,6 +105,25 @@ export default function EmployeesPage() {
     let ignore = false;
 
     (async () => {
+      try {
+        const res = await apiFetch("/api/employees/teams");
+        const result = await res.json();
+        if (!ignore && res.ok) setTeams(result.data);
+      } catch {
+        // danh sách team chỉ để lọc, không chặn trang nếu lấy thất bại
+      }
+    })();
+
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user || user.role !== "ADMIN") return;
+    let ignore = false;
+
+    (async () => {
       setLoading(true);
       setError(null);
       try {
@@ -106,6 +132,7 @@ export default function EmployeesPage() {
         params.set("pageSize", String(PAGE_SIZE));
         if (search) params.set("search", search);
         if (status) params.set("employmentStatus", status);
+        if (team) params.set("managerName", team);
 
         const res = await apiFetch(`/api/employees?${params.toString()}`);
         const result = await res.json();
@@ -128,7 +155,7 @@ export default function EmployeesPage() {
     return () => {
       ignore = true;
     };
-  }, [user, page, search, status, reloadKey]);
+  }, [user, page, search, status, team, reloadKey]);
 
   async function handleSync() {
     setSyncing(true);
@@ -193,6 +220,21 @@ export default function EmployeesPage() {
           {STATUS_OPTIONS.map((s) => (
             <option key={s} value={s}>
               {s}
+            </option>
+          ))}
+        </select>
+        <select
+          value={team}
+          onChange={(e) => {
+            setTeam(e.target.value);
+            setPage(1);
+          }}
+          className={`${inputClass} max-w-xs`}
+        >
+          <option value="">Tất cả team</option>
+          {teams.map((t) => (
+            <option key={t.employeeCode} value={t.fullName ?? ""}>
+              Team {t.fullName}
             </option>
           ))}
         </select>

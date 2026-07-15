@@ -1,7 +1,7 @@
 const prisma = require('../config/prisma');
 const { buildPageResult } = require('../utils/pagination');
 
-async function findAll({ search, position, employmentStatus, page, pageSize }) {
+async function findAll({ search, position, employmentStatus, managerName, page, pageSize }) {
   const where = {
     ...(search && {
       OR: [
@@ -12,6 +12,7 @@ async function findAll({ search, position, employmentStatus, page, pageSize }) {
     }),
     ...(position && { position }),
     ...(employmentStatus && { employmentStatus }),
+    ...(managerName && { managerName }),
   };
 
   const [data, total] = await Promise.all([
@@ -25,6 +26,15 @@ async function findAll({ search, position, employmentStatus, page, pageSize }) {
   ]);
 
   return buildPageResult({ data, total, page, pageSize });
+}
+
+// Danh sách Team Leader (dùng làm option cho filter "Team" - lọc nhân viên theo managerName)
+async function findTeamLeaders() {
+  return prisma.employee.findMany({
+    where: { position: 'Team Leader' },
+    select: { employeeCode: true, fullName: true },
+    orderBy: { fullName: 'asc' },
+  });
 }
 
 async function upsert(employeeCode, data) {
@@ -44,4 +54,4 @@ async function findByEmail(email) {
   return prisma.employee.findFirst({ where: { email } });
 }
 
-module.exports = { findAll, upsert, findAllEmployeeCodes, findByEmail };
+module.exports = { findAll, findTeamLeaders, upsert, findAllEmployeeCodes, findByEmail };

@@ -24,6 +24,22 @@ const HEADER_MAP = {
 
 const DATE_FIELDS = new Set(['dateOfBirth', 'startDate']);
 
+const COMBINING_DIACRITICS = /[̀-ͯ]/g;
+
+// So khớp header không phân biệt hoa/thường và bỏ qua dấu tiếng Việt - HR gõ tay sheet nên
+// rất dễ lệch dấu (vd "TIÊP" thay vì "TIẾP"), so khớp tuyệt đối sẽ âm thầm bỏ sót cả cột.
+function normalizeHeader(str) {
+  return String(str || '')
+    .trim()
+    .toUpperCase()
+    .normalize('NFD')
+    .replace(COMBINING_DIACRITICS, '');
+}
+
+const NORMALIZED_HEADER_MAP = Object.fromEntries(
+  Object.entries(HEADER_MAP).map(([key, value]) => [normalizeHeader(key), value])
+);
+
 let isSyncing = false;
 
 function parseDdMmYyyy(str) {
@@ -38,7 +54,7 @@ function parseDdMmYyyy(str) {
 function buildFieldIndex(headerRow) {
   const index = {};
   headerRow.forEach((raw, i) => {
-    const field = HEADER_MAP[String(raw || '').trim()];
+    const field = NORMALIZED_HEADER_MAP[normalizeHeader(raw)];
     if (field) index[field] = i;
   });
   return index;
