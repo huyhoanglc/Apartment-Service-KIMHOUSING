@@ -101,7 +101,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-navy shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1600px] items-center gap-6 px-4 py-3 sm:px-6 lg:px-8 xl:px-10">
         <Link href="/" className="flex shrink-0 items-center">
           {logoError ? (
             <span className="text-lg font-bold tracking-wide text-white">
@@ -120,17 +120,21 @@ export default function Navbar() {
           )}
         </Link>
 
-        <div className="hidden flex-1 items-center gap-6 lg:flex">
-          <SearchForm className="hidden max-w-50 flex-1 xl:flex" />
+        <div className="hidden flex-1 items-center gap-8 xl:flex">
+          <SearchForm className="hidden w-48 shrink-0 2xl:flex" />
 
-          <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium text-white">
+          <nav className="flex flex-1 items-center justify-center gap-8 text-sm font-medium whitespace-nowrap text-white">
             {NAV_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="transition-colors duration-300 hover:text-gold-to">
+              <Link
+                key={link.href}
+                href={link.href}
+                className="shrink-0 transition-colors duration-300 hover:text-gold-to"
+              >
                 {link.label}
               </Link>
             ))}
 
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => setKimOpen((v) => !v)}
@@ -159,22 +163,26 @@ export default function Navbar() {
             </div>
 
             {TRAILING_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} className="transition-colors duration-300 hover:text-gold-to">
+              <Link
+                key={link.href}
+                href={link.href}
+                className="shrink-0 transition-colors duration-300 hover:text-gold-to"
+              >
                 {link.label}
               </Link>
             ))}
           </nav>
         </div>
 
-        <div className="ml-auto hidden items-center gap-3 lg:flex">
+        <div className="ml-auto hidden shrink-0 items-center gap-4 xl:flex">
           <LanguageSwitcher />
           <ThemeToggle />
-          <Link href="/lien-he" className={goldButtonClass}>
+          <Link href="/lien-he" className={`${goldButtonClass} whitespace-nowrap`}>
             Liên hệ ngay
           </Link>
         </div>
 
-        <div className="ml-auto flex items-center gap-1 lg:hidden">
+        <div className="ml-auto flex items-center gap-1 xl:hidden">
           <LanguageSwitcher />
           <ThemeToggle />
           <button
@@ -190,7 +198,7 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-navy px-4 py-4 lg:hidden">
+        <div className="border-t border-white/10 bg-navy px-4 py-4 xl:hidden">
           <SearchForm className="mb-4" />
           <nav className="flex flex-col gap-1 text-sm font-medium text-white">
             {NAV_LINKS.map((link) => (
