@@ -54,7 +54,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối"}
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-navy transition-colors duration-300 hover:bg-navy/5 dark:text-white dark:hover:bg-white/10"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
     </button>
