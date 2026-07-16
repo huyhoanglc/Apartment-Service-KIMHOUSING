@@ -3,6 +3,7 @@ import Link from "next/link";
 
 const COMPANY_LINKS = [
   { href: "/#tam-nhin", label: "Tầm nhìn - Giá trị cốt lõi" },
+  { href: "/lich-su", label: "Lịch sử hình thành" },
   { href: "/#he-sinh-thai", label: "Hệ sinh thái dịch vụ" },
   { href: "/#chu-nha", label: "Hợp tác chủ nhà" },
   { href: "/lien-he", label: "Liên hệ" },

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HeroCarousel, { type HeroSlide } from "@/app/components/HeroCarousel";
+import AbstractPanel from "@/app/components/AbstractPanel";
 
 // Không khai báo metadata riêng ở đây - trang chủ kế thừa title/description
 // mặc định từ app/layout.tsx (layout.template không áp dụng cho page cùng segment gốc).
@@ -152,39 +153,6 @@ function CheckIcon() {
   );
 }
 
-function AbstractPanel({ className = "" }: { className?: string }) {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-2xl border border-navy/10 bg-linear-to-br from-navy via-navy-light to-black/80 shadow-lg dark:border-white/10 ${className}`}
-    >
-      <div
-        className="absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(212,175,55,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.25) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
-      <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-gold/20 blur-3xl" />
-      <div className="absolute -bottom-12 -left-8 h-40 w-40 rounded-full bg-gold-from/10 blur-3xl" />
-      <div className="relative flex h-full min-h-48 items-center justify-center">
-        <svg viewBox="0 0 100 100" className="h-16 w-16 opacity-80" aria-hidden>
-          <defs>
-            <linearGradient id={`panel-star-${className.length}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#fcf6ba" />
-              <stop offset="100%" stopColor="#b38728" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M50 2 L58 40 L98 50 L58 60 L50 98 L42 60 L2 50 L42 40 Z"
-            fill={`url(#panel-star-${className.length})`}
-          />
-        </svg>
-      </div>
-    </div>
-  );
-}
-
 export default function HomePage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
@@ -245,7 +213,7 @@ export default function HomePage() {
       {/* Về Kim Housing */}
       <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <AbstractPanel className="aspect-video w-full lg:aspect-4/3" />
+          <AbstractPanel id="about" className="aspect-video w-full lg:aspect-4/3" />
           <div>
             <h2 className="text-2xl font-bold sm:text-3xl">Vận Hành Bởi Đội Ngũ Tận Tâm</h2>
             <p className="mt-4 text-sm text-white/70 sm:text-base">
@@ -253,12 +221,20 @@ export default function HomePage() {
               vực bất động sản cho thuê. Chúng tôi tin rằng một chỗ ở tốt bắt đầu từ sự minh bạch, dịch vụ
               chu đáo và trải nghiệm thuê nhà không phiền hà.
             </p>
-            <Link
-              href="/lien-he"
-              className="mt-6 inline-flex rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
-            >
-              Tìm hiểu thêm
-            </Link>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <Link
+                href="/lien-he"
+                className="inline-flex rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
+              >
+                Tìm hiểu thêm
+              </Link>
+              <Link
+                href="/lich-su"
+                className="text-sm font-semibold text-white/80 underline-offset-4 transition-colors duration-300 hover:text-gold hover:underline"
+              >
+                Xem lịch sử hình thành →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -364,14 +340,14 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <AbstractPanel className="aspect-video w-full lg:aspect-4/3" />
+          <AbstractPanel id="chu-nha" className="aspect-video w-full lg:aspect-4/3" />
         </div>
       </section>
 
       {/* Cam kết phát triển bền vững */}
       <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <AbstractPanel className="aspect-video w-full lg:aspect-4/3" />
+          <AbstractPanel id="sustain" className="aspect-video w-full lg:aspect-4/3" />
           <div>
             <p className="text-xs font-semibold tracking-widest text-gold uppercase">Cam kết của chúng tôi</p>
             <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Phát Triển Bền Vững</h2>
