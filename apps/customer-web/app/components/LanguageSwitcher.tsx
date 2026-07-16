@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 const LANGUAGES = [
   { code: "vi", label: "Tiếng Việt", src: "/VN_Flag.png", fallback: "VN" },
-  { code: "en", label: "English", src: "/ENG_Flag.png", fallback: "EN" },
+  { code: "en", label: "English", src: "/ENG_Flag.svg", fallback: "EN" },
 ] as const;
 
 type LangCode = (typeof LANGUAGES)[number]["code"];
 
 // Chỉ đổi icon đang chọn, chưa dịch nội dung trang - site hiện chỉ có tiếng Việt.
+// Dùng thẻ <img> thường thay vì next/image vì cờ EN là SVG (Next chặn tối ưu SVG mặc định).
 export default function LanguageSwitcher() {
   const [active, setActive] = useState<LangCode>("vi");
   const [errored, setErrored] = useState<Partial<Record<LangCode, boolean>>>({});
@@ -31,7 +31,8 @@ export default function LanguageSwitcher() {
           {errored[lang.code] ? (
             <span className="text-[9px] font-bold text-white">{lang.fallback}</span>
           ) : (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={lang.src}
               alt={lang.label}
               width={24}
