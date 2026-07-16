@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 import "./globals.css";
 
 const THEME_INIT_SCRIPT = `
@@ -48,6 +49,7 @@ export default function RootLayout({
         </Script>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

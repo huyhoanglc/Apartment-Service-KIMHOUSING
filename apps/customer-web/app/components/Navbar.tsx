@@ -7,6 +7,7 @@ import ThemeToggle from "@/app/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Trang chủ" },
+  { href: "/can-ho", label: "Căn hộ" },
   { href: "/dich-vu", label: "Dịch vụ" },
   { href: "/lien-he", label: "Liên hệ" },
 ];
@@ -48,7 +49,7 @@ function CloseIcon() {
 function SearchForm({ className }: { className?: string }) {
   return (
     <form
-      action="/"
+      action="/can-ho"
       method="GET"
       className={`flex items-center gap-2 rounded-full border border-navy/10 bg-navy/3 px-4 py-2 transition-all duration-300 focus-within:border-gold focus-within:bg-white dark:border-white/10 dark:bg-white/5 dark:focus-within:bg-navy-light ${className ?? ""}`}
     >

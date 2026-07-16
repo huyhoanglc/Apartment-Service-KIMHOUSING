@@ -8,7 +8,7 @@ export default function NotFound() {
         Phòng bạn tìm không tồn tại hoặc đã bị gỡ.
       </p>
       <Link
-        href="/"
+        href="/can-ho"
         className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
       >
         Về trang danh sách phòng

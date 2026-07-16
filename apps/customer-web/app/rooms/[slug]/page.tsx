@@ -52,7 +52,7 @@ export default async function RoomDetailPage({
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
       <div className="border-b border-navy/10 px-6 py-3 dark:border-white/10">
         <Link
-          href="/"
+          href="/can-ho"
           className="text-sm text-navy/60 underline transition-colors duration-300 hover:text-gold-to dark:text-white/60"
         >
           ← Danh sách phòng
