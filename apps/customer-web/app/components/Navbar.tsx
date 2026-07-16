@@ -101,7 +101,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-navy shadow-sm">
-      <div className="mx-auto flex max-w-[1600px] items-center gap-6 px-4 py-3 sm:px-6 lg:px-8 xl:px-10">
+      <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6 lg:px-8 xl:px-10">
         <Link href="/" className="flex shrink-0 items-center">
           {logoError ? (
             <span className="text-lg font-bold tracking-wide text-white">

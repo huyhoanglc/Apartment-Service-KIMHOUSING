@@ -60,9 +60,9 @@ export default async function CanHoPage({
 
         <form
           method="GET"
-          className="flex flex-wrap items-end gap-3 rounded-lg border border-navy/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5"
+          className="grid grid-cols-2 items-end gap-3 rounded-lg border border-navy/10 bg-white p-4 shadow-sm sm:grid-cols-3 lg:grid-cols-6 dark:border-white/10 dark:bg-white/5"
         >
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label htmlFor="district" className={labelClass}>
               Quận/Huyện
             </label>
@@ -75,7 +75,7 @@ export default async function CanHoPage({
             />
           </div>
 
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label htmlFor="roomType" className={labelClass}>
               Loại phòng
             </label>
@@ -117,7 +117,7 @@ export default async function CanHoPage({
             />
           </div>
 
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label htmlFor="featureId" className={labelClass}>
               Tiện ích
             </label>
@@ -133,7 +133,7 @@ export default async function CanHoPage({
 
           <button
             type="submit"
-            className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
+            className="col-span-2 rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105 sm:col-span-3 lg:col-span-1"
           >
             Tìm phòng
           </button>

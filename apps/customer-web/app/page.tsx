@@ -190,7 +190,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {VISION_CARDS.map((card) => (
                 <div
                   key={card.title}
@@ -278,7 +278,7 @@ export default function HomePage() {
       <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {SOLUTION_CARDS.map((card) => (
                 <div
                   key={card.title}
