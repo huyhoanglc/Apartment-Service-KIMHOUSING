@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "@/app/components/ThemeToggle";
@@ -98,6 +98,18 @@ export default function Navbar() {
   const [kimOpen, setKimOpen] = useState(false);
   const [kimMobileOpen, setKimMobileOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const kimMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!kimOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (kimMenuRef.current && !kimMenuRef.current.contains(event.target as Node)) {
+        setKimOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [kimOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-navy shadow-sm">
@@ -128,21 +140,20 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
+                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to"
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="relative shrink-0">
+            <div ref={kimMenuRef} className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => setKimOpen((v) => !v)}
-                onBlur={() => setTimeout(() => setKimOpen(false), 150)}
                 aria-haspopup="true"
                 aria-expanded={kimOpen}
-                className={`flex items-center gap-1 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to ${
-                  kimOpen ? "bg-white/10 text-gold-to" : ""
+                className={`flex items-center gap-1 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to ${
+                  kimOpen ? "bg-gold/15 text-gold-to" : ""
                 }`}
               >
                 Kim Housing
@@ -155,7 +166,7 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setKimOpen(false)}
-                      className="mx-2 block rounded-md px-3 py-2 text-sm text-white/80 transition-colors duration-300 hover:bg-white/10 hover:text-gold"
+                      className="mx-2 block rounded-md px-3 py-2 text-sm text-white/80 transition-colors duration-300 hover:bg-gold/15 hover:text-gold"
                     >
                       {item.label}
                     </Link>
@@ -168,7 +179,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
+                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to"
               >
                 {link.label}
               </Link>
@@ -208,7 +219,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
+                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to"
               >
                 {link.label}
               </Link>
@@ -218,8 +229,8 @@ export default function Navbar() {
               type="button"
               onClick={() => setKimMobileOpen((v) => !v)}
               aria-expanded={kimMobileOpen}
-              className={`flex items-center justify-between rounded-md px-3 py-2 text-left transition-colors duration-300 hover:bg-white/10 hover:text-gold-to ${
-                kimMobileOpen ? "bg-white/10 text-gold-to" : ""
+              className={`flex items-center justify-between rounded-md px-3 py-2 text-left transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to ${
+                kimMobileOpen ? "bg-gold/15 text-gold-to" : ""
               }`}
             >
               Kim Housing
@@ -232,7 +243,7 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-md px-3 py-1.5 text-sm text-white/70 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
+                    className="rounded-md px-3 py-1.5 text-sm text-white/70 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to"
                   >
                     {item.label}
                   </Link>
@@ -245,7 +256,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
+                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-gold/15 hover:text-gold-to"
               >
                 {link.label}
               </Link>
