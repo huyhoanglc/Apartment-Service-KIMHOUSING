@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import AosInit from "@/app/components/AosInit";
+import "aos/dist/aos.css";
 import "./globals.css";
 
 const THEME_INIT_SCRIPT = `
@@ -47,6 +49,10 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {THEME_INIT_SCRIPT}
         </Script>
+        <noscript>
+          <style>{`[data-aos] { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
+        <AosInit />
         <Navbar />
         {children}
         <Footer />

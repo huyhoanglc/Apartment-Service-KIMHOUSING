@@ -38,7 +38,7 @@ export default function LichSuPage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
       {/* Hero + breadcrumb */}
-      <section className="relative overflow-hidden bg-navy px-4 pt-6 pb-20 sm:px-6 lg:px-8">
+      <section data-aos="fade-down" className="relative overflow-hidden bg-navy px-4 pt-6 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-xs text-white/70 backdrop-blur-sm">
             <Link href="/" className="transition-colors duration-300 hover:text-gold">
@@ -87,8 +87,8 @@ export default function LichSuPage() {
                   i > 0 ? "border-t border-navy/10 dark:border-white/10" : ""
                 }`}
               >
-                <AbstractPanel id={m.date} className="aspect-video w-full" />
-                <div>
+                <AbstractPanel id={m.date} data-aos="fade-right" className="aspect-video w-full" />
+                <div data-aos="fade-left">
                   <p className="text-sm font-semibold tracking-wide text-gold-to">{m.date}</p>
                   <h2 className="mt-1 text-lg font-semibold text-navy dark:text-white">{m.title}</h2>
                   <p className="mt-2 text-sm text-navy/60 sm:text-base dark:text-white/60">{m.description}</p>

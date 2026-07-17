@@ -30,21 +30,6 @@ const TRAILING_LINKS = [
 const goldButtonClass =
   "rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105";
 
-function SearchIcon() {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      className="h-4 w-4 shrink-0 text-white/40"
-    >
-      <circle cx="9" cy="9" r="6" />
-      <path d="m17 17-3.5-3.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
@@ -72,24 +57,6 @@ function CloseIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6">
       <path d="M6 6l12 12M18 6 6 18" strokeLinecap="round" />
     </svg>
-  );
-}
-
-function SearchForm({ className }: { className?: string }) {
-  return (
-    <form
-      action="/can-ho"
-      method="GET"
-      className={`flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 transition-all duration-300 focus-within:border-gold focus-within:bg-white/10 ${className ?? ""}`}
-    >
-      <SearchIcon />
-      <input
-        type="text"
-        name="district"
-        placeholder="Tìm theo khu vực..."
-        className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/40"
-      />
-    </form>
   );
 }
 
@@ -133,8 +100,6 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden flex-1 items-center gap-8 xl:flex">
-          <SearchForm className="hidden w-48 shrink-0 2xl:flex" />
-
           <nav className="flex flex-1 items-center justify-center gap-1 text-sm font-medium whitespace-nowrap text-white">
             {NAV_LINKS.map((link) => (
               <Link
@@ -212,7 +177,6 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="border-t border-white/10 bg-navy px-4 py-4 xl:hidden">
-          <SearchForm className="mb-4" />
           <nav className="flex flex-col gap-1 text-sm font-medium text-white">
             {NAV_LINKS.map((link) => (
               <Link

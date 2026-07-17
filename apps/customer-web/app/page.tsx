@@ -138,6 +138,60 @@ const SOLUTION_CARDS = [
   },
 ];
 
+const STEPS = [
+  {
+    number: "1",
+    title: "Tìm căn hộ theo nhu cầu",
+    experience:
+      "Khách hàng truy cập nền tảng, xem danh mục căn hộ dịch vụ thực tế với đầy đủ thông tin, hình ảnh chân thực và giá cả niêm yết công khai.",
+    privilege:
+      "Không cần đăng ký. Bạn hoàn toàn có thể tìm hiểu thông tin căn hộ trên hệ thống của Kim Housing mà không cần cung cấp thông tin cá nhân.",
+  },
+  {
+    number: "2",
+    title: "Kết nối tư vấn viên & đặt lịch xem căn hộ miễn phí",
+    experience:
+      "Khi lựa chọn được căn hộ ưng ý, khách hàng chỉ cần nhấp vào nút liên hệ để đặt lịch xem căn hộ nhanh chóng, hoàn toàn miễn phí.",
+    privilege:
+      "Đội ngũ tư vấn Kim Housing sẽ liên hệ tư vấn chuyên sâu và trực tiếp dẫn bạn đi xem căn hộ thực tế.",
+  },
+  {
+    number: "3",
+    title: "Đặt cọc giữ phòng an toàn",
+    experience:
+      "Khi quyết định thuê, chuyên viên sẽ hỗ trợ bạn thiết lập Phiếu Đặt Cọc Giữ Phòng rõ ràng, minh bạch. Bạn có thể chuyển khoản cọc trực tiếp cho Chủ nhà hoặc uỷ quyền qua tài khoản nhận cọc hộ chính thức của Kim Housing.",
+    privilege:
+      "Kim Housing cam kết kết toán và chuyển giao toàn bộ số tiền cọc nhận hộ cho Chủ nhà trong vòng 24 giờ làm việc, đảm bảo an toàn tuyệt đối cho cọc giữ chỗ của bạn.",
+  },
+  {
+    number: "4",
+    title: "Nhận căn hộ và ký hợp đồng thuê",
+    experience:
+      "Chuyên viên Kim Housing đồng hành hỗ trợ khách hàng ký Hợp đồng thuê chính thức với Bên cho thuê.",
+    privilege:
+      "Phiếu cọc giữ phòng tự động hết hiệu lực sau khi ký kết hợp đồng. Bạn dọn vào ở và bắt đầu hành trình sống mới an tâm.",
+  },
+];
+
+const WHY_CHOOSE_CARDS = [
+  {
+    title: "Hình thật, giá thật",
+    description: "Mọi tin đăng đều có hình ảnh và mức giá được kiểm duyệt, không tin ảo.",
+  },
+  {
+    title: "Miễn phí cho người thuê",
+    description: "Bạn không trả phí môi giới khi tìm và đặt lịch xem căn hộ qua Kim Housing.",
+  },
+  {
+    title: "Phản hồi nhanh",
+    description: "Đội ngũ tư vấn liên hệ và sắp xếp lịch xem trong thời gian sớm nhất.",
+  },
+  {
+    title: "Phủ rộng TP.HCM",
+    description: "Kho căn hộ đa dạng khắp các quận huyện, cập nhật liên tục mỗi ngày.",
+  },
+];
+
 const OWNER_BENEFITS = [
   "Cam kết minh bạch về giá thuê và dòng tiền",
   "Quy trình hợp tác rõ ràng, nhanh gọn",
@@ -157,7 +211,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <section data-aos="fade-down" className="relative overflow-hidden bg-navy px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="mb-6 text-xs font-medium tracking-wide text-white/50">
             Công ty Cổ phần Kim Housing · Thành lập ngày {FOUNDING_DATE} · Email: info@kimhousing.vn
@@ -170,7 +224,7 @@ export default function HomePage() {
       <section id="tam-nhin" className="bg-white px-4 py-16 sm:px-6 lg:px-8 dark:bg-navy">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.4fr]">
-            <div>
+            <div data-aos="fade-right">
               <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">
                 Tầm nhìn &amp; giá trị cốt lõi
               </p>
@@ -191,9 +245,11 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {VISION_CARDS.map((card) => (
+              {VISION_CARDS.map((card, i) => (
                 <div
                   key={card.title}
+                  data-aos="zoom-in"
+                  data-aos-delay={i * 100}
                   className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-white/5"
                 >
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to text-navy">
@@ -213,8 +269,8 @@ export default function HomePage() {
       {/* Về Kim Housing */}
       <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <AbstractPanel id="about" className="aspect-video w-full lg:aspect-4/3" />
-          <div>
+          <AbstractPanel id="about" data-aos="fade-right" className="aspect-video w-full lg:aspect-4/3" />
+          <div data-aos="fade-left">
             <h2 className="text-2xl font-bold sm:text-3xl">Vận Hành Bởi Đội Ngũ Tận Tâm</h2>
             <p className="mt-4 text-sm text-white/70 sm:text-base">
               Kim Housing được thành lập vào ngày {FOUNDING_DATE} bởi đội ngũ có kinh nghiệm trong lĩnh
@@ -242,20 +298,27 @@ export default function HomePage() {
       {/* Hệ sinh thái */}
       <section id="he-sinh-thai" className="bg-navy/3 px-4 py-16 sm:px-6 lg:px-8 dark:bg-white/3">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">Hệ sinh thái</p>
-          <h2 className="mt-2 max-w-2xl text-2xl font-bold text-navy sm:text-3xl dark:text-white">
+          <p data-aos="fade-up" className="text-xs font-semibold tracking-widest text-gold-to uppercase">
+            Hệ sinh thái
+          </p>
+          <h2
+            data-aos="fade-up"
+            className="mt-2 max-w-2xl text-2xl font-bold text-navy sm:text-3xl dark:text-white"
+          >
             Dịch vụ trọn gói cho hành trình thuê nhà
           </h2>
-          <p className="mt-4 max-w-2xl text-sm text-navy/60 sm:text-base dark:text-white/60">
+          <p data-aos="fade-up" className="mt-4 max-w-2xl text-sm text-navy/60 sm:text-base dark:text-white/60">
             Kim Housing xây dựng hệ sinh thái dịch vụ khép kín, đồng hành cùng khách thuê từ lúc tìm phòng
             đến khi ổn định chỗ ở.
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {ECOSYSTEM_CARDS.map((card) => (
+            {ECOSYSTEM_CARDS.map((card, i) => (
               <Link
                 key={card.title}
                 href={card.href}
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
                 className="flex gap-4 rounded-lg border border-navy/10 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-navy"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy/5 text-navy dark:bg-white/10 dark:text-white">
@@ -279,9 +342,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {SOLUTION_CARDS.map((card) => (
+              {SOLUTION_CARDS.map((card, i) => (
                 <div
                   key={card.title}
+                  data-aos="flip-up"
+                  data-aos-delay={i * 100}
                   className="rounded-lg bg-white p-5 text-navy shadow-lg transition-transform duration-300 hover:-translate-y-1"
                 >
                   <h3 className="text-base font-semibold">{card.title}</h3>
@@ -290,7 +355,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            <div>
+            <div data-aos="fade-left">
               <p className="text-xs font-semibold tracking-widest text-gold uppercase">
                 Giải pháp tiên phong
               </p>
@@ -312,10 +377,72 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Quy trình 4 bước */}
+      <section className="bg-navy/3 px-4 py-16 sm:px-6 lg:px-8 dark:bg-white/3">
+        <div className="mx-auto max-w-7xl">
+          <p data-aos="fade-up" className="text-xs font-semibold tracking-widest text-gold-to uppercase">
+            Quy trình thuê căn hộ
+          </p>
+          <h2
+            data-aos="fade-up"
+            className="mt-2 max-w-2xl text-2xl font-bold text-navy sm:text-3xl dark:text-white"
+          >
+            Tìm Căn Hộ Nhanh Chóng - 4 Bước Không Cần Đăng Ký
+          </h2>
+
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {STEPS.map((step, i) => (
+              <div
+                key={step.number}
+                data-aos={i % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={Math.floor(i / 2) * 120}
+                className="rounded-lg border border-navy/10 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-navy"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to text-sm font-bold text-navy">
+                  {step.number}
+                </span>
+                <h3 className="mt-4 text-base font-semibold text-navy dark:text-white">{step.title}</h3>
+                <p className="mt-3 text-sm text-navy/60 dark:text-white/60">
+                  <span className="font-semibold text-navy dark:text-white">Trải nghiệm: </span>
+                  {step.experience}
+                </p>
+                <p className="mt-2 text-sm text-navy/60 dark:text-white/60">
+                  <span className="font-semibold text-navy dark:text-white">Đặc quyền: </span>
+                  {step.privilege}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Vì sao chọn Kim Housing */}
+      <section className="bg-white px-4 py-16 sm:px-6 lg:px-8 dark:bg-navy">
+        <div className="mx-auto max-w-7xl">
+          <h2 data-aos="fade-up" className="text-xl font-semibold text-navy sm:text-2xl dark:text-white">
+            Vì Sao Chọn Kim Housing
+          </h2>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {WHY_CHOOSE_CARDS.map((item, i) => (
+              <div
+                key={item.title}
+                data-aos="zoom-in"
+                data-aos-delay={i * 100}
+                className="rounded-lg border border-navy/10 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-white/5"
+              >
+                <h3 className="text-base font-semibold text-navy dark:text-white">{item.title}</h3>
+                <p className="mt-2 text-sm text-navy/60 dark:text-white/60">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Chủ nhà hợp tác */}
       <section id="chu-nha" className="bg-white px-4 py-16 sm:px-6 lg:px-8 dark:bg-navy">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <div>
+          <div data-aos="fade-right">
             <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">Dành cho chủ nhà</p>
             <h2 className="mt-2 text-2xl font-bold text-navy sm:text-3xl dark:text-white">
               Hợp tác cho thuê cùng Kim Housing
@@ -340,15 +467,15 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <AbstractPanel id="chu-nha" className="aspect-video w-full lg:aspect-4/3" />
+          <AbstractPanel id="chu-nha" data-aos="fade-left" className="aspect-video w-full lg:aspect-4/3" />
         </div>
       </section>
 
       {/* Cam kết phát triển bền vững */}
       <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-          <AbstractPanel id="sustain" className="aspect-video w-full lg:aspect-4/3" />
-          <div>
+          <AbstractPanel id="sustain" data-aos="fade-right" className="aspect-video w-full lg:aspect-4/3" />
+          <div data-aos="fade-left">
             <p className="text-xs font-semibold tracking-widest text-gold uppercase">Cam kết của chúng tôi</p>
             <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Phát Triển Bền Vững</h2>
             <p className="mt-4 text-sm text-white/70 sm:text-base">
@@ -362,7 +489,7 @@ export default function HomePage() {
 
       {/* Liên hệ */}
       <section className="bg-white px-4 py-16 sm:px-6 lg:px-8 dark:bg-navy">
-        <div className="mx-auto max-w-7xl text-center">
+        <div data-aos="zoom-in" className="mx-auto max-w-7xl text-center">
           <h2 className="text-2xl font-bold text-navy sm:text-3xl dark:text-white">Tham Gia Cùng Chúng Tôi</h2>
           <p className="mt-2 text-sm text-navy/60 dark:text-white/60">
             Hãy liên hệ với Kim Housing theo thông tin dưới đây
@@ -370,7 +497,7 @@ export default function HomePage() {
         </div>
 
         <div className="mx-auto mt-10 grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-2">
-          <div>
+          <div data-aos="fade-right">
             <h3 className="text-lg font-semibold text-navy dark:text-white">Gửi tin nhắn</h3>
             <div className="mt-4 grid grid-cols-1 gap-4 border-t border-navy/10 pt-4 sm:grid-cols-2 dark:border-white/10">
               <div>
@@ -426,14 +553,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div>
+          <div data-aos="fade-left">
             <h3 className="text-lg font-semibold text-navy dark:text-white">Thông tin liên hệ</h3>
             <div className="mt-4 space-y-3 border-t border-navy/10 pt-4 text-sm text-navy/70 dark:border-white/10 dark:text-white/70">
               <p className="font-semibold text-navy dark:text-white">CÔNG TY CỔ PHẦN KIM HOUSING</p>
               <p>Thành lập ngày: {FOUNDING_DATE}</p>
-              <p>Địa chỉ: đang cập nhật</p>
-              <p>Hotline: đang cập nhật</p>
-              <p>Email: info@kimhousing.vn</p>
+              <p>Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh</p>
+              <p>Hotline: 0394-008-700</p>
+              <p>Email: kimhousinghr@gmail.com</p>
             </div>
           </div>
         </div>

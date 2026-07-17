@@ -1,6 +1,18 @@
-export default function AbstractPanel({ id, className = "" }: { id: string; className?: string }) {
+type AosProps = {
+  "data-aos"?: string;
+  "data-aos-delay"?: number | string;
+  "data-aos-duration"?: number | string;
+  "data-aos-easing"?: string;
+};
+
+export default function AbstractPanel({
+  id,
+  className = "",
+  ...rest
+}: { id: string; className?: string } & AosProps) {
   return (
     <div
+      {...rest}
       className={`relative overflow-hidden rounded-2xl border border-navy/10 bg-linear-to-br from-navy via-navy-light to-black/80 shadow-lg dark:border-white/10 ${className}`}
     >
       <div
