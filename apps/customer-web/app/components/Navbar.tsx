@@ -123,12 +123,12 @@ export default function Navbar() {
         <div className="hidden flex-1 items-center gap-8 xl:flex">
           <SearchForm className="hidden w-48 shrink-0 2xl:flex" />
 
-          <nav className="flex flex-1 items-center justify-center gap-8 text-sm font-medium whitespace-nowrap text-white">
+          <nav className="flex flex-1 items-center justify-center gap-1 text-sm font-medium whitespace-nowrap text-white">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="shrink-0 transition-colors duration-300 hover:text-gold-to"
+                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
               >
                 {link.label}
               </Link>
@@ -141,7 +141,9 @@ export default function Navbar() {
                 onBlur={() => setTimeout(() => setKimOpen(false), 150)}
                 aria-haspopup="true"
                 aria-expanded={kimOpen}
-                className="flex items-center gap-1 transition-colors duration-300 hover:text-gold-to"
+                className={`flex items-center gap-1 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to ${
+                  kimOpen ? "bg-white/10 text-gold-to" : ""
+                }`}
               >
                 Kim Housing
                 <ChevronIcon open={kimOpen} />
@@ -153,7 +155,7 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setKimOpen(false)}
-                      className="block px-4 py-2 text-sm text-white/80 transition-colors duration-300 hover:bg-white/5 hover:text-gold"
+                      className="mx-2 block rounded-md px-3 py-2 text-sm text-white/80 transition-colors duration-300 hover:bg-white/10 hover:text-gold"
                     >
                       {item.label}
                     </Link>
@@ -166,7 +168,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="shrink-0 transition-colors duration-300 hover:text-gold-to"
+                className="shrink-0 rounded-full px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
               >
                 {link.label}
               </Link>
@@ -206,7 +208,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="py-2 transition-colors duration-300 hover:text-gold-to"
+                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
               >
                 {link.label}
               </Link>
@@ -216,7 +218,9 @@ export default function Navbar() {
               type="button"
               onClick={() => setKimMobileOpen((v) => !v)}
               aria-expanded={kimMobileOpen}
-              className="flex items-center justify-between py-2 text-left transition-colors duration-300 hover:text-gold-to"
+              className={`flex items-center justify-between rounded-md px-3 py-2 text-left transition-colors duration-300 hover:bg-white/10 hover:text-gold-to ${
+                kimMobileOpen ? "bg-white/10 text-gold-to" : ""
+              }`}
             >
               Kim Housing
               <ChevronIcon open={kimMobileOpen} />
@@ -228,7 +232,7 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="py-1.5 text-sm text-white/70 transition-colors duration-300 hover:text-gold-to"
+                    className="rounded-md px-3 py-1.5 text-sm text-white/70 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
                   >
                     {item.label}
                   </Link>
@@ -241,7 +245,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="py-2 transition-colors duration-300 hover:text-gold-to"
+                className="rounded-md px-3 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-gold-to"
               >
                 {link.label}
               </Link>
