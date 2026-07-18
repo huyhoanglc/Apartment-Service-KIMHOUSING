@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+import { motion } from "motion/react";
+import { useEffect, useState, type ReactNode } from "react";
 
 type RevealDirection = "up" | "down" | "left" | "right" | "scale" | "none";
 
@@ -28,6 +28,20 @@ interface RevealProps {
   id?: string;
 }
 
+// Không dùng useReducedMotion() của motion/react cho việc này - đã quan sát thấy trong một số
+// trường hợp whileInView không bao giờ được kích hoạt để chuyển sang trạng thái hiển thị cuối
+// cùng khi reduced-motion bật (nội dung bị kẹt ở opacity:0 vĩnh viễn, một lỗi nghiêm trọng về
+// accessibility). Tự kiểm tra matchMedia trực tiếp - cùng cách đã dùng ở BrandIntro và đã kiểm
+// chứng hoạt động đúng.
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- matchMedia chỉ có ở client, không tính được lúc render đầu
+    setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+  return reduce;
+}
+
 /**
  * Thay thế AOS: reveal-on-scroll dùng motion whileInView (nhẹ hơn AOS, tự tôn trọng
  * prefers-reduced-motion). direction map 1:1 với các giá trị data-aos cũ (fade-up -> "up", ...).
@@ -41,7 +55,7 @@ export default function Reveal({
   children,
   ...rest
 }: RevealProps) {
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const offset = OFFSETS[direction];
 
   if (reduce) {

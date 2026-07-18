@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock, Eye, Heart, Star, Users } from "lucide-react";
 import AbstractPanel from "@/app/components/AbstractPanel";
+import BrandEmblemLazy from "@/app/components/BrandEmblemLazy";
 import PageHero from "@/app/components/PageHero";
 import Section from "@/app/components/ui/Section";
 import Card from "@/app/components/ui/Card";
@@ -97,6 +98,31 @@ export default function AboutPage() {
 
           <Reveal direction="left">
             <AbstractPanel id="about" className="aspect-video w-full lg:aspect-4/3" />
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* Ý nghĩa biểu tượng */}
+      <Section tone="navy">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+          <Reveal direction="right">
+            <p className="text-xs font-semibold tracking-widest text-gold uppercase">Ý nghĩa biểu tượng</p>
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Ngôi Sao Sáu Cánh Kim Housing</h2>
+            <p className="mt-4 text-sm text-white/70 sm:text-base">
+              Ngôi sao sáu cánh trong logo Kim Housing tượng trưng cho sức mạnh, sự bảo vệ và khát vọng dẫn
+              đầu. Cấu trúc cân đối thể hiện nền tảng vững chắc, uy tín và cam kết đồng hành cùng khách hàng
+              trên hành trình kiến tạo tổ ấm và gia tăng giá trị tài sản.
+            </p>
+            <p className="mt-4 text-sm text-white/70 sm:text-base">
+              Các cánh sao hội tụ tại trung tâm thể hiện sự kết nối giữa doanh nghiệp, khách hàng và những cơ
+              hội giá trị. Thiết kế đối xứng, mạnh mẽ phản ánh tinh thần chuyên nghiệp, uy tín và khát vọng
+              phát triển bền vững của thương hiệu.
+            </p>
+            <p className="mt-3 text-xs text-white/40">Kéo hoặc chạm vào biểu tượng để xoay.</p>
+          </Reveal>
+
+          <Reveal direction="left">
+            <BrandEmblemLazy />
           </Reveal>
         </div>
       </Section>
