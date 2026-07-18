@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import AbstractPanel from "@/app/components/AbstractPanel";
+import PageHero from "@/app/components/PageHero";
+import Section from "@/app/components/ui/Section";
+import Reveal from "@/app/components/ui/Reveal";
 
 export const metadata: Metadata = {
   title: "Lịch sử hình thành",
@@ -37,41 +39,17 @@ const MILESTONES = [
 export default function LichSuPage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
-      {/* Hero + breadcrumb */}
-      <section data-aos="fade-down" className="relative overflow-hidden bg-navy px-4 pt-6 pb-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-xs text-white/70 backdrop-blur-sm">
-            <Link href="/" className="transition-colors duration-300 hover:text-gold">
-              Trang chủ
-            </Link>
-            <span>›</span>
-            <span className="font-semibold text-white">Lịch sử hình thành</span>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-14 max-w-7xl">
-          <div className="relative mx-auto -mb-24 max-w-xl rounded-2xl bg-white/95 px-8 py-10 text-center shadow-2xl dark:bg-navy-light/95">
-            <h1 className="text-2xl font-bold tracking-wide text-navy uppercase sm:text-3xl dark:text-white">
-              Lịch Sử Hình Thành
-            </h1>
-            <div className="mx-auto mt-3 flex items-center justify-center gap-2">
-              <span className="h-px w-8 bg-gold-to" />
-              <span className="h-1.5 w-1.5 rounded-full bg-gold-to" />
-              <span className="h-px w-8 bg-gold-to" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero breadcrumb="Lịch sử hình thành" title="Lịch Sử Hình Thành" />
 
       {/* Timeline */}
-      <section className="px-4 pt-32 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-[160px_1fr]">
-          <nav className="flex gap-2 overflow-x-auto pb-2 lg:sticky lg:top-20 lg:h-fit lg:flex-col lg:overflow-visible lg:pb-0">
+      <Section>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[160px_1fr]">
+          <nav className="flex gap-2 overflow-x-auto pb-2 lg:sticky lg:top-24 lg:h-fit lg:flex-col lg:overflow-visible lg:pb-0">
             {MILESTONES.map((m) => (
               <a
                 key={m.date}
                 href={`#${m.date}`}
-                className="shrink-0 rounded-md border border-navy/10 px-3 py-1.5 text-sm font-medium text-navy/70 transition-colors duration-300 hover:border-gold hover:text-gold-to lg:border-0 lg:border-l-2 lg:border-navy/10 lg:rounded-none lg:px-3 lg:py-2 dark:border-white/10 dark:text-white/70"
+                className="shrink-0 rounded-input border border-navy/10 px-3 py-1.5 text-sm font-medium text-navy/70 transition-colors duration-300 hover:border-gold hover:text-gold-to lg:rounded-none lg:border-0 lg:border-l-2 lg:border-navy/10 lg:px-3 lg:py-2 dark:border-white/10 dark:text-white/70"
               >
                 {m.date}
               </a>
@@ -87,17 +65,19 @@ export default function LichSuPage() {
                   i > 0 ? "border-t border-navy/10 dark:border-white/10" : ""
                 }`}
               >
-                <AbstractPanel id={m.date} data-aos="fade-right" className="aspect-video w-full" />
-                <div data-aos="fade-left">
+                <Reveal direction="right">
+                  <AbstractPanel id={m.date} className="aspect-video w-full" />
+                </Reveal>
+                <Reveal direction="left">
                   <p className="text-sm font-semibold tracking-wide text-gold-to">{m.date}</p>
                   <h2 className="mt-1 text-lg font-semibold text-navy dark:text-white">{m.title}</h2>
                   <p className="mt-2 text-sm text-navy/60 sm:text-base dark:text-white/60">{m.description}</p>
-                </div>
+                </Reveal>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }

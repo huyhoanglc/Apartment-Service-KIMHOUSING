@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ImageOff } from "lucide-react";
 import type { RoomListItem } from "@/app/lib/api";
+import Badge from "@/app/components/ui/Badge";
 
 const ROOM_TYPE_LABEL: Record<RoomListItem["roomType"], string> = {
   STUDIO: "Studio",
@@ -19,20 +21,21 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
   return (
     <Link
       href={`/rooms/${room.slug}`}
-      className="block overflow-hidden rounded-lg border border-navy/10 bg-white transition-shadow duration-300 hover:shadow-md dark:border-white/10 dark:bg-white/5"
+      className="group block overflow-hidden rounded-card border border-navy/10 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-md dark:border-white/10 dark:bg-white/5"
     >
-      <div className="relative aspect-video w-full bg-navy/5 dark:bg-white/5">
+      <div className="relative aspect-video w-full overflow-hidden">
         {thumbnail ? (
           <Image
             src={thumbnail.url}
             alt={`Phòng ${room.code}`}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-navy/40 dark:text-white/40">
-            Chưa có ảnh
+          <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-navy/5 text-navy/40 dark:bg-white/5 dark:text-white/40">
+            <ImageOff size={22} strokeWidth={1.5} />
+            <span className="text-xs">Chưa có ảnh</span>
           </div>
         )}
       </div>
@@ -50,12 +53,9 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
         {room.features.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
             {room.features.map((rf) => (
-              <span
-                key={rf.feature.id}
-                className="rounded-full bg-navy/5 px-2 py-0.5 text-xs text-navy/70 dark:bg-white/10 dark:text-white/70"
-              >
+              <Badge key={rf.feature.id} variant="chip">
                 {rf.feature.name}
-              </span>
+              </Badge>
             ))}
           </div>
         )}

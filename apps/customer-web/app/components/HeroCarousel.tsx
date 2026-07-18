@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Button from "@/app/components/ui/Button";
 
 export interface HeroSlide {
   kicker: string;
@@ -11,17 +13,7 @@ export interface HeroSlide {
   ctaHref: string;
 }
 
-function ArrowIcon({ direction }: { direction: "left" | "right" }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <path
-        d={direction === "left" ? "m12 4-6 6 6 6" : "m8 4 6 6-6 6"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
@@ -41,7 +33,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div className="relative grid grid-cols-1 items-center gap-6 lg:grid-cols-[1.1fr_1fr]">
-      <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-navy-light via-navy to-black/80 shadow-2xl sm:aspect-video lg:aspect-4/3">
+      <div className="relative aspect-4/3 overflow-hidden rounded-card border border-white/10 bg-linear-to-br from-navy-light via-navy to-black/80 shadow-soft-lg sm:aspect-video lg:aspect-4/3">
         <div
           className="absolute inset-0 opacity-30"
           style={{
@@ -74,17 +66,17 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           type="button"
           onClick={() => go(-1)}
           aria-label="Slide trước"
-          className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20"
+          className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
         >
-          <ArrowIcon direction="left" />
+          <ChevronLeft size={16} strokeWidth={2} />
         </button>
         <button
           type="button"
           onClick={() => go(1)}
           aria-label="Slide sau"
-          className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20"
+          className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
         >
-          <ArrowIcon direction="right" />
+          <ChevronRight size={16} strokeWidth={2} />
         </button>
 
         <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
@@ -102,18 +94,25 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </div>
       </div>
 
-      <div className="relative rounded-2xl bg-white p-6 shadow-2xl sm:p-8 lg:-ml-16 dark:bg-navy-light">
-        <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">{slide.kicker}</p>
-        <h1 className="mt-2 text-2xl leading-tight font-bold text-navy sm:text-3xl dark:text-white">
-          {slide.title}
-        </h1>
-        <p className="mt-3 text-sm text-navy/70 sm:text-base dark:text-white/70">{slide.description}</p>
-        <Link
-          href={slide.ctaHref}
-          className="mt-5 inline-flex rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-5 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
-        >
-          {slide.ctaLabel}
-        </Link>
+      <div className="relative min-h-64 overflow-hidden rounded-card bg-white p-6 shadow-soft-lg sm:p-8 lg:-ml-16 dark:bg-navy-light">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4, ease: EASE }}
+          >
+            <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">{slide.kicker}</p>
+            <h1 className="mt-2 text-2xl leading-tight font-bold text-navy sm:text-3xl dark:text-white">
+              {slide.title}
+            </h1>
+            <p className="mt-3 text-sm text-navy/70 sm:text-base dark:text-white/70">{slide.description}</p>
+            <Button href={slide.ctaHref} className="mt-5">
+              {slide.ctaLabel}
+            </Button>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

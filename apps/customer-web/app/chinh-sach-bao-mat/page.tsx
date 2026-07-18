@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHero from "@/app/components/PageHero";
+import Section from "@/app/components/ui/Section";
+import Reveal from "@/app/components/ui/Reveal";
 
 export const metadata: Metadata = {
   title: "Chính sách bảo mật",
@@ -22,36 +24,15 @@ function P({ children }: { children: React.ReactNode }) {
 export default function ChinhSachBaoMatPage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
-      {/* Hero + breadcrumb */}
-      <section data-aos="fade-down" className="relative overflow-hidden bg-navy px-4 pt-6 pb-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-xs text-white/70 backdrop-blur-sm">
-            <Link href="/" className="transition-colors duration-300 hover:text-gold">
-              Trang chủ
-            </Link>
-            <span>›</span>
-            <span className="font-semibold text-white">Chính sách bảo mật</span>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-14 max-w-7xl">
-          <div className="relative mx-auto -mb-24 max-w-xl rounded-2xl bg-white/95 px-8 py-10 text-center shadow-2xl dark:bg-navy-light/95">
-            <h1 className="text-2xl font-bold tracking-wide text-navy uppercase sm:text-3xl dark:text-white">
-              Chính Sách Bảo Mật
-            </h1>
-            <p className="mt-2 text-sm text-navy/60 dark:text-white/60">Chính sách Bảo mật của Kim Housing</p>
-            <div className="mx-auto mt-3 flex items-center justify-center gap-2">
-              <span className="h-px w-8 bg-gold-to" />
-              <span className="h-1.5 w-1.5 rounded-full bg-gold-to" />
-              <span className="h-px w-8 bg-gold-to" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Chính sách bảo mật"
+        title="Chính Sách Bảo Mật"
+        description="Chính sách Bảo mật của Kim Housing"
+      />
 
       {/* Nội dung */}
-      <section data-aos="fade-up" className="px-4 pt-32 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl">
+      <Section>
+        <Reveal direction="up" className="mx-auto max-w-3xl">
           <SectionHeading>I. Định Nghĩa &amp; Phạm Vi</SectionHeading>
           <P>
             Chính sách Bảo mật Thông tin Cá nhân quy định các tiêu chuẩn thu thập, lưu trữ, xử lý, bảo vệ và chia sẻ
@@ -210,8 +191,8 @@ export default function ChinhSachBaoMatPage() {
             Kim Housing cam kết kiểm tra, xác minh danh tính và xử lý hoàn tất yêu cầu của người dùng trong vòng tối
             đa 48 giờ làm việc kể từ khi tiếp nhận yêu cầu hợp lệ.
           </P>
-        </div>
-      </section>
+        </Reveal>
+      </Section>
     </div>
   );
 }

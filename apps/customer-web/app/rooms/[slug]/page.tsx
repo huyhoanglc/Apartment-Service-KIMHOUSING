@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getRoomBySlug, type RoomListItem } from "@/app/lib/api";
+import Badge from "@/app/components/ui/Badge";
 
 const ROOM_TYPE_LABEL: Record<RoomListItem["roomType"], string> = {
   STUDIO: "Studio",
@@ -53,9 +55,10 @@ export default async function RoomDetailPage({
       <div className="border-b border-navy/10 px-6 py-3 dark:border-white/10">
         <Link
           href="/can-ho"
-          className="text-sm text-navy/60 underline transition-colors duration-300 hover:text-gold-to dark:text-white/60"
+          className="inline-flex items-center gap-1.5 text-sm text-navy/60 transition-colors duration-300 hover:text-gold-to dark:text-white/60"
         >
-          ← Danh sách phòng
+          <ArrowLeft size={15} strokeWidth={2} />
+          Danh sách phòng
         </Link>
       </div>
 
@@ -65,7 +68,7 @@ export default async function RoomDetailPage({
             {room.media.map((m) => (
               <div
                 key={m.id}
-                className="relative aspect-square overflow-hidden rounded-md bg-navy/5 dark:bg-white/5"
+                className="relative aspect-square overflow-hidden rounded-input bg-navy/5 dark:bg-white/5"
               >
                 {m.type === "IMAGE" ? (
                   <Image
@@ -100,12 +103,9 @@ export default async function RoomDetailPage({
             <h2 className="mb-2 text-base font-semibold text-navy dark:text-white">Tiện ích</h2>
             <div className="flex flex-wrap gap-2">
               {room.features.map((rf) => (
-                <span
-                  key={rf.feature.id}
-                  className="rounded-full bg-navy/5 px-3 py-1 text-sm text-navy/70 dark:bg-white/10 dark:text-white/70"
-                >
+                <Badge key={rf.feature.id} variant="chip">
                   {rf.feature.name}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
