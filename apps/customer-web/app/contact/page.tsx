@@ -15,19 +15,19 @@ export const metadata: Metadata = {
 const CONTACT_INFO = [
   {
     title: "Địa chỉ",
-    value: "14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP. Hồ Chí Minh",
+    value: "14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh",
     icon: MapPin,
   },
   {
     title: "Hotline",
-    value: "0394-008-700",
+    value: "0394-008-700 (Mr. Quang)",
     href: "tel:0394008700",
     icon: Phone,
   },
   {
     title: "Email",
-    value: "info@kimhousing.vn",
-    href: "mailto:info@kimhousing.vn",
+    value: "kimhousinghr@gmail.com",
+    href: "mailto:kimhousinghr@gmail.com",
     icon: Mail,
   },
   {
@@ -48,6 +48,11 @@ export default function LienHePage() {
 
       {/* Contact info cards */}
       <Section>
+        <Reveal direction="up" className="mb-8 text-center">
+          <p className="text-sm font-semibold tracking-wide text-navy uppercase dark:text-white">
+            Công Ty TNHH MTV KIM Housing
+          </p>
+        </Reveal>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {CONTACT_INFO.map((item, i) => {
             const inner = (

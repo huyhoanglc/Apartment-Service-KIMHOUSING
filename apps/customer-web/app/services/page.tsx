@@ -121,8 +121,8 @@ export default function DichVuPage() {
             Dù bạn là khách thuê đang tìm căn hộ hay chủ nhà muốn hợp tác cho thuê, Kim Housing luôn sẵn sàng hỗ trợ.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-            <Button href="/can-ho">Tìm căn hộ ngay</Button>
-            <Button href="/lien-he" variant="outline">
+            <Button href="/apartments">Tìm căn hộ ngay</Button>
+            <Button href="/contact" variant="outline">
               Liên hệ hợp tác
             </Button>
           </div>

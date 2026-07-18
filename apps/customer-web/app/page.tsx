@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home, Laptop, MessageCircle, Settings, Headset, User, Users, CheckCircle2 } from "lucide-react";
+import { Home, Laptop, MessageCircle, Settings, Headset, Phone, User, Users, CheckCircle2 } from "lucide-react";
 import HeroCarousel, { type HeroSlide } from "@/app/components/HeroCarousel";
 import AbstractPanel from "@/app/components/AbstractPanel";
 import ContactForm from "@/app/components/ContactForm";
@@ -21,7 +21,7 @@ const HERO_SLIDES: HeroSlide[] = [
     title: "Thương hiệu căn hộ dịch vụ mới tại TP.HCM",
     description: `Kim Housing chính thức đi vào hoạt động từ ngày ${FOUNDING_DATE}, mang đến giải pháp thuê nhà minh bạch, tiện nghi và tận tâm cho khách thuê.`,
     ctaLabel: "Tìm phòng ngay",
-    ctaHref: "/can-ho",
+    ctaHref: "/apartments",
   },
   {
     kicker: "Hệ sinh thái trọn gói",
@@ -29,7 +29,7 @@ const HERO_SLIDES: HeroSlide[] = [
     description:
       "Từ tư vấn chọn phòng, hỗ trợ ký hợp đồng đến chăm sóc khách hàng 24/7 - Kim Housing lo trọn mọi khâu để bạn an tâm an cư.",
     ctaLabel: "Khám phá dịch vụ",
-    ctaHref: "/dich-vu",
+    ctaHref: "/services",
   },
   {
     kicker: "Dành cho chủ nhà",
@@ -37,7 +37,7 @@ const HERO_SLIDES: HeroSlide[] = [
     description:
       "Tối ưu tỷ lệ lấp đầy, minh bạch vận hành và an tâm pháp lý khi giao căn hộ của bạn cho đội ngũ Kim Housing quản lý.",
     ctaLabel: "Liên hệ hợp tác",
-    ctaHref: "/lien-he",
+    ctaHref: "/contact",
   },
 ];
 
@@ -66,25 +66,25 @@ const ECOSYSTEM_CARDS = [
   {
     title: "Căn Hộ Dịch Vụ",
     description: "Danh mục căn hộ đa dạng diện tích, đầy đủ tiện nghi, sẵn sàng dọn vào ở ngay.",
-    href: "/can-ho",
+    href: "/apartments",
     icon: Home,
   },
   {
     title: "Tư Vấn Thuê Nhà",
     description: "Đội ngũ tư vấn hỗ trợ chọn phòng phù hợp nhu cầu, ngân sách và vị trí mong muốn.",
-    href: "/dich-vu",
+    href: "/services",
     icon: MessageCircle,
   },
   {
     title: "Quản Lý Vận Hành",
     description: "Quy trình vận hành, bảo trì và xử lý sự cố căn hộ được chuẩn hoá, minh bạch.",
-    href: "/dich-vu",
+    href: "/services",
     icon: Settings,
   },
   {
     title: "Chăm Sóc Khách Hàng",
     description: "Hỗ trợ khách thuê 24/7 trong suốt thời gian ở, phản hồi nhanh mọi yêu cầu.",
-    href: "/lien-he",
+    href: "/contact",
     icon: Headset,
   },
 ];
@@ -171,15 +171,12 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <Container>
-          <p className="mb-6 text-xs font-medium tracking-wide text-white/50">
-            Công ty Cổ phần Kim Housing · Thành lập ngày {FOUNDING_DATE} · Email: info@kimhousing.vn
-          </p>
           <HeroCarousel slides={HERO_SLIDES} />
         </Container>
       </section>
 
       {/* Tầm nhìn */}
-      <Section id="tam-nhin">
+      <Section id="vision">
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.4fr]">
           <Reveal direction="right">
             <Badge variant="eyebrow">Tầm nhìn &amp; giá trị cốt lõi</Badge>
@@ -191,7 +188,7 @@ export default function HomePage() {
               vụ được tin tưởng hàng đầu, đồng hành cùng khách thuê và chủ nhà bằng sự minh bạch, tận
               tâm và không ngừng đổi mới.
             </p>
-            <Button href="/lien-he" variant="outline" className="mt-6">
+            <Button href="/about" variant="outline" className="mt-6">
               Xem thêm
             </Button>
           </Reveal>
@@ -224,9 +221,9 @@ export default function HomePage() {
               chu đáo và trải nghiệm thuê nhà không phiền hà.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Button href="/lien-he">Tìm hiểu thêm</Button>
+              <Button href="/about">Tìm hiểu thêm</Button>
               <Link
-                href="/lich-su"
+                href="/about/history"
                 className="text-sm font-semibold text-white/80 underline-offset-4 transition-colors duration-300 hover:text-gold hover:underline"
               >
                 Xem lịch sử hình thành →
@@ -237,7 +234,7 @@ export default function HomePage() {
       </Section>
 
       {/* Hệ sinh thái */}
-      <Section id="he-sinh-thai" tone="subtle">
+      <Section id="ecosystem" tone="subtle">
         <Reveal direction="up">
           <Badge variant="eyebrow">Hệ sinh thái</Badge>
           <h2 className="mt-2 max-w-2xl text-2xl font-bold text-navy sm:text-3xl dark:text-white">
@@ -290,7 +287,7 @@ export default function HomePage() {
               Kim Housing tập trung vào trải nghiệm khách thuê, giúp bạn dễ dàng tìm được nơi ở phù hợp
               và an tâm trong suốt quá trình thuê.
             </p>
-            <Button href="/can-ho" className="mt-6">
+            <Button href="/apartments" className="mt-6">
               Tìm phòng ngay
             </Button>
           </Reveal>
@@ -349,7 +346,7 @@ export default function HomePage() {
       </Section>
 
       {/* Chủ nhà hợp tác */}
-      <Section id="chu-nha">
+      <Section id="partners">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <Reveal direction="right">
             <p className="text-xs font-semibold tracking-widest text-gold-to uppercase">Dành cho chủ nhà</p>
@@ -368,13 +365,13 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-            <Button href="/lien-he" className="mt-6">
+            <Button href="/contact" className="mt-6">
               Hợp tác ngay →
             </Button>
           </Reveal>
 
           <Reveal direction="left">
-            <AbstractPanel id="chu-nha" className="aspect-video w-full lg:aspect-4/3" />
+            <AbstractPanel id="partners-panel" className="aspect-video w-full lg:aspect-4/3" />
           </Reveal>
         </div>
       </Section>
@@ -415,13 +412,25 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal direction="left">
-            <h3 className="text-lg font-semibold text-navy dark:text-white">Thông tin liên hệ</h3>
-            <div className="mt-4 space-y-3 border-t border-navy/10 pt-4 text-sm text-navy/70 dark:border-white/10 dark:text-white/70">
-              <p className="font-semibold text-navy dark:text-white">CÔNG TY CỔ PHẦN KIM HOUSING</p>
-              <p>Thành lập ngày: {FOUNDING_DATE}</p>
-              <p>Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh</p>
-              <p>Hotline: 0394-008-700</p>
-              <p>Email: kimhousinghr@gmail.com</p>
+            <h3 className="text-lg font-semibold text-navy dark:text-white">Kết nối nhanh</h3>
+            <div className="mt-4 space-y-5 border-t border-navy/10 pt-4 dark:border-white/10">
+              <p className="text-sm text-navy/60 dark:text-white/60">
+                Cần hỗ trợ ngay? Gọi hotline hoặc chat Zalo với đội ngũ tư vấn Kim Housing.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button href="tel:0394008700" variant="outline" icon={<Phone size={16} strokeWidth={2} />}>
+                  Gọi hotline
+                </Button>
+                <Button href="https://zalo.me/0394008700" variant="outline">
+                  Chat Zalo
+                </Button>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-block text-sm font-medium text-gold-to underline-offset-4 transition-colors duration-300 hover:underline"
+              >
+                Xem đầy đủ thông tin liên hệ →
+              </Link>
             </div>
           </Reveal>
         </div>

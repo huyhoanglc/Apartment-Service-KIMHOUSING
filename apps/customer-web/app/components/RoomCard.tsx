@@ -20,7 +20,7 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
 
   return (
     <Link
-      href={`/rooms/${room.slug}`}
+      href={`/apartments/${room.slug}`}
       className="group block overflow-hidden rounded-card border border-navy/10 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-md dark:border-white/10 dark:bg-white/5"
     >
       <div className="relative aspect-video w-full overflow-hidden">

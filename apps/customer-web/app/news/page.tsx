@@ -72,7 +72,7 @@ export default function BlogPage() {
           <p className="mt-2 text-sm text-white/70">
             Liên hệ Kim Housing qua hotline hoặc email để được thông báo ngay khi blog chính thức ra mắt.
           </p>
-          <Button href="/lien-he" className="mt-6">
+          <Button href="/contact" className="mt-6">
             Liên hệ Kim Housing
           </Button>
         </Reveal>

@@ -28,7 +28,10 @@ export default function Card({
   return (
     <Component
       className={cn(
-        "rounded-card border border-navy/10 bg-white shadow-soft dark:border-white/10 dark:bg-white/5",
+        // "block" bắt buộc: khi as="a"/as={Link}, thẻ <a> mặc định display:inline, phá layout
+        // (padding/nội dung tràn ra ngoài lưới grid). Nơi nào cần flex thì tự truyền className
+        // "flex ..." đè lên - .flex đứng sau .block trong CSS build ra nên vẫn thắng đúng ý.
+        "block rounded-card border border-navy/10 bg-white shadow-soft dark:border-white/10 dark:bg-white/5",
         "transition-all duration-300 ease-[var(--ease-premium)]",
         hoverable && "hover:-translate-y-1 hover:shadow-soft-md",
         PADDING[padding],

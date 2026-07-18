@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Clock, Eye, Heart, Star, Users } from "lucide-react";
 import AbstractPanel from "@/app/components/AbstractPanel";
 import PageHero from "@/app/components/PageHero";
@@ -17,31 +18,31 @@ export const metadata: Metadata = {
 
 const ABOUT_LINKS = [
   {
-    href: "/gia-tri-cot-loi",
+    href: "/about/values",
     title: "Giá trị cốt lõi",
     description: "Những giá trị nền tảng dẫn dắt mọi hoạt động của Kim Housing.",
     icon: Star,
   },
   {
-    href: "/#tam-nhin",
+    href: "/#vision",
     title: "Tầm nhìn chiến lược",
     description: "Định hướng trở thành thương hiệu căn hộ dịch vụ đáng tin cậy hàng đầu.",
     icon: Eye,
   },
   {
-    href: "/lich-su",
+    href: "/about/history",
     title: "Lịch sử hình thành",
     description: "Hành trình từ ý tưởng đến ngày Kim Housing chính thức ra mắt.",
     icon: Clock,
   },
   {
-    href: "/trach-nhiem-xa-hoi",
+    href: "/about/social-responsibility",
     title: "Trách nhiệm xã hội",
     description: "Cam kết phát triển bền vững cùng khách hàng, đối tác và cộng đồng.",
     icon: Heart,
   },
   {
-    href: "/doi-ngu-nhan-su",
+    href: "/about/team",
     title: "Đội ngũ nhân sự",
     description: "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi giàu kinh nghiệm.",
     icon: Users,
@@ -55,11 +56,11 @@ const QUICK_FACTS = [
   { label: "Loại hình", value: "Căn hộ dịch vụ" },
 ];
 
-export default function VeKimPage() {
+export default function AboutPage() {
   return (
     <div className="flex flex-1 flex-col bg-white dark:bg-navy">
       <PageHero
-        breadcrumb="Về Kim Housing"
+        breadcrumb="Về chúng tôi"
         title="Thuê Căn Hộ Minh Bạch Và Dễ Dàng"
         description="Kim Housing là thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM, kết nối khách thuê với những căn hộ đúng như hình ảnh, giá thật, cùng trải nghiệm đặt lịch xem phòng nhanh chóng."
       />
@@ -95,7 +96,7 @@ export default function VeKimPage() {
           </Reveal>
 
           <Reveal direction="left">
-            <AbstractPanel id="ve-kim" className="aspect-video w-full lg:aspect-4/3" />
+            <AbstractPanel id="about" className="aspect-video w-full lg:aspect-4/3" />
           </Reveal>
         </div>
       </Section>
@@ -112,7 +113,7 @@ export default function VeKimPage() {
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {ABOUT_LINKS.map((item, i) => (
             <Reveal key={item.title} direction="up" delay={(i % 3) * 0.08}>
-              <Card as="a" href={item.href} hoverable className="group flex flex-col">
+              <Card as={Link} href={item.href} hoverable className="group flex flex-col">
                 <IconBadge icon={item.icon} />
                 <h3 className="mt-4 text-base font-semibold text-navy dark:text-white">{item.title}</h3>
                 <p className="mt-1 text-sm text-navy/60 dark:text-white/60">{item.description}</p>
@@ -133,8 +134,8 @@ export default function VeKimPage() {
             Khám phá danh mục căn hộ dịch vụ hoặc liên hệ đội ngũ Kim Housing để được tư vấn miễn phí.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-            <Button href="/can-ho">Tìm phòng ngay</Button>
-            <Button href="/lien-he" variant="outline-invert">
+            <Button href="/apartments">Tìm phòng ngay</Button>
+            <Button href="/contact" variant="outline-invert">
               Liên hệ tư vấn
             </Button>
           </div>

@@ -85,7 +85,7 @@ export default function GiaTriCotLoiPage() {
             Từ lúc tìm phòng đến khi ổn định chỗ ở, Kim Housing luôn giữ vững những giá trị này trong từng điểm
             chạm với khách thuê và đối tác.
           </p>
-          <Button href="/ve-kim" className="mt-6">
+          <Button href="/about" className="mt-6">
             Tìm hiểu về Kim Housing
           </Button>
         </Reveal>

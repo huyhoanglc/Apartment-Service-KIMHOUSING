@@ -84,9 +84,11 @@ export default function BrandIntro() {
           role="dialog"
           aria-modal="true"
           aria-label="Kim Housing"
+          // Nền navy phải đặc ngay từ khung hình đầu tiên (không initial/animate opacity ở
+          // chính overlay) - nếu không, HTML server-render sẽ có opacity:0 cho tới khi Motion
+          // hydrate xong mới bắt đầu animate, khiến nội dung trang thật lộ ra một nhịp trước
+          // khi intro kịp che (đúng bug đã gặp). Chỉ các phần tử BÊN TRONG mới fade/scale in.
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-navy"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(10px)", scale: 0.94 }}
           transition={{ duration: 0.4, ease: EASE }}
         >

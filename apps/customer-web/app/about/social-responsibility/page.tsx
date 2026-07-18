@@ -105,7 +105,7 @@ export default function TrachNhiemXaHoiPage() {
             Nếu bạn có đề xuất hợp tác hoặc góp ý cho định hướng phát triển bền vững của Kim Housing, hãy liên hệ
             với chúng tôi.
           </p>
-          <Button href="/lien-he" className="mt-6">
+          <Button href="/contact" className="mt-6">
             Liên hệ Kim Housing
           </Button>
         </Reveal>

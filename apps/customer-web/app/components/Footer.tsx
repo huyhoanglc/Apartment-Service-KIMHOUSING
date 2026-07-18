@@ -3,45 +3,44 @@ import Link from "next/link";
 import { Container } from "@/app/components/ui/Section";
 
 const COMPANY_LINKS = [
-  { href: "/#tam-nhin", label: "Tầm nhìn - Giá trị cốt lõi" },
-  { href: "/lich-su", label: "Lịch sử hình thành" },
-  { href: "/#he-sinh-thai", label: "Hệ sinh thái dịch vụ" },
-  { href: "/#chu-nha", label: "Hợp tác chủ nhà" },
-  { href: "/lien-he", label: "Liên hệ" },
-  { href: "/chinh-sach-bao-mat", label: "Chính sách bảo mật" },
+  { href: "/about", label: "Về chúng tôi" },
+  { href: "/#vision", label: "Tầm nhìn - Giá trị cốt lõi" },
+  { href: "/about/history", label: "Lịch sử hình thành" },
+  { href: "/#ecosystem", label: "Hệ sinh thái dịch vụ" },
+  { href: "/#partners", label: "Hợp tác chủ nhà" },
+  { href: "/gallery", label: "Thư viện ảnh" },
+  { href: "/contact", label: "Liên hệ" },
+  { href: "/privacy-policy", label: "Chính sách bảo mật" },
 ];
 
 const SERVICE_LINKS = [
-  { href: "/can-ho", label: "Căn hộ dịch vụ cho thuê" },
-  { href: "/dich-vu", label: "Tư vấn thuê nhà" },
-  { href: "/dich-vu", label: "Quản lý vận hành" },
-  { href: "/dich-vu", label: "Chăm sóc khách hàng" },
+  { href: "/apartments", label: "Căn hộ dịch vụ cho thuê" },
+  { href: "/services", label: "Tư vấn thuê nhà" },
+  { href: "/services", label: "Quản lý vận hành" },
+  { href: "/services", label: "Chăm sóc khách hàng" },
 ];
 
-// Facebook + Instagram - hai kênh mạng xã hội chính thức của Kim Housing.
 const SOCIAL_LINKS = [
   {
     label: "Facebook",
+    href: "https://www.facebook.com/KIMhousing26/",
     path: "M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z",
-  },
-  {
-    label: "Instagram",
-    path: "M12 2c2.7 0 3.1 0 4.1.1 1.1 0 1.8.2 2.5.5.7.3 1.2.6 1.8 1.2.6.6.9 1.1 1.2 1.8.3.7.5 1.4.5 2.5.1 1 .1 1.4.1 4.1s0 3.1-.1 4.1c0 1.1-.2 1.8-.5 2.5-.3.7-.6 1.2-1.2 1.8-.6.6-1.1.9-1.8 1.2-.7.3-1.4.5-2.5.5-1 .1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1.1 0-1.8-.2-2.5-.5-.7-.3-1.2-.6-1.8-1.2-.6-.6-.9-1.1-1.2-1.8-.3-.7-.5-1.4-.5-2.5C2 15.1 2 14.7 2 12s0-3.1.1-4.1c0-1.1.2-1.8.5-2.5.3-.7.6-1.2 1.2-1.8.6-.6 1.1-.9 1.8-1.2.7-.3 1.4-.5 2.5-.5C8.9 2 9.3 2 12 2Zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Zm5.2-8.4a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z",
   },
 ];
 
-function SocialIcon({ label, path }: { label: string; path: string }) {
-  // Chưa có URL trang mạng xã hội chính thức - giữ dạng span trang trí (không phải link chết "#"),
-  // đổi sang <a href> thật khi có URL Facebook/Instagram chính thức của Kim Housing.
+function SocialIcon({ label, href, path }: { label: string; href: string; path: string }) {
   return (
-    <span
-      title={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold/20 hover:text-gold"
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold/20 hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
     >
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-label={label}>
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
         <path d={path} />
       </svg>
-    </span>
+    </a>
   );
 }
 
@@ -60,11 +59,10 @@ export default function Footer() {
               height={196}
               className="h-10 w-auto object-contain"
             />
-            <p className="mt-4 text-sm font-semibold text-white">CÔNG TY CỔ PHẦN KIM HOUSING</p>
-            <p className="mt-1 text-sm text-white/60">Thành lập ngày 01/01/2026</p>
-            <p className="mt-3 text-sm text-white/60">Địa chỉ: 14/5A5 Kỳ Đồng, Phường Nhiêu Lộc, TP. Hồ Chí Minh</p>
-            <p className="text-sm text-white/60">Hotline: 0394-008-700</p>
-            <p className="text-sm text-white/60">Email: info@kimhousing.vn</p>
+            <p className="mt-4 text-sm font-semibold text-white">Công Ty TNHH MTV KIM Housing</p>
+            <p className="mt-3 text-sm text-white/60">Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh</p>
+            <p className="text-sm text-white/60">Hotline: 0394-008-700 (Mr. Quang)</p>
+            <p className="text-sm text-white/60">Email: kimhousinghr@gmail.com</p>
             <div className="mt-4 flex gap-2">
               {SOCIAL_LINKS.map((social) => (
                 <SocialIcon key={social.label} {...social} />

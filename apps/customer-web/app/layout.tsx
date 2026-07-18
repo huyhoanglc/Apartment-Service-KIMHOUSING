@@ -4,6 +4,7 @@ import Script from "next/script";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import BrandIntro from "@/app/components/BrandIntro";
+import FloatingActions from "@/app/components/FloatingActions";
 import "./globals.css";
 
 const THEME_INIT_SCRIPT = `
@@ -52,6 +53,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <FloatingActions />
       </body>
     </html>
   );
