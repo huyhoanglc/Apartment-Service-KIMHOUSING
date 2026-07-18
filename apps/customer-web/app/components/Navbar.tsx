@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
+import Button from "@/app/components/ui/Button";
 import { cn } from "@/app/lib/cn";
 
 const NAV_LINKS = [
@@ -48,7 +49,7 @@ export default function Navbar() {
           : "border-transparent bg-navy"
       )}
     >
-      <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6 lg:px-8 xl:px-10">
+      <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-4 py-4 sm:gap-6 sm:px-6 sm:py-5 lg:px-8 xl:px-10">
         <Link href="/" className="flex shrink-0 items-center">
           {logoError ? (
             <span className="text-lg font-bold tracking-wide text-white">
@@ -61,7 +62,7 @@ export default function Navbar() {
               width={468}
               height={196}
               priority
-              className="h-10 w-auto object-contain"
+              className="h-11 w-auto object-contain sm:h-12"
               onError={() => setLogoError(true)}
             />
           )}
@@ -83,6 +84,9 @@ export default function Navbar() {
         <div className="ml-auto hidden shrink-0 items-center gap-4 lg:flex">
           <LanguageSwitcher />
           <ThemeToggle />
+          <Button href="/contact" size="sm" className="whitespace-nowrap">
+            Liên hệ ngay
+          </Button>
         </div>
 
         <div className="ml-auto flex items-center gap-1 lg:hidden">
@@ -121,6 +125,9 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <Button href="/contact" onClick={() => setMobileOpen(false)} className="mt-2 text-center">
+                Liên hệ ngay
+              </Button>
             </nav>
           </motion.div>
         )}
