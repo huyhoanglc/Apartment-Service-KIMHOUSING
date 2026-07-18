@@ -8,16 +8,14 @@ const EASE_BACK_DELAY = 900;
 const AUTO_ROTATE_SPEED = 0.28;
 
 /**
- * Toạ độ đúng 6 cánh sao thương hiệu Kim Housing (2 cánh dọc dài + 4 cánh chéo ngắn hơn,
- * xen kẽ 6 đỉnh lõm ở tâm) - dựng lại bằng THREE.Shape/ExtrudeGeometry thay vì dùng ảnh/model
- * có sẵn (không có), giữ đúng tỉ lệ ngôi sao thật trong logo.
+ * Toạ độ 6 cánh sao thương hiệu Kim Housing, đều nhau (6 đỉnh ngoài cách tâm bằng nhau, xen kẽ
+ * 6 đỉnh lõm) - dựng lại bằng THREE.Shape/ExtrudeGeometry thay vì dùng ảnh/model có sẵn (không có).
  */
 function buildStarShape() {
   const outerPoints: [number, number][] = [];
   for (let i = 0; i < 6; i++) {
     const angle = (i * 60 * Math.PI) / 180;
-    const isVertical = i === 0 || i === 3; // đỉnh trên (N) và đỉnh dưới (S) dài hơn
-    const r = isVertical ? 1 : 0.6;
+    const r = 1;
     outerPoints.push([r * Math.sin(angle), r * Math.cos(angle)]);
   }
   const innerR = 0.16;

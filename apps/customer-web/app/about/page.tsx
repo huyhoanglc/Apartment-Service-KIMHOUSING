@@ -10,6 +10,7 @@ import Badge from "@/app/components/ui/Badge";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { cn } from "@/app/lib/cn";
 
 export const metadata: Metadata = {
   title: "Về Kim Housing",
@@ -48,6 +49,12 @@ const ABOUT_LINKS = [
     description: "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi giàu kinh nghiệm.",
     icon: Users,
   },
+];
+
+const KIM_LETTERS = [
+  { letter: "K", title: "Kaizen", description: "Tinh thần cải tiến không ngừng, mỗi ngày tốt hơn.", center: false },
+  { letter: "I", title: "Interaction", description: "Con người là trung tâm của mọi kết nối.", center: true },
+  { letter: "M", title: "Mission", description: "Sứ mệnh dài hạn, hướng tới chiều sâu.", center: false },
 ];
 
 const QUICK_FACTS = [
@@ -102,21 +109,43 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Ý nghĩa biểu tượng */}
+      {/* Ý nghĩa thương hiệu */}
       <Section tone="navy">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <Reveal direction="right">
-            <p className="text-xs font-semibold tracking-widest text-gold uppercase">Ý nghĩa biểu tượng</p>
-            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Ngôi Sao Sáu Cánh Kim Housing</h2>
+            <p className="text-xs font-semibold tracking-widest text-gold uppercase">Ý nghĩa thương hiệu</p>
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Vì Sao Là KIM HOUSING?</h2>
             <p className="mt-4 text-sm text-white/70 sm:text-base">
-              Ngôi sao sáu cánh trong logo Kim Housing tượng trưng cho sức mạnh, sự bảo vệ và khát vọng dẫn
-              đầu. Cấu trúc cân đối thể hiện nền tảng vững chắc, uy tín và cam kết đồng hành cùng khách hàng
-              trên hành trình kiến tạo tổ ấm và gia tăng giá trị tài sản.
+              Trong tiếng Việt, KIM mang nghĩa <span className="font-semibold text-white">giá trị</span> - đúng
+              với điều Kim Housing muốn trao đến từng khách hàng. KIM cũng là kim loại, là kim cương: bền vững
+              cùng thời gian, như cách chúng tôi chọn đồng hành lâu dài cùng khách thuê và chủ nhà.
             </p>
-            <p className="mt-4 text-sm text-white/70 sm:text-base">
-              Các cánh sao hội tụ tại trung tâm thể hiện sự kết nối giữa doanh nghiệp, khách hàng và những cơ
-              hội giá trị. Thiết kế đối xứng, mạnh mẽ phản ánh tinh thần chuyên nghiệp, uy tín và khát vọng
-              phát triển bền vững của thương hiệu.
+
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {KIM_LETTERS.map((item) => (
+                <div
+                  key={item.letter}
+                  className={cn(
+                    "rounded-2xl p-4 text-center sm:text-left",
+                    item.center ? "border border-gold/40 bg-white/5" : "border border-white/10"
+                  )}
+                >
+                  <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to text-sm font-bold text-navy sm:mx-0">
+                    {item.letter}
+                  </span>
+                  <p className="mt-3 text-sm font-semibold text-white">{item.title}</p>
+                  <p className="mt-1 text-xs text-white/60">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-white/50">
+              Chữ I được đặt ở trung tâm, đại diện cho con người - trọng tâm trong mọi giá trị Kim Housing tạo
+              ra.
+            </p>
+
+            <p className="mt-6 text-sm text-white/70 sm:text-base">
+              Đặt sự phát triển chiều sâu của đội ngũ làm trọng tâm, Kim Housing tin rằng đó là nền tảng để tạo
+              nên dịch vụ chất lượng và giá trị thật sự cho khách hàng.
             </p>
             <p className="mt-3 text-xs text-white/40">Kéo hoặc chạm vào biểu tượng để xoay.</p>
           </Reveal>
