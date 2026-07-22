@@ -1,18 +1,14 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ImageOff } from "lucide-react";
 import type { RoomListItem } from "@/app/lib/api";
 import Badge from "@/app/components/ui/Badge";
-
-const ROOM_TYPE_LABEL: Record<RoomListItem["roomType"], string> = {
-  STUDIO: "Studio",
-  DUPLEX: "Duplex",
-  ONE_BEDROOM: "1 phòng ngủ",
-  TWO_BEDROOM: "2 phòng ngủ",
-  THREE_BEDROOM: "3 phòng ngủ",
-};
+import { Link } from "@/i18n/navigation";
 
 export default function RoomCard({ room }: { room: RoomListItem }) {
+  const t = useTranslations("apartmentDetail");
+  const tRoomType = useTranslations("roomType");
+  const roomType = tRoomType(room.roomType);
   const thumbnail = room.media.find((m) => m.type === "IMAGE");
   const address = `${room.apartment.houseNumber} ${room.apartment.street}${
     room.apartment.buildingName ? ` (${room.apartment.buildingName})` : ""
@@ -27,7 +23,7 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
         {thumbnail ? (
           <Image
             src={thumbnail.url}
-            alt={`${ROOM_TYPE_LABEL[room.roomType]} ${room.area}m² tại ${room.apartment.district} - Kim Housing`}
+            alt={t("cardAlt", { roomType, area: room.area, district: room.apartment.district })}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -35,20 +31,20 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-navy/5 text-navy/40 dark:bg-white/5 dark:text-white/40">
             <ImageOff size={22} strokeWidth={1.5} />
-            <span className="text-xs">Chưa có ảnh</span>
+            <span className="text-xs">{t("noImage")}</span>
           </div>
         )}
       </div>
       <div className="p-4">
         <p className="text-sm text-navy/60 dark:text-white/60">{room.apartment.district}</p>
         <h3 className="text-base font-semibold text-navy dark:text-white">
-          Phòng {room.code} - {ROOM_TYPE_LABEL[room.roomType]}
+          {t("cardTitle", { code: room.code, roomType })}
         </h3>
         <p className="text-sm text-navy/60 dark:text-white/60">
           {address} · {room.area} m²
         </p>
         <p className="mt-2 text-lg font-semibold text-navy dark:text-white">
-          {room.publicPrice.toLocaleString("vi-VN")} đ/tháng
+          {t("pricePerMonth", { price: room.publicPrice.toLocaleString("vi-VN") })}
         </p>
         {room.features.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">

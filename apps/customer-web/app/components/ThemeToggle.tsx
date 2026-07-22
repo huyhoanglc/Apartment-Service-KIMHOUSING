@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { useTranslations } from "next-intl";
 import { Moon, Sun } from "lucide-react";
 
 function subscribe(callback: () => void) {
@@ -18,6 +19,7 @@ function getServerSnapshot() {
 }
 
 export default function ThemeToggle() {
+  const t = useTranslations("themeToggle");
   const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   function toggle() {
@@ -34,7 +36,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label={isDark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối"}
+      aria-label={isDark ? t("toLight") : t("toDark")}
       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
     >
       {isDark ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}

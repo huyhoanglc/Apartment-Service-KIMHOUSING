@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 
 const STORAGE_KEY = "kim_intro_seen";
@@ -20,6 +21,7 @@ const STAR_FRACTION = 0.27;
 const DISPLAY_WIDTH = "clamp(220px, 60vw, 340px)";
 
 export default function BrandIntro() {
+  const t = useTranslations("brandIntro");
   const [visible, setVisible] = useState(true);
   const [exiting, setExiting] = useState(false);
   const [canSkip, setCanSkip] = useState(false);
@@ -145,7 +147,7 @@ export default function BrandIntro() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 1.85, ease: EASE }}
             >
-              Your Trusted Serviced Apartment Partner
+              {t("tagline")}
             </motion.p>
           </div>
 
@@ -158,9 +160,9 @@ export default function BrandIntro() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="absolute right-5 bottom-5 rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-white/70 transition-colors duration-300 hover:border-gold/40 hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to sm:right-8 sm:bottom-8"
-                aria-label="Bỏ qua giới thiệu thương hiệu"
+                aria-label={t("skipAriaLabel")}
               >
-                Bỏ qua
+                {t("skip")}
               </motion.button>
             )}
           </AnimatePresence>

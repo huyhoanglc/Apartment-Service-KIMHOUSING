@@ -1,24 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Container } from "@/app/components/ui/Section";
-
-const COMPANY_LINKS = [
-  { href: "/about", label: "Về chúng tôi" },
-  { href: "/#vision", label: "Tầm nhìn - Giá trị cốt lõi" },
-  { href: "/about/history", label: "Lịch sử hình thành" },
-  { href: "/#ecosystem", label: "Hệ sinh thái dịch vụ" },
-  { href: "/#partners", label: "Hợp tác chủ nhà" },
-  { href: "/gallery", label: "Thư viện ảnh" },
-  { href: "/contact", label: "Liên hệ" },
-  { href: "/privacy-policy", label: "Chính sách bảo mật" },
-];
-
-const SERVICE_LINKS = [
-  { href: "/apartments", label: "Căn hộ dịch vụ cho thuê" },
-  { href: "/services", label: "Tư vấn thuê nhà" },
-  { href: "/services", label: "Quản lý vận hành" },
-  { href: "/services", label: "Chăm sóc khách hàng" },
-];
+import { Link } from "@/i18n/navigation";
 
 const SOCIAL_LINKS = [
   {
@@ -44,8 +27,16 @@ function SocialIcon({ label, href, path }: { label: string; href: string; path: 
   );
 }
 
+interface FooterLink {
+  href: string;
+  label: string;
+}
+
 export default function Footer() {
+  const t = useTranslations("footer");
   const year = new Date().getFullYear();
+  const companyLinks = t.raw("companyLinks") as FooterLink[];
+  const serviceLinks = t.raw("serviceLinks") as FooterLink[];
 
   return (
     <footer className="border-t border-white/10 bg-navy text-white">
@@ -59,10 +50,10 @@ export default function Footer() {
               height={196}
               className="h-10 w-auto object-contain"
             />
-            <p className="mt-4 text-sm font-semibold text-white">Công Ty TNHH MTV KIM Housing</p>
-            <p className="mt-3 text-sm text-white/60">Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh</p>
-            <p className="text-sm text-white/60">Hotline: Đang cập nhật</p>
-            <p className="text-sm text-white/60">Email: kimhousing.hrad@gmail.com</p>
+            <p className="mt-4 text-sm font-semibold text-white">{t("companyName")}</p>
+            <p className="mt-3 text-sm text-white/60">{t("addressLabel")}</p>
+            <p className="text-sm text-white/60">{t("hotlineLabel")}</p>
+            <p className="text-sm text-white/60">{t("emailLabel")}</p>
             <div className="mt-4 flex gap-2">
               {SOCIAL_LINKS.map((social) => (
                 <SocialIcon key={social.label} {...social} />
@@ -71,9 +62,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold tracking-wide text-white uppercase">Kim Housing</p>
+            <p className="text-sm font-semibold tracking-wide text-white uppercase">{t("companyHeading")}</p>
             <ul className="mt-4 space-y-2">
-              {COMPANY_LINKS.map((link) => (
+              {companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -87,10 +78,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold tracking-wide text-white uppercase">Dịch vụ</p>
+            <p className="text-sm font-semibold tracking-wide text-white uppercase">{t("servicesHeading")}</p>
             <ul className="mt-4 space-y-2">
-              {SERVICE_LINKS.map((link) => (
-                <li key={link.label}>
+              {serviceLinks.map((link, i) => (
+                <li key={`${link.label}-${i}`}>
                   <Link
                     href={link.href}
                     className="text-sm text-white/60 transition-colors duration-300 hover:text-gold"
@@ -112,21 +103,21 @@ export default function Footer() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Vị trí Kim Housing trên Google Maps"
+            title={t("mapTitle")}
           />
         </div>
       </Container>
 
       <div className="border-t border-white/10">
         <Container className="flex flex-col gap-2 px-4 py-4 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>Copyright © {year} Kim Housing. All Rights Reserved.</p>
+          <p>{t("copyright", { year })}</p>
           <div className="flex items-center gap-3">
-            <p>Thiết kế &amp; vận hành bởi Kim Housing</p>
+            <p>{t("designedBy")}</p>
             <a
               href="https://www.google.com/maps/search/?api=1&query=14/5A5+K%E1%BB%B3+%C4%90%E1%BB%93ng+Ph%C6%B0%E1%BB%9Dng+Nhi%C3%AAu+L%E1%BB%99c+TP+H%E1%BB%93+Ch%C3%AD+Minh"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Xem trên Google Maps"
+              aria-label={t("viewOnMaps")}
               className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 hover:bg-gold/20 hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">

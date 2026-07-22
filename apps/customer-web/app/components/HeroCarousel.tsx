@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Button from "@/app/components/ui/Button";
@@ -16,6 +17,7 @@ export interface HeroSlide {
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
+  const t = useTranslations("heroCarousel");
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <button
           type="button"
           onClick={() => go(-1)}
-          aria-label="Slide trước"
+          aria-label={t("prevSlide")}
           className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
         >
           <ChevronLeft size={16} strokeWidth={2} />
@@ -73,7 +75,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <button
           type="button"
           onClick={() => go(1)}
-          aria-label="Slide sau"
+          aria-label={t("nextSlide")}
           className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to"
         >
           <ChevronRight size={16} strokeWidth={2} />
@@ -85,7 +87,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               key={s.title}
               type="button"
               onClick={() => setIndex(i)}
-              aria-label={`Xem slide ${i + 1}`}
+              aria-label={t("goToSlide", { index: i + 1 })}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === index ? "w-6 bg-gold" : "w-1.5 bg-white/40"
               }`}

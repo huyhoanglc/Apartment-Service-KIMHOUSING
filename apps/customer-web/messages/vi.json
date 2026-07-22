@@ -1,0 +1,673 @@
+{
+  "common": {
+    "brand": "Kim Housing",
+    "foundingDate": "01/01/2026",
+    "backToHome": "Trang chủ",
+    "readMore": "Xem thêm",
+    "details": "Chi tiết →",
+    "contactCta": "Liên hệ ngay",
+    "sendEmail": "Gửi email",
+    "learnMore": "Tìm hiểu thêm"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "services": "Dịch vụ",
+    "about": "Về chúng tôi",
+    "news": "Tin tức",
+    "careers": "Tuyển dụng",
+    "contact": "Liên hệ",
+    "contactCta": "Liên hệ ngay",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu"
+  },
+  "footer": {
+    "companyName": "Công Ty TNHH MTV KIM Housing",
+    "addressLabel": "Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh",
+    "hotlineLabel": "Hotline: Đang cập nhật",
+    "emailLabel": "Email: kimhousing.hrad@gmail.com",
+    "companyHeading": "Kim Housing",
+    "companyLinks": [
+      { "href": "/about", "label": "Về chúng tôi" },
+      { "href": "/#vision", "label": "Tầm nhìn - Giá trị cốt lõi" },
+      { "href": "/about/history", "label": "Lịch sử hình thành" },
+      { "href": "/#ecosystem", "label": "Hệ sinh thái dịch vụ" },
+      { "href": "/#partners", "label": "Hợp tác chủ nhà" },
+      { "href": "/gallery", "label": "Thư viện ảnh" },
+      { "href": "/contact", "label": "Liên hệ" },
+      { "href": "/privacy-policy", "label": "Chính sách bảo mật" }
+    ],
+    "servicesHeading": "Dịch vụ",
+    "serviceLinks": [
+      { "href": "/apartments", "label": "Căn hộ dịch vụ cho thuê" },
+      { "href": "/services", "label": "Tư vấn thuê nhà" },
+      { "href": "/services", "label": "Quản lý vận hành" },
+      { "href": "/services", "label": "Chăm sóc khách hàng" }
+    ],
+    "copyright": "Copyright © {year} Kim Housing. All Rights Reserved.",
+    "designedBy": "Thiết kế & vận hành bởi Kim Housing",
+    "viewOnMaps": "Xem trên Google Maps",
+    "mapTitle": "Vị trí Kim Housing trên Google Maps"
+  },
+  "languageSwitcher": {
+    "groupLabel": "Chọn ngôn ngữ"
+  },
+  "themeToggle": {
+    "toLight": "Chuyển sang giao diện sáng",
+    "toDark": "Chuyển sang giao diện tối"
+  },
+  "brandIntro": {
+    "tagline": "Your Trusted Serviced Apartment Partner",
+    "skip": "Bỏ qua",
+    "skipAriaLabel": "Bỏ qua giới thiệu thương hiệu"
+  },
+  "heroCarousel": {
+    "prevSlide": "Slide trước",
+    "nextSlide": "Slide sau",
+    "goToSlide": "Xem slide {index}"
+  },
+  "notFound": {
+    "kicker": "404",
+    "title": "Không tìm thấy trang",
+    "description": "Trang hoặc phòng bạn tìm không tồn tại hoặc đã bị gỡ.",
+    "action": "Về trang chủ"
+  },
+  "errorPage": {
+    "title": "Đã có lỗi xảy ra",
+    "description": "Nội dung này đang gặp sự cố hiển thị. Bạn thử tải lại phần này xem sao nhé.",
+    "action": "Thử lại"
+  },
+  "comingSoon": {
+    "title": "Đang cập nhật"
+  },
+  "roomType": {
+    "STUDIO": "Studio",
+    "DUPLEX": "Duplex",
+    "ONE_BEDROOM": "1 phòng ngủ",
+    "TWO_BEDROOM": "2 phòng ngủ",
+    "THREE_BEDROOM": "3 phòng ngủ"
+  },
+  "apartmentDetail": {
+    "backToList": "Danh sách phòng",
+    "notFoundTitle": "Không tìm thấy phòng",
+    "amenities": "Tiện ích",
+    "areaLabel": "Diện tích: {area} m²",
+    "pricePerMonth": "{price} đ/tháng",
+    "altImage": "{roomType} phòng {code} tại {district} - ảnh {index}",
+    "roomTitle": "Phòng {code} - {roomType}",
+    "cardTitle": "Phòng {code} - {roomType}",
+    "cardAlt": "{roomType} {area}m² tại {district} - Kim Housing",
+    "noImage": "Chưa có ảnh"
+  },
+  "metadata": {
+    "default": {
+      "title": "Kim Housing - Căn Hộ Dịch Vụ TP.HCM",
+      "description": "Kim Housing cung cấp dịch vụ cho thuê căn hộ dịch vụ, phòng trọ cao cấp tại TP.HCM - đầy đủ tiện nghi, vị trí thuận tiện, giá cả hợp lý."
+    },
+    "about": {
+      "title": "Về Kim Housing",
+      "description": "Kim Housing là thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM, đồng hành cùng khách thuê và chủ nhà bằng sự minh bạch, tận tâm và chuyên nghiệp."
+    },
+    "aboutHistory": {
+      "title": "Lịch sử hình thành",
+      "description": "Hành trình hình thành và ra mắt của Kim Housing - thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM."
+    },
+    "aboutSocial": {
+      "title": "Trách nhiệm xã hội",
+      "description": "Định hướng trách nhiệm xã hội của Kim Housing với khách thuê, đối tác chủ nhà, đội ngũ nhân sự và cộng đồng tại TP.HCM."
+    },
+    "aboutTeam": {
+      "title": "Đội ngũ nhân sự",
+      "description": "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi của Kim Housing - nhiều năm kinh nghiệm trong lĩnh vực sale căn hộ dịch vụ tại TP. Hồ Chí Minh."
+    },
+    "aboutValues": {
+      "title": "Giá trị cốt lõi",
+      "description": "Minh bạch, tận tâm, chuyên nghiệp và đổi mới - những giá trị cốt lõi dẫn dắt mọi hoạt động của Kim Housing."
+    },
+    "apartments": {
+      "title": "Căn hộ cho thuê",
+      "description": "Trang tìm kiếm căn hộ dịch vụ cho thuê của Kim Housing đang được hoàn thiện. Liên hệ đội ngũ tư vấn để được giới thiệu căn hộ phù hợp ngay hôm nay."
+    },
+    "careers": {
+      "title": "Tuyển dụng",
+      "description": "Cơ hội nghề nghiệp tại Kim Housing - môi trường làm việc năng động, chế độ đãi ngộ cạnh tranh cho các vị trí tư vấn, kinh doanh và vận hành."
+    },
+    "contact": {
+      "title": "Liên hệ",
+      "description": "Liên hệ Kim Housing để được tư vấn thuê căn hộ dịch vụ hoặc hợp tác cho thuê tại TP.HCM."
+    },
+    "gallery": {
+      "title": "Thư viện ảnh",
+      "description": "Album ảnh không gian căn hộ, hoạt động đội ngũ và sự kiện của Kim Housing."
+    },
+    "news": {
+      "title": "Blog",
+      "description": "Chuyên mục tin tức, kinh nghiệm thuê nhà và hướng dẫn thủ tục của Kim Housing."
+    },
+    "privacyPolicy": {
+      "title": "Chính sách bảo mật",
+      "description": "Chính sách Bảo mật Thông tin Cá nhân của Kim Housing - quy định thu thập, lưu trữ, xử lý, bảo vệ và chia sẻ thông tin cá nhân của khách thuê và đối tác."
+    },
+    "services": {
+      "title": "Dịch vụ",
+      "description": "Hệ sinh thái dịch vụ trọn gói của Kim Housing: tư vấn thuê nhà, quản lý vận hành, chăm sóc khách hàng và hợp tác cùng chủ nhà."
+    },
+    "roomNotFound": {
+      "title": "Không tìm thấy phòng"
+    }
+  },
+  "home": {
+    "hero": {
+      "slides": [
+        {
+          "kicker": "Kim Housing chính thức ra mắt",
+          "title": "Thương hiệu căn hộ dịch vụ mới tại TP.HCM",
+          "description": "Kim Housing chính thức đi vào hoạt động từ ngày {foundingDate}, mang đến giải pháp thuê nhà minh bạch, tiện nghi và tận tâm cho khách thuê.",
+          "ctaLabel": "Tìm phòng ngay",
+          "ctaHref": "/apartments"
+        },
+        {
+          "kicker": "Hệ sinh thái trọn gói",
+          "title": "Đồng hành cùng bạn suốt hành trình thuê nhà",
+          "description": "Từ tư vấn chọn phòng, hỗ trợ ký hợp đồng đến chăm sóc khách hàng 24/7 - Kim Housing lo trọn mọi khâu để bạn an tâm an cư.",
+          "ctaLabel": "Khám phá dịch vụ",
+          "ctaHref": "/services"
+        },
+        {
+          "kicker": "Dành cho chủ nhà",
+          "title": "Hợp tác cho thuê cùng Kim Housing",
+          "description": "Tối ưu tỷ lệ lấp đầy, minh bạch vận hành và an tâm pháp lý khi giao căn hộ của bạn cho đội ngũ Kim Housing quản lý.",
+          "ctaLabel": "Liên hệ hợp tác",
+          "ctaHref": "/contact"
+        }
+      ]
+    },
+    "vision": {
+      "eyebrow": "Tầm nhìn & giá trị cốt lõi",
+      "heading": "Xây dựng thương hiệu căn hộ dịch vụ đáng tin cậy",
+      "paragraph": "Ra đời từ ngày {foundingDate}, Kim Housing đặt mục tiêu trở thành thương hiệu căn hộ dịch vụ được tin tưởng hàng đầu, đồng hành cùng khách thuê và chủ nhà bằng sự minh bạch, tận tâm và không ngừng đổi mới.",
+      "cta": "Xem thêm",
+      "cards": [
+        {
+          "title": "Khách Hàng",
+          "description": "Lấy sự hài lòng của khách thuê làm trung tâm, minh bạch giá cả và tận tâm trong từng dịch vụ."
+        },
+        {
+          "title": "Con Người",
+          "description": "Đội ngũ Kim Housing được đào tạo bài bản, chuyên nghiệp và luôn sẵn sàng hỗ trợ khách hàng mọi lúc."
+        },
+        {
+          "title": "Công Nghệ",
+          "description": "Ứng dụng công nghệ vào quản lý và tìm phòng, giúp việc thuê nhà nhanh chóng và thuận tiện hơn."
+        }
+      ]
+    },
+    "aboutUs": {
+      "heading": "Vận Hành Bởi Đội Ngũ Tận Tâm",
+      "paragraph": "Kim Housing được thành lập vào ngày {foundingDate} bởi đội ngũ có kinh nghiệm trong lĩnh vực bất động sản cho thuê. Chúng tôi tin rằng một chỗ ở tốt bắt đầu từ sự minh bạch, dịch vụ chu đáo và trải nghiệm thuê nhà không phiền hà.",
+      "ctaPrimary": "Tìm hiểu thêm",
+      "ctaHistory": "Xem lịch sử hình thành →"
+    },
+    "ecosystem": {
+      "eyebrow": "Hệ sinh thái",
+      "heading": "Dịch vụ trọn gói cho hành trình thuê nhà",
+      "paragraph": "Kim Housing xây dựng hệ sinh thái dịch vụ khép kín, đồng hành cùng khách thuê từ lúc tìm phòng đến khi ổn định chỗ ở.",
+      "cards": [
+        {
+          "title": "Căn Hộ Dịch Vụ",
+          "description": "Danh mục căn hộ đa dạng diện tích, đầy đủ tiện nghi, sẵn sàng dọn vào ở ngay.",
+          "href": "/apartments"
+        },
+        {
+          "title": "Tư Vấn Thuê Nhà",
+          "description": "Đội ngũ tư vấn hỗ trợ chọn phòng phù hợp nhu cầu, ngân sách và vị trí mong muốn.",
+          "href": "/services"
+        },
+        {
+          "title": "Quản Lý Vận Hành",
+          "description": "Quy trình vận hành, bảo trì và xử lý sự cố căn hộ được chuẩn hoá, minh bạch.",
+          "href": "/services"
+        },
+        {
+          "title": "Chăm Sóc Khách Hàng",
+          "description": "Hỗ trợ khách thuê 24/7 trong suốt thời gian ở, phản hồi nhanh mọi yêu cầu.",
+          "href": "/contact"
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "Giải pháp tiên phong",
+      "heading": "Đơn giản hoá hành trình thuê căn hộ dịch vụ",
+      "paragraph": "Kim Housing tập trung vào trải nghiệm khách thuê, giúp bạn dễ dàng tìm được nơi ở phù hợp và an tâm trong suốt quá trình thuê.",
+      "cta": "Tìm phòng ngay",
+      "cards": [
+        {
+          "title": "Tư Vấn Chọn Phòng",
+          "description": "Gợi ý căn hộ phù hợp dựa trên khu vực, ngân sách và tiện ích mong muốn."
+        },
+        {
+          "title": "Hỗ Trợ Ký Hợp Đồng Nhanh",
+          "description": "Thủ tục rõ ràng, minh bạch, hỗ trợ ký hợp đồng và nhận phòng trong thời gian ngắn."
+        },
+        {
+          "title": "Đồng Hành Dài Hạn",
+          "description": "Chăm sóc và hỗ trợ khách thuê xuyên suốt thời gian sinh sống tại căn hộ."
+        }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Quy trình thuê căn hộ",
+      "heading": "Tìm Căn Hộ Nhanh Chóng - 4 Bước Không Cần Đăng Ký",
+      "experienceLabel": "Trải nghiệm: ",
+      "privilegeLabel": "Đặc quyền: ",
+      "items": [
+        {
+          "number": "1",
+          "title": "Tìm căn hộ theo nhu cầu",
+          "experience": "Khách hàng truy cập nền tảng, xem danh mục căn hộ dịch vụ thực tế với đầy đủ thông tin, hình ảnh chân thực và giá cả niêm yết công khai.",
+          "privilege": "Không cần đăng ký. Bạn hoàn toàn có thể tìm hiểu thông tin căn hộ trên hệ thống của Kim Housing mà không cần cung cấp thông tin cá nhân."
+        },
+        {
+          "number": "2",
+          "title": "Kết nối tư vấn viên & đặt lịch xem căn hộ miễn phí",
+          "experience": "Khi lựa chọn được căn hộ ưng ý, khách hàng chỉ cần nhấp vào nút liên hệ để đặt lịch xem căn hộ nhanh chóng, hoàn toàn miễn phí.",
+          "privilege": "Đội ngũ tư vấn Kim Housing sẽ liên hệ tư vấn chuyên sâu và trực tiếp dẫn bạn đi xem căn hộ thực tế."
+        },
+        {
+          "number": "3",
+          "title": "Đặt cọc giữ phòng an toàn",
+          "experience": "Khi quyết định thuê, chuyên viên sẽ hỗ trợ bạn thiết lập Phiếu Đặt Cọc Giữ Phòng rõ ràng, minh bạch. Bạn có thể chuyển khoản cọc trực tiếp cho Chủ nhà hoặc uỷ quyền qua tài khoản nhận cọc hộ chính thức của Kim Housing.",
+          "privilege": "Kim Housing cam kết kết toán và chuyển giao toàn bộ số tiền cọc nhận hộ cho Chủ nhà trong vòng 24 giờ làm việc, đảm bảo an toàn tuyệt đối cho cọc giữ chỗ của bạn."
+        },
+        {
+          "number": "4",
+          "title": "Nhận căn hộ và ký hợp đồng thuê",
+          "experience": "Chuyên viên Kim Housing đồng hành hỗ trợ khách hàng ký Hợp đồng thuê chính thức với Bên cho thuê.",
+          "privilege": "Phiếu cọc giữ phòng tự động hết hiệu lực sau khi ký kết hợp đồng. Bạn dọn vào ở và bắt đầu hành trình sống mới an tâm."
+        }
+      ]
+    },
+    "whyChoose": {
+      "heading": "Vì Sao Chọn Kim Housing",
+      "cards": [
+        { "title": "Hình thật, giá thật", "description": "Mọi tin đăng đều có hình ảnh và mức giá được kiểm duyệt, không tin ảo." },
+        { "title": "Miễn phí cho người thuê", "description": "Bạn không trả phí môi giới khi tìm và đặt lịch xem căn hộ qua Kim Housing." },
+        { "title": "Phản hồi nhanh", "description": "Đội ngũ tư vấn liên hệ và sắp xếp lịch xem trong thời gian sớm nhất." },
+        { "title": "Phủ rộng TP.HCM", "description": "Kho căn hộ đa dạng khắp các quận huyện, cập nhật liên tục mỗi ngày." }
+      ]
+    },
+    "partners": {
+      "eyebrow": "Dành cho chủ nhà",
+      "heading": "Hợp tác cho thuê cùng Kim Housing",
+      "paragraph": "Kim Housing ưu tiên chủ nhà cùng tham gia hợp tác vận hành, cam kết minh bạch thông tin, đảm bảo dòng tiền ổn định và uy tín với khách thuê.",
+      "benefits": [
+        "Cam kết minh bạch về giá thuê và dòng tiền",
+        "Quy trình hợp tác rõ ràng, nhanh gọn",
+        "Hỗ trợ pháp lý và hợp đồng tận tâm",
+        "Tối ưu tỷ lệ lấp đầy căn hộ"
+      ],
+      "cta": "Hợp tác ngay →"
+    },
+    "sustainability": {
+      "eyebrow": "Cam kết của chúng tôi",
+      "heading": "Phát Triển Bền Vững",
+      "paragraph": "Ngay từ những ngày đầu thành lập, Kim Housing định hướng phát triển gắn với trách nhiệm với khách hàng, đối tác và cộng đồng - hướng đến một thương hiệu bền vững, đáng tin cậy trong dài hạn."
+    },
+    "contactSection": {
+      "heading": "Tham Gia Cùng Chúng Tôi",
+      "paragraph": "Hãy liên hệ với Kim Housing theo thông tin dưới đây",
+      "formHeading": "Gửi tin nhắn",
+      "quickConnectHeading": "Kết nối nhanh",
+      "quickConnectParagraph": "Cần hỗ trợ ngay? Gửi email cho đội ngũ tư vấn Kim Housing.",
+      "sendEmail": "Gửi email",
+      "fullContactLink": "Xem đầy đủ thông tin liên hệ →"
+    }
+  },
+  "about": {
+    "hero": {
+      "breadcrumb": "Về chúng tôi",
+      "title": "Thuê Căn Hộ Minh Bạch Và Dễ Dàng",
+      "description": "Kim Housing là thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM, kết nối khách thuê với những căn hộ đúng như hình ảnh, giá thật, cùng trải nghiệm đặt lịch xem phòng nhanh chóng."
+    },
+    "intro": {
+      "eyebrow": "Giới thiệu",
+      "heading": "Đồng Hành Cùng Bạn Trong Hành Trình An Cư",
+      "paragraph1": "Kim Housing chính thức đi vào hoạt động từ ngày 01/01/2026 với mong muốn xây dựng một thương hiệu cho thuê căn hộ dịch vụ minh bạch, tận tâm và chuyên nghiệp. Chúng tôi tin rằng một chỗ ở tốt bắt đầu từ thông tin trung thực, giá cả rõ ràng và một đội ngũ luôn sẵn sàng đồng hành.",
+      "paragraph2": "Từ tư vấn chọn phòng, hỗ trợ ký hợp đồng đến chăm sóc khách hàng trong suốt thời gian thuê, Kim Housing xây dựng hệ sinh thái dịch vụ khép kín để khách thuê an tâm và chủ nhà an tâm giao căn hộ vận hành.",
+      "quickFacts": [
+        { "label": "Thành lập", "value": "01/01/2026" },
+        { "label": "Nhân sự cốt lõi", "value": "30+" },
+        { "label": "Khu vực hoạt động", "value": "TP.HCM" },
+        { "label": "Loại hình", "value": "Căn hộ dịch vụ" }
+      ]
+    },
+    "brandMeaning": {
+      "eyebrow": "Ý nghĩa thương hiệu",
+      "heading": "Vì Sao Là KIM HOUSING?",
+      "paragraph1": "Trong tiếng Việt, KIM mang nghĩa giá trị - đúng với điều Kim Housing muốn trao đến từng khách hàng. KIM cũng là kim loại, là kim cương: bền vững cùng thời gian, như cách chúng tôi chọn đồng hành lâu dài cùng khách thuê và chủ nhà.",
+      "paragraph1Highlight": "giá trị",
+      "letters": [
+        { "letter": "K", "title": "Kaizen", "description": "Tinh thần cải tiến không ngừng, mỗi ngày tốt hơn.", "center": false },
+        { "letter": "I", "title": "Interaction", "description": "Con người là trung tâm của mọi kết nối.", "center": true },
+        { "letter": "M", "title": "Mission", "description": "Sứ mệnh dài hạn, hướng tới chiều sâu.", "center": false }
+      ],
+      "lettersNote": "Chữ I được đặt ở trung tâm, đại diện cho con người - trọng tâm trong mọi giá trị Kim Housing tạo ra.",
+      "paragraph2": "Đặt sự phát triển chiều sâu của đội ngũ làm trọng tâm, Kim Housing tin rằng đó là nền tảng để tạo nên dịch vụ chất lượng và giá trị thật sự cho khách hàng.",
+      "rotateHint": "Kéo hoặc chạm vào biểu tượng để xoay."
+    },
+    "links": {
+      "eyebrow": "Tìm hiểu thêm",
+      "heading": "Khám Phá Kim Housing",
+      "cta": "Xem thêm →",
+      "items": [
+        { "href": "/about/values", "title": "Giá trị cốt lõi", "description": "Những giá trị nền tảng dẫn dắt mọi hoạt động của Kim Housing." },
+        { "href": "/#vision", "title": "Tầm nhìn chiến lược", "description": "Định hướng trở thành thương hiệu căn hộ dịch vụ đáng tin cậy hàng đầu." },
+        { "href": "/about/history", "title": "Lịch sử hình thành", "description": "Hành trình từ ý tưởng đến ngày Kim Housing chính thức ra mắt." },
+        { "href": "/about/social-responsibility", "title": "Trách nhiệm xã hội", "description": "Cam kết phát triển bền vững cùng khách hàng, đối tác và cộng đồng." },
+        { "href": "/about/team", "title": "Đội ngũ nhân sự", "description": "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi giàu kinh nghiệm." }
+      ]
+    },
+    "cta": {
+      "heading": "Sẵn Sàng Tìm Căn Hộ Phù Hợp?",
+      "paragraph": "Khám phá danh mục căn hộ dịch vụ hoặc liên hệ đội ngũ Kim Housing để được tư vấn miễn phí.",
+      "primary": "Tìm phòng ngay",
+      "secondary": "Liên hệ tư vấn"
+    }
+  },
+  "aboutHistory": {
+    "hero": { "breadcrumb": "Lịch sử hình thành", "title": "Lịch Sử Hình Thành" },
+    "milestones": [
+      {
+        "date": "2026-01",
+        "title": "KIM HOUSING Chính Thức Ra Mắt",
+        "description": "Sau thời gian chuẩn bị, Kim Housing chính thức đi vào hoạt động từ ngày 01/01/2026, đánh dấu cột mốc ra mắt thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM. Ngay từ ngày đầu, Kim Housing xác định lấy sự minh bạch và trải nghiệm khách thuê làm giá trị cốt lõi cho mọi hoạt động."
+      },
+      {
+        "date": "2025-10",
+        "title": "Hoàn Thiện Nền Tảng & Đội Ngũ",
+        "description": "Trong những tháng cuối năm 2025, đội ngũ Kim Housing tập trung hoàn thiện quy trình vận hành, xây dựng hệ thống quản lý căn hộ và tuyển chọn nhân sự cho các vị trí tư vấn, chăm sóc khách hàng, sẵn sàng cho ngày ra mắt chính thức."
+      },
+      {
+        "date": "2025-06",
+        "title": "Xây Dựng Định Hướng Dịch Vụ",
+        "description": "Giữa năm 2025, định hướng dịch vụ của Kim Housing dần được định hình rõ nét: từ mô hình căn hộ dịch vụ cho thuê, tư vấn chọn phòng đến hợp tác cùng chủ nhà - tất cả hướng đến một hệ sinh thái trọn gói cho khách thuê tại TP.HCM."
+      },
+      {
+        "date": "2025-01",
+        "title": "Hình Thành Ý Tưởng",
+        "description": "Ý tưởng về Kim Housing bắt đầu từ mong muốn xây dựng một thương hiệu cho thuê căn hộ dịch vụ minh bạch, tận tâm và đặt lợi ích của khách thuê lên hàng đầu - điều mà đội ngũ sáng lập nhận thấy vẫn còn nhiều khoảng trống trên thị trường."
+      }
+    ]
+  },
+  "aboutSocial": {
+    "hero": {
+      "breadcrumb": "Trách nhiệm xã hội",
+      "title": "Trách Nhiệm Xã Hội",
+      "description": "Phát triển gắn với trách nhiệm với khách hàng, đối tác và cộng đồng."
+    },
+    "intro": {
+      "eyebrow": "Định hướng phát triển",
+      "heading": "Phát Triển Bền Vững, Có Trách Nhiệm",
+      "paragraph": "Ngay từ những ngày đầu thành lập, Kim Housing xác định trách nhiệm xã hội không phải là hoạt động phong trào mà là một phần trong cách vận hành hằng ngày - từ việc minh bạch thông tin cho khách thuê, công bằng với đối tác chủ nhà, đến chăm lo cho đội ngũ nhân sự và cộng đồng xung quanh."
+    },
+    "commitmentsSection": {
+      "eyebrow": "Cam kết",
+      "heading": "Bốn Trụ Cột Trách Nhiệm Của Kim Housing"
+    },
+    "commitments": [
+      {
+        "title": "Với Khách Thuê",
+        "description": "Minh bạch thông tin căn hộ, giá thuê và hợp đồng. Không để khách thuê chịu rủi ro từ tin đăng sai lệch hay chi phí phát sinh không rõ ràng."
+      },
+      {
+        "title": "Với Đối Tác Chủ Nhà",
+        "description": "Cam kết minh bạch dòng tiền, hỗ trợ pháp lý và vận hành có trách nhiệm khi được chủ nhà tin tưởng giao quản lý căn hộ."
+      },
+      {
+        "title": "Với Đội Ngũ Nhân Sự",
+        "description": "Xây dựng môi trường làm việc công bằng, đào tạo bài bản và tạo điều kiện phát triển lâu dài cho từng thành viên Kim Housing."
+      },
+      {
+        "title": "Với Cộng Đồng",
+        "description": "Hướng đến trở thành thương hiệu căn hộ dịch vụ có trách nhiệm tại TP.HCM, đồng hành cùng các hoạt động thiết thực cho cộng đồng nơi Kim Housing hoạt động."
+      }
+    ],
+    "cta": {
+      "heading": "Cùng Kim Housing Xây Dựng Cộng Đồng Thuê Nhà Đáng Tin Cậy",
+      "paragraph": "Nếu bạn có đề xuất hợp tác hoặc góp ý cho định hướng phát triển bền vững của Kim Housing, hãy liên hệ với chúng tôi.",
+      "button": "Liên hệ Kim Housing"
+    }
+  },
+  "aboutTeam": {
+    "hero": { "breadcrumb": "Đội ngũ nhân sự", "title": "Đội Ngũ Nhân Sự" },
+    "founders": {
+      "eyebrow": "Sáng lập",
+      "heading": "Được Dẫn Dắt Bởi Đội Ngũ Giàu Kinh Nghiệm",
+      "paragraph": "Kim Housing được thành lập bởi đội ngũ sáng lập nhiều năm kinh nghiệm trong lĩnh vực bất động sản cho thuê, cùng chung định hướng xây dựng một thương hiệu căn hộ dịch vụ minh bạch, tận tâm và chuyên nghiệp tại TP. Hồ Chí Minh."
+    },
+    "coreTeam": {
+      "eyebrow": "Đội ngũ cốt lõi",
+      "heading": "30+ Nhân Sự Giàu Kinh Nghiệm",
+      "paragraph": "Bên cạnh đội ngũ sáng lập, Kim Housing quy tụ hơn 30 nhân sự cốt lõi, nhiều năm kinh nghiệm trong lĩnh vực sale căn hộ dịch vụ tại khu vực TP. Hồ Chí Minh. Am hiểu thị trường và từng khu vực cho thuê, đội ngũ Kim Housing luôn sẵn sàng tư vấn và đồng hành cùng khách thuê để tìm được căn hộ phù hợp nhất."
+    }
+  },
+  "aboutValues": {
+    "hero": {
+      "breadcrumb": "Giá trị cốt lõi",
+      "title": "Giá Trị Cốt Lõi",
+      "description": "Những giá trị nền tảng dẫn dắt mọi quyết định và hành động của đội ngũ Kim Housing."
+    },
+    "values": [
+      { "title": "Minh Bạch", "description": "Giá thuê, hình ảnh căn hộ và điều khoản hợp đồng đều rõ ràng, công khai - không phát sinh chi phí ẩn trong suốt quá trình thuê." },
+      { "title": "Tận Tâm", "description": "Đặt sự hài lòng và trải nghiệm của khách thuê lên hàng đầu trong mọi quyết định, từ tư vấn chọn phòng đến chăm sóc sau khi ký hợp đồng." },
+      { "title": "Chuyên Nghiệp", "description": "Quy trình vận hành, tư vấn và ký kết hợp đồng được chuẩn hoá bởi đội ngũ giàu kinh nghiệm trong lĩnh vực bất động sản cho thuê." },
+      { "title": "Đổi Mới", "description": "Không ngừng ứng dụng công nghệ vào quản lý và tìm phòng, giúp hành trình thuê căn hộ dịch vụ trở nên nhanh chóng và thuận tiện hơn." },
+      { "title": "Trách Nhiệm", "description": "Cam kết đồng hành lâu dài với khách thuê, đối tác chủ nhà và cộng đồng nơi Kim Housing hoạt động, hướng đến phát triển bền vững." },
+      { "title": "Hợp Tác", "description": "Xây dựng mối quan hệ hợp tác cùng có lợi với chủ nhà - minh bạch dòng tiền, tối ưu tỷ lệ lấp đầy và an tâm pháp lý." }
+    ],
+    "cta": {
+      "eyebrow": "Cam kết của chúng tôi",
+      "heading": "Giá Trị Được Thể Hiện Trong Từng Trải Nghiệm",
+      "paragraph": "Từ lúc tìm phòng đến khi ổn định chỗ ở, Kim Housing luôn giữ vững những giá trị này trong từng điểm chạm với khách thuê và đối tác.",
+      "button": "Tìm hiểu về Kim Housing"
+    }
+  },
+  "apartmentsListing": {
+    "kicker": "Căn hộ",
+    "description": "Trang tìm kiếm căn hộ dịch vụ cho thuê của Kim Housing đang được hoàn thiện. Liên hệ đội ngũ tư vấn để được giới thiệu căn hộ phù hợp ngay hôm nay.",
+    "action": "Liên hệ tư vấn"
+  },
+  "careers": {
+    "hero": {
+      "breadcrumb": "Tuyển dụng",
+      "title": "Gia Nhập Kim Housing",
+      "description": "Cùng xây dựng thương hiệu căn hộ dịch vụ minh bạch và tận tâm hàng đầu TP.HCM."
+    },
+    "intro": {
+      "eyebrow": "Vì sao chọn Kim Housing",
+      "heading": "Phát Triển Sự Nghiệp Cùng Chúng Tôi",
+      "paragraph": "Kim Housing đang từng bước xây dựng đội ngũ nhân sự vững mạnh cho hành trình phát triển dài hạn. Chúng tôi tìm kiếm những con người tận tâm, chủ động và mong muốn gắn bó cùng một thương hiệu căn hộ dịch vụ đang lớn mạnh mỗi ngày tại TP.HCM."
+    },
+    "benefitsSection": {
+      "eyebrow": "Quyền lợi",
+      "heading": "Đãi Ngộ Dành Cho Nhân Viên Kim Housing"
+    },
+    "benefits": [
+      { "title": "Lương Thưởng Cạnh Tranh", "description": "Thu nhập xứng đáng với năng lực, cùng chính sách thưởng theo hiệu quả công việc." },
+      { "title": "Môi Trường Trẻ, Năng Động", "description": "Làm việc cùng đội ngũ nhiệt huyết, văn hoá cởi mở và luôn hỗ trợ lẫn nhau." },
+      { "title": "Đào Tạo Bài Bản", "description": "Được đào tạo quy trình tư vấn, vận hành ngay từ ngày đầu, đồng hành cùng đội ngũ giàu kinh nghiệm." },
+      { "title": "Cơ Hội Thăng Tiến", "description": "Lộ trình phát triển sự nghiệp rõ ràng khi Kim Housing không ngừng mở rộng quy mô hoạt động." }
+    ],
+    "openings": {
+      "eyebrow": "Vị trí tuyển dụng",
+      "heading": "Hiện Chưa Có Vị Trí Đang Mở",
+      "paragraph": "Kim Housing luôn chào đón những ứng viên tiềm năng cho các vị trí tư vấn viên, chuyên viên kinh doanh và vận hành căn hộ. Gửi CV cho chúng tôi để được liên hệ ngay khi có vị trí phù hợp.",
+      "button": "Gửi CV ứng tuyển",
+      "emailSubject": "Ứng tuyển vào Kim Housing"
+    }
+  },
+  "contact": {
+    "hero": {
+      "breadcrumb": "Liên hệ",
+      "title": "Liên Hệ Kim Housing",
+      "description": "Đội ngũ tư vấn Kim Housing luôn sẵn sàng hỗ trợ bạn tìm căn hộ phù hợp hoặc hợp tác cho thuê."
+    },
+    "companyName": "Công Ty TNHH MTV KIM Housing",
+    "info": [
+      { "title": "Địa chỉ", "value": "14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh" },
+      { "title": "Hotline", "value": "Đang cập nhật" },
+      { "title": "Email", "value": "kimhousing.hrad@gmail.com" },
+      { "title": "Giờ làm việc", "value": "8:00 - 18:00, Thứ Hai - Chủ Nhật" }
+    ],
+    "formHeading": "Gửi tin nhắn cho chúng tôi",
+    "mapTitle": "Vị trí Kim Housing trên Google Maps"
+  },
+  "contactForm": {
+    "nameLabel": "Họ và tên",
+    "namePlaceholder": "Nguyễn Văn A",
+    "nameError": "Vui lòng nhập họ và tên",
+    "emailLabel": "Email",
+    "emailPlaceholder": "example@email.com",
+    "emailRequiredError": "Vui lòng nhập email",
+    "emailInvalidError": "Email không hợp lệ",
+    "phoneLabel": "Số điện thoại",
+    "phonePlaceholder": "0912 345 678",
+    "phoneRequiredError": "Vui lòng nhập số điện thoại",
+    "phoneInvalidError": "Số điện thoại không hợp lệ",
+    "messageLabel": "Nội dung",
+    "messagePlaceholder": "Bạn cần hỗ trợ điều gì?",
+    "messageError": "Vui lòng nhập nội dung cần hỗ trợ",
+    "submit": "Gửi ngay",
+    "submitting": "Đang gửi...",
+    "successTitle": "Đã gửi thành công",
+    "successDescription": "Cảm ơn bạn đã liên hệ. Đội ngũ Kim Housing sẽ phản hồi trong thời gian sớm nhất.",
+    "sendAnother": "Gửi yêu cầu khác"
+  },
+  "gallery": {
+    "hero": {
+      "breadcrumb": "Thư viện ảnh",
+      "title": "Thư Viện Ảnh",
+      "description": "Hình ảnh không gian căn hộ, hoạt động đội ngũ và các sự kiện của Kim Housing sẽ sớm được cập nhật tại đây."
+    },
+    "albums": [
+      { "id": "can-ho", "label": "Không gian căn hộ", "tiles": 6 },
+      { "id": "doi-ngu", "label": "Hoạt động đội ngũ", "tiles": 4 },
+      { "id": "su-kien", "label": "Sự kiện & bàn giao", "tiles": 4 }
+    ]
+  },
+  "news": {
+    "hero": {
+      "breadcrumb": "Blog",
+      "title": "Blog Kim Housing",
+      "description": "Chuyên mục tin tức, chia sẻ kinh nghiệm thuê nhà đang được đội ngũ Kim Housing hoàn thiện."
+    },
+    "categoriesSection": {
+      "eyebrow": "Sắp ra mắt",
+      "heading": "Các Chuyên Mục Đang Được Chuẩn Bị",
+      "badge": "Sắp ra mắt"
+    },
+    "categories": [
+      { "title": "Kinh Nghiệm Thuê Nhà", "description": "Mẹo chọn căn hộ phù hợp, so sánh khu vực và tối ưu ngân sách thuê nhà tại TP.HCM." },
+      { "title": "Tin Tức Kim Housing", "description": "Cập nhật hoạt động, dự án căn hộ mới và các chương trình ưu đãi từ Kim Housing." },
+      { "title": "Hướng Dẫn Thủ Tục", "description": "Hướng dẫn đặt cọc, ký hợp đồng và đăng ký tạm trú khi thuê căn hộ dịch vụ." }
+    ],
+    "cta": {
+      "heading": "Đừng Bỏ Lỡ Bài Viết Đầu Tiên",
+      "paragraph": "Liên hệ Kim Housing qua email để được thông báo ngay khi blog chính thức ra mắt.",
+      "button": "Liên hệ Kim Housing"
+    }
+  },
+  "services": {
+    "hero": {
+      "breadcrumb": "Dịch vụ",
+      "title": "Dịch Vụ Của Kim Housing",
+      "description": "Hệ sinh thái dịch vụ trọn gói, đồng hành cùng khách thuê và chủ nhà xuyên suốt hành trình thuê căn hộ."
+    },
+    "services": [
+      { "title": "Tư Vấn Chọn Căn Hộ", "description": "Đội ngũ tư vấn viên lắng nghe nhu cầu, ngân sách và khu vực mong muốn để gợi ý những căn hộ dịch vụ phù hợp nhất, sắp xếp lịch xem phòng thực tế miễn phí." },
+      { "title": "Hỗ Trợ Ký Hợp Đồng", "description": "Chuẩn hoá thủ tục đặt cọc giữ phòng và ký hợp đồng thuê, đảm bảo điều khoản rõ ràng, minh bạch cho cả khách thuê và chủ nhà." },
+      { "title": "Quản Lý Vận Hành Căn Hộ", "description": "Thay mặt chủ nhà quản lý, bảo trì và xử lý sự cố phát sinh trong quá trình cho thuê, đảm bảo căn hộ luôn trong tình trạng tốt nhất." },
+      { "title": "Chăm Sóc Khách Hàng", "description": "Hỗ trợ khách thuê 24/7 trong suốt thời gian sinh sống tại căn hộ, tiếp nhận và phản hồi mọi yêu cầu trong thời gian sớm nhất." },
+      { "title": "Hợp Tác Cùng Chủ Nhà", "description": "Nhận uỷ thác quản lý và cho thuê căn hộ, cam kết minh bạch dòng tiền, tối ưu tỷ lệ lấp đầy và hỗ trợ pháp lý trong suốt quá trình hợp tác." },
+      { "title": "Hỗ Trợ Thủ Tục Cư Trú", "description": "Hướng dẫn và hỗ trợ khách thuê hoàn tất thủ tục đăng ký tạm trú, tạm vắng với cơ quan chức năng theo đúng quy định pháp luật." }
+    ],
+    "processSection": {
+      "eyebrow": "Quy trình phối hợp",
+      "heading": "Đơn Giản, Rõ Ràng Từng Bước"
+    },
+    "process": [
+      { "step": "1", "title": "Tiếp nhận nhu cầu", "description": "Khách thuê hoặc chủ nhà liên hệ Kim Housing qua website hoặc email." },
+      { "step": "2", "title": "Tư vấn & khảo sát", "description": "Tư vấn viên đề xuất giải pháp phù hợp, sắp xếp lịch xem căn hộ hoặc khảo sát." },
+      { "step": "3", "title": "Ký kết hợp đồng", "description": "Hoàn tất thủ tục đặt cọc, ký hợp đồng minh bạch, rõ ràng." },
+      { "step": "4", "title": "Đồng hành dài hạn", "description": "Kim Housing tiếp tục hỗ trợ, chăm sóc trong suốt thời gian thuê." }
+    ],
+    "cta": {
+      "heading": "Cần Tư Vấn Dịch Vụ Phù Hợp?",
+      "paragraph": "Dù bạn là khách thuê đang tìm căn hộ hay chủ nhà muốn hợp tác cho thuê, Kim Housing luôn sẵn sàng hỗ trợ.",
+      "primary": "Tìm căn hộ ngay",
+      "secondary": "Liên hệ hợp tác"
+    }
+  },
+  "privacyPolicy": {
+    "hero": { "breadcrumb": "Chính sách bảo mật", "title": "Chính Sách Bảo Mật", "description": "Chính sách Bảo mật của Kim Housing" },
+    "sections": {
+      "s1Heading": "I. Định Nghĩa & Phạm Vi",
+      "s1P1": "Chính sách Bảo mật Thông tin Cá nhân quy định các tiêu chuẩn thu thập, lưu trữ, xử lý, bảo vệ và chia sẻ thông tin cá nhân của người dùng (bao gồm khách thuê và đối tác bên cho thuê/chủ nhà) trên toàn hệ thống dữ liệu của Kim Housing. Với tư cách là Bên Kiểm soát kiêm Bên Xử lý dữ liệu cá nhân, Kim Housing cam kết tuân thủ nghiêm ngặt các quy định pháp luật Việt Nam về bảo vệ dữ liệu (đặc biệt là Luật Bảo vệ dữ liệu cá nhân 2025 và Nghị định số 356/2025/NĐ-CP ngày 31/12/2025).",
+      "s2Heading": "II. Nội Dung Chi Tiết",
+      "s2_1Heading": "1. Nguyên tắc chung và sự đồng ý",
+      "s2_1P1Label": "Tự do truy cập ẩn danh: ",
+      "s2_1P1": "Kim Housing duy trì tính mở của nền tảng. Người dùng có quyền truy cập, tra cứu thông tin căn hộ dịch vụ hoàn toàn miễn phí và ẩn danh mà không bắt buộc phải đăng ký tài khoản hay đăng nhập.",
+      "s2_1P2Label": "Nguyên tắc đồng thuận: ",
+      "s2_1P2": "Bằng việc chủ động gửi thông tin qua các kênh liên hệ (Hotline, Zalo OA), đăng ký dịch vụ hoặc ký nhận trên các biểu mẫu giao dịch (Phiếu Đặt Cọc, Phiếu Nhượng Phòng), người dùng được xem là đã xác nhận và đồng ý cho phép Kim Housing thu thập và xử lý dữ liệu cá nhân theo các điều khoản quy định tại chính sách này.",
+      "s2_2Heading": "2. Danh mục dữ liệu thu thập",
+      "s2_2Intro": "Dữ liệu cá nhân được phân loại cụ thể như sau:",
+      "s2_2Item1Label": "Dữ liệu kỹ thuật (ẩn danh): ",
+      "s2_2Item1": "Hệ thống tự động ghi nhận các thông số phi định danh như địa chỉ IP tạm thời, loại thiết bị, hệ điều hành, trình duyệt web, thời gian truy cập và lịch sử thao tác chung trên website nhằm mục đích cải thiện hiệu năng hệ thống và trải nghiệm người dùng.",
+      "s2_2Item2Label": "Dữ liệu định danh giao dịch:",
+      "s2_2Item2aLabel": "Khách thuê: ",
+      "s2_2Item2a": "Họ và tên, số CCCD/Hộ chiếu, số điện thoại di động, địa chỉ thường trú, thông tin tài khoản ngân hàng (phục vụ dịch vụ hỗ trợ ưu đãi), số lượng thành viên ở cùng và số lượng phương tiện đi lại.",
+      "s2_2Item2bLabel": "Bên cho thuê (Chủ nhà/Quản lý): ",
+      "s2_2Item2b": "Họ và tên, số CCCD/Hộ chiếu, số điện thoại, địa chỉ tòa nhà cho thuê, thông tin tài khoản nhận tiền đặt cọc giữ phòng.",
+      "s2_2Item2cLabel": "Chuyên viên kinh doanh: ",
+      "s2_2Item2c": "Họ và tên, số điện thoại, mã nhân viên.",
+      "s2_3Heading": "3. Mục đích và phạm vi sử dụng thông tin",
+      "s2_3Intro": "Dữ liệu cá nhân thu thập được chỉ sử dụng cho các mục đích hợp pháp sau đây:",
+      "s2_3Item1Label": "Xác lập và thực hiện giao dịch: ",
+      "s2_3Item1": "Soạn thảo, đối chiếu và lưu giữ các chứng từ giao dịch pháp lý bao gồm Phiếu đặt cọc giữ phòng, Phiếu nhượng phòng và Phiếu xác nhận giao dịch thành công.",
+      "s2_3Item2Label": "Xác thực và minh bạch thông tin: ",
+      "s2_3Item2": "Xác minh danh tính của khách thuê và chủ nhà nhằm ngăn chặn các hành vi gian lận tài chính, tin đăng ảo hoặc lừa đảo cọc.",
+      "s2_3Item3Label": "Thực hiện nghĩa vụ pháp lý: ",
+      "s2_3Item3": "Cung cấp thông tin nhân thân của khách thuê cho bên cho thuê để hoàn tất thủ tục đăng ký tạm trú, tạm vắng với cơ quan Công an địa phương theo quy định của pháp luật cư trú.",
+      "s2_3Item4Label": "Chăm sóc khách hàng: ",
+      "s2_3Item4": "Tích hợp dữ liệu để quản lý tài khoản tích điểm trên Zalo OA; gửi tặng các chương trình ưu đãi, voucher dịch vụ liên kết từ các đối tác hệ sinh thái. Việc cung cấp thông tin liên hệ đồng nghĩa với việc đồng ý chia sẻ giới hạn thông tin cơ bản cho các đối tác này để kích hoạt ưu đãi.",
+      "s2_4Heading": "4. Cam kết bảo mật và chuyển giao dữ liệu (theo Điều 7, Nghị định số 356/2025/NĐ-CP)",
+      "s2_4P1Label": "Cam kết không thương mại hóa: ",
+      "s2_4P1": "Kim Housing cam kết bảo mật tuyệt đối dữ liệu cá nhân của người dùng. Chúng tôi không mua bán, trao đổi dữ liệu cá nhân cho bên thứ ba vì mục đích thương mại khi chưa được sự đồng ý bằng văn bản của người dùng.",
+      "s2_4P2Label": "Quy định chuyển giao dữ liệu cá nhân: ",
+      "s2_4P2": "Tuân thủ Điều 7 Nghị định số 356/2025/NĐ-CP, khi thực hiện chuyển giao dữ liệu cá nhân của người dùng cho bên thứ ba (Chủ nhà/Quản lý tòa nhà hoặc Đối tác hệ sinh thái), Kim Housing áp dụng các biện pháp sau:",
+      "s2_4Item1Label": "Thỏa thuận chuyển giao bằng văn bản: ",
+      "s2_4Item1": "Thiết lập điều khoản/thỏa thuận bằng văn bản rõ ràng với Bên nhận dữ liệu (Chủ nhà/Quản lý hoặc Đối tác), xác định rõ: mục đích chuyển giao, loại dữ liệu chuyển giao, thời hạn lưu trữ dữ liệu, cơ sở pháp lý xử lý dữ liệu, trách nhiệm bảo vệ dữ liệu của các bên, trách nhiệm thực hiện các quyền của chủ thể dữ liệu, và cơ chế phối hợp xử lý khi xảy ra sự cố hoặc vi phạm.",
+      "s2_4Item2Label": "Giới hạn mục đích và phạm vi sử dụng: ",
+      "s2_4Item2": "Bên nhận dữ liệu chỉ được xử lý dữ liệu cá nhân đúng mục đích chuyển giao đã cam kết, phù hợp với ngành, nghề đăng ký kinh doanh và không được chuyển giao tiếp cho bên thứ tư khi chưa có sự đồng ý của Kim Housing và chủ thể dữ liệu.",
+      "s2_4Item3Label": "Cơ chế đồng thuận minh bạch: ",
+      "s2_4Item3": "Đối với các hoạt động chia sẻ dữ liệu liên kết có phát sinh lợi ích kinh tế hoặc dịch vụ phụ trợ, Kim Housing thiết lập giao diện kỹ thuật hoặc cơ chế xác nhận rõ ràng để người dùng đồng ý một cách chính xác theo từng danh mục dịch vụ.",
+      "s2_4Item4Label": "Yêu cầu pháp lý: ",
+      "s2_4Item4": "Cung cấp dữ liệu theo yêu cầu bằng văn bản của Cơ quan Công an hoặc cơ quan hành chính nhà nước có thẩm quyền phục vụ công tác quản lý cư trú.",
+      "s2_5Heading": "5. Lưu trữ, bảo vệ và biện pháp an toàn kỹ thuật",
+      "s2_5P1Label": "Thời hạn lưu trữ: ",
+      "s2_5P1": "Dữ liệu giao dịch được lưu trữ an toàn trong hệ thống máy chủ nội bộ tối đa 02 (hai) năm kể từ ngày chấm dứt giao dịch nhằm mục đích đối soát tài chính, giải quyết khiếu nại hoặc tranh chấp phát sinh (nếu có). Sau thời hạn này, dữ liệu định danh sẽ được xóa bỏ hoặc mã hóa ẩn danh hoàn toàn.",
+      "s2_5P2Label": "Biện pháp bảo vệ nội bộ: ",
+      "s2_5P2": "Dữ liệu được số hóa và quản lý tập trung trên cơ sở dữ liệu nội bộ được phân quyền truy cập nghiêm ngặt. Chuyên viên kinh doanh chỉ được quyền tiếp cận thông tin của nhóm khách hàng do mình trực tiếp phụ trách.",
+      "s2_5P3Label": "Trách nhiệm bảo mật của người dùng: ",
+      "s2_5P3": "Người dùng có nghĩa vụ tự bảo quản các thông tin giao dịch cá nhân và chứng từ cọc. Kim Housing không chịu trách nhiệm đối với các tổn thất phát sinh do người dùng tự ý tiết lộ thông tin giao dịch hoặc thông tin tài khoản cho bên thứ ba không thuộc thẩm quyền của hệ thống.",
+      "s2_6Heading": "6. Quyền hạn của chủ thể dữ liệu và thời gian phản hồi xử lý",
+      "s2_6Intro": "Người dùng có đầy đủ các quyền của chủ thể dữ liệu theo Nghị định số 356/2025/NĐ-CP, bao gồm:",
+      "s2_6Item1": "Quyền yêu cầu kiểm tra, cập nhật hoặc đính chính thông tin cá nhân.",
+      "s2_6Item2": "Quyền rút lại sự đồng ý xử lý dữ liệu hoặc yêu cầu hạn chế xử lý.",
+      "s2_6Item3": "Quyền yêu cầu xóa bỏ hoàn toàn dữ liệu cá nhân khỏi hệ thống lưu trữ nội bộ của Kim Housing.",
+      "s2_6P1Label": "Quy trình tiếp nhận: ",
+      "s2_6P1": "Mọi yêu cầu liên quan đến quyền dữ liệu cá nhân được gửi qua email kimhousing.hrad@gmail.com hoặc trực tiếp tại văn phòng Kim Housing (14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP. Hồ Chí Minh).",
+      "s2_6P2Label": "Thời gian phản hồi: ",
+      "s2_6P2": "Kim Housing cam kết kiểm tra, xác minh danh tính và xử lý hoàn tất yêu cầu của người dùng trong vòng tối đa 48 giờ làm việc kể từ khi tiếp nhận yêu cầu hợp lệ."
+    }
+  }
+}

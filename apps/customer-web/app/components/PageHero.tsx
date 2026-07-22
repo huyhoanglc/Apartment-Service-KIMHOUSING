@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Container } from "@/app/components/ui/Section";
+import { Link } from "@/i18n/navigation";
 
 /**
  * Hero breadcrumb dùng chung cho mọi trang con (không phải trang chủ) - card trắng nổi
@@ -18,12 +19,14 @@ export default function PageHero({
   description?: string;
   children?: ReactNode;
 }) {
+  const t = useTranslations("common");
+
   return (
     <section className="relative overflow-hidden bg-navy px-4 pt-6 pb-16 sm:px-6 sm:pb-20 lg:px-8">
       <Container>
         <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-xs text-white/70 backdrop-blur-sm">
           <Link href="/" className="transition-colors duration-300 hover:text-gold">
-            Trang chủ
+            {t("backToHome")}
           </Link>
           <span>›</span>
           <span className="font-semibold text-white">{breadcrumb}</span>

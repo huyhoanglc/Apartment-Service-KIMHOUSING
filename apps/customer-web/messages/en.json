@@ -1,0 +1,673 @@
+{
+  "common": {
+    "brand": "Kim Housing",
+    "foundingDate": "January 1, 2026",
+    "backToHome": "Home",
+    "readMore": "Learn more",
+    "details": "Details →",
+    "contactCta": "Contact us",
+    "sendEmail": "Send email",
+    "learnMore": "Learn more"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "news": "News",
+    "careers": "Careers",
+    "contact": "Contact",
+    "contactCta": "Contact us",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "footer": {
+    "companyName": "Kim Housing Co., Ltd.",
+    "addressLabel": "Address: 14/5A5 Ky Dong Street, Nhieu Loc Ward, Ho Chi Minh City",
+    "hotlineLabel": "Hotline: Coming soon",
+    "emailLabel": "Email: kimhousing.hrad@gmail.com",
+    "companyHeading": "Kim Housing",
+    "companyLinks": [
+      { "href": "/about", "label": "About us" },
+      { "href": "/#vision", "label": "Vision & core values" },
+      { "href": "/about/history", "label": "Our history" },
+      { "href": "/#ecosystem", "label": "Service ecosystem" },
+      { "href": "/#partners", "label": "Landlord partnerships" },
+      { "href": "/gallery", "label": "Photo gallery" },
+      { "href": "/contact", "label": "Contact" },
+      { "href": "/privacy-policy", "label": "Privacy policy" }
+    ],
+    "servicesHeading": "Services",
+    "serviceLinks": [
+      { "href": "/apartments", "label": "Serviced apartments for rent" },
+      { "href": "/services", "label": "Rental consulting" },
+      { "href": "/services", "label": "Operations management" },
+      { "href": "/services", "label": "Customer care" }
+    ],
+    "copyright": "Copyright © {year} Kim Housing. All Rights Reserved.",
+    "designedBy": "Designed & operated by Kim Housing",
+    "viewOnMaps": "View on Google Maps",
+    "mapTitle": "Kim Housing's location on Google Maps"
+  },
+  "languageSwitcher": {
+    "groupLabel": "Select language"
+  },
+  "themeToggle": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "brandIntro": {
+    "tagline": "Your Trusted Serviced Apartment Partner",
+    "skip": "Skip",
+    "skipAriaLabel": "Skip brand introduction"
+  },
+  "heroCarousel": {
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "goToSlide": "View slide {index}"
+  },
+  "notFound": {
+    "kicker": "404",
+    "title": "Page not found",
+    "description": "The page or room you're looking for doesn't exist or has been removed.",
+    "action": "Back to home"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "This content is having trouble displaying. Try reloading this section.",
+    "action": "Try again"
+  },
+  "comingSoon": {
+    "title": "Coming soon"
+  },
+  "roomType": {
+    "STUDIO": "Studio",
+    "DUPLEX": "Duplex",
+    "ONE_BEDROOM": "1 Bedroom",
+    "TWO_BEDROOM": "2 Bedrooms",
+    "THREE_BEDROOM": "3 Bedrooms"
+  },
+  "apartmentDetail": {
+    "backToList": "Room listings",
+    "notFoundTitle": "Room not found",
+    "amenities": "Amenities",
+    "areaLabel": "Area: {area} m²",
+    "pricePerMonth": "{price} VND/month",
+    "altImage": "{roomType} room {code} in {district} - photo {index}",
+    "roomTitle": "Room {code} - {roomType}",
+    "cardTitle": "Room {code} - {roomType}",
+    "cardAlt": "{roomType} {area}m² in {district} - Kim Housing",
+    "noImage": "No photo yet"
+  },
+  "metadata": {
+    "default": {
+      "title": "Kim Housing - Serviced Apartments in Ho Chi Minh City",
+      "description": "Kim Housing provides serviced apartment and premium boarding room rentals in Ho Chi Minh City - fully furnished, convenient locations, reasonable prices."
+    },
+    "about": {
+      "title": "About Kim Housing",
+      "description": "Kim Housing is a serviced apartment rental brand in Ho Chi Minh City, supporting tenants and landlords with transparency, dedication, and professionalism."
+    },
+    "aboutHistory": {
+      "title": "Our History",
+      "description": "The founding journey and launch of Kim Housing - a serviced apartment rental brand in Ho Chi Minh City."
+    },
+    "aboutSocial": {
+      "title": "Social Responsibility",
+      "description": "Kim Housing's social responsibility commitments to tenants, landlord partners, staff, and the community in Ho Chi Minh City."
+    },
+    "aboutTeam": {
+      "title": "Our Team",
+      "description": "Kim Housing's founding team and 30+ core staff - years of experience in serviced apartment sales in Ho Chi Minh City."
+    },
+    "aboutValues": {
+      "title": "Core Values",
+      "description": "Transparency, dedication, professionalism, and innovation - the core values guiding everything Kim Housing does."
+    },
+    "apartments": {
+      "title": "Apartments for Rent",
+      "description": "Kim Housing's apartment search page is being finalized. Contact our consulting team today to get matched with the right apartment."
+    },
+    "careers": {
+      "title": "Careers",
+      "description": "Career opportunities at Kim Housing - a dynamic work environment and competitive benefits for consulting, sales, and operations roles."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch with Kim Housing for serviced apartment rental advice or leasing partnerships in Ho Chi Minh City."
+    },
+    "gallery": {
+      "title": "Photo Gallery",
+      "description": "Photo albums of apartment spaces, team activities, and events at Kim Housing."
+    },
+    "news": {
+      "title": "Blog",
+      "description": "Kim Housing's news, rental tips, and procedure guides."
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "description": "Kim Housing's Personal Data Protection Policy - rules on collecting, storing, processing, protecting, and sharing tenants' and partners' personal data."
+    },
+    "services": {
+      "title": "Services",
+      "description": "Kim Housing's full-service ecosystem: rental consulting, operations management, customer care, and landlord partnerships."
+    },
+    "roomNotFound": {
+      "title": "Room not found"
+    }
+  },
+  "home": {
+    "hero": {
+      "slides": [
+        {
+          "kicker": "Kim Housing officially launches",
+          "title": "A new serviced apartment brand in Ho Chi Minh City",
+          "description": "Kim Housing officially began operating on {foundingDate}, bringing a transparent, convenient, and dedicated rental solution to tenants.",
+          "ctaLabel": "Find a room now",
+          "ctaHref": "/apartments"
+        },
+        {
+          "kicker": "A full-service ecosystem",
+          "title": "With you throughout your entire rental journey",
+          "description": "From room consulting and contract support to 24/7 customer care - Kim Housing handles every step so you can settle in with peace of mind.",
+          "ctaLabel": "Explore our services",
+          "ctaHref": "/services"
+        },
+        {
+          "kicker": "For landlords",
+          "title": "Lease your property in partnership with Kim Housing",
+          "description": "Optimize occupancy, keep operations transparent, and stay legally at ease when you hand your apartment over to the Kim Housing team.",
+          "ctaLabel": "Contact us to partner",
+          "ctaHref": "/contact"
+        }
+      ]
+    },
+    "vision": {
+      "eyebrow": "Vision & core values",
+      "heading": "Building a trusted serviced apartment brand",
+      "paragraph": "Founded on {foundingDate}, Kim Housing aims to become the most trusted serviced apartment brand, supporting tenants and landlords through transparency, dedication, and continuous innovation.",
+      "cta": "Learn more",
+      "cards": [
+        {
+          "title": "Customers",
+          "description": "Tenant satisfaction is at the center of everything we do, with transparent pricing and dedicated service."
+        },
+        {
+          "title": "People",
+          "description": "The Kim Housing team is professionally trained and always ready to support customers, anytime."
+        },
+        {
+          "title": "Technology",
+          "description": "We apply technology to management and room search, making renting faster and more convenient."
+        }
+      ]
+    },
+    "aboutUs": {
+      "heading": "Run by a Dedicated Team",
+      "paragraph": "Kim Housing was founded on {foundingDate} by a team with years of experience in rental real estate. We believe a good home starts with transparency, thoughtful service, and a hassle-free rental experience.",
+      "ctaPrimary": "Learn more",
+      "ctaHistory": "See our history →"
+    },
+    "ecosystem": {
+      "eyebrow": "Ecosystem",
+      "heading": "A full-service package for your rental journey",
+      "paragraph": "Kim Housing builds a closed-loop service ecosystem, supporting tenants from the moment they start searching until they're settled in.",
+      "cards": [
+        {
+          "title": "Serviced Apartments",
+          "description": "A diverse portfolio of apartments, fully furnished and ready to move in immediately.",
+          "href": "/apartments"
+        },
+        {
+          "title": "Rental Consulting",
+          "description": "Our consultants help you choose a room that fits your needs, budget, and preferred location.",
+          "href": "/services"
+        },
+        {
+          "title": "Operations Management",
+          "description": "Standardized, transparent processes for operations, maintenance, and issue resolution.",
+          "href": "/services"
+        },
+        {
+          "title": "Customer Care",
+          "description": "24/7 support for tenants throughout their stay, with fast responses to every request.",
+          "href": "/contact"
+        }
+      ]
+    },
+    "solution": {
+      "eyebrow": "A pioneering solution",
+      "heading": "Simplifying the serviced apartment rental journey",
+      "paragraph": "Kim Housing focuses on the tenant experience, helping you easily find the right place to live and stay at ease throughout the entire rental process.",
+      "cta": "Find a room now",
+      "cards": [
+        {
+          "title": "Room Matching",
+          "description": "Apartment recommendations based on your area, budget, and desired amenities."
+        },
+        {
+          "title": "Fast Contract Support",
+          "description": "Clear, transparent procedures that get your contract signed and room handed over quickly."
+        },
+        {
+          "title": "Long-term Support",
+          "description": "Ongoing care and support for tenants throughout their entire stay at the apartment."
+        }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Rental process",
+      "heading": "Find an Apartment Fast - 4 Steps, No Sign-up Required",
+      "experienceLabel": "Experience: ",
+      "privilegeLabel": "Benefit: ",
+      "items": [
+        {
+          "number": "1",
+          "title": "Find an apartment that fits your needs",
+          "experience": "Browse our platform to see a real portfolio of serviced apartments with full details, genuine photos, and publicly listed prices.",
+          "privilege": "No sign-up required. You can freely browse apartment listings on Kim Housing's platform without providing any personal information."
+        },
+        {
+          "number": "2",
+          "title": "Connect with a consultant & book a free viewing",
+          "experience": "Once you've found an apartment you like, simply tap the contact button to quickly book a viewing, completely free of charge.",
+          "privilege": "A Kim Housing consultant will reach out for in-depth advice and personally take you to see the actual apartment."
+        },
+        {
+          "number": "3",
+          "title": "Place a secure holding deposit",
+          "experience": "Once you decide to rent, our specialist will help you set up a clear, transparent Deposit Receipt. You can transfer the deposit directly to the landlord or authorize Kim Housing's official deposit-holding account to receive it on your behalf.",
+          "privilege": "Kim Housing commits to settling and transferring the full deposit amount to the landlord within 24 working hours, guaranteeing complete safety for your holding deposit."
+        },
+        {
+          "number": "4",
+          "title": "Move in and sign your lease",
+          "experience": "A Kim Housing specialist will support you throughout signing the official lease with the landlord.",
+          "privilege": "The holding deposit receipt automatically expires once the lease is signed. Move in and start your new chapter with peace of mind."
+        }
+      ]
+    },
+    "whyChoose": {
+      "heading": "Why Choose Kim Housing",
+      "cards": [
+        { "title": "Real photos, real prices", "description": "Every listing has verified photos and pricing - no fake listings." },
+        { "title": "Free for tenants", "description": "You pay no brokerage fee when finding and booking apartment viewings through Kim Housing." },
+        { "title": "Fast response", "description": "Our consulting team reaches out and arranges viewings as quickly as possible." },
+        { "title": "Coverage across Ho Chi Minh City", "description": "A diverse portfolio of apartments across every district, updated continuously every day." }
+      ]
+    },
+    "partners": {
+      "eyebrow": "For landlords",
+      "heading": "Lease your property in partnership with Kim Housing",
+      "paragraph": "Kim Housing welcomes landlords to partner with us on operations, with a commitment to transparent information, stable cash flow, and a trustworthy reputation with tenants.",
+      "benefits": [
+        "A commitment to transparent rental pricing and cash flow",
+        "A clear, fast partnership process",
+        "Dedicated legal and contract support",
+        "Optimized apartment occupancy rates"
+      ],
+      "cta": "Partner with us →"
+    },
+    "sustainability": {
+      "eyebrow": "Our commitment",
+      "heading": "Sustainable Growth",
+      "paragraph": "From our earliest days, Kim Housing has tied its growth to responsibility toward customers, partners, and the community - working toward a sustainable, trustworthy brand for the long term."
+    },
+    "contactSection": {
+      "heading": "Join Us",
+      "paragraph": "Get in touch with Kim Housing using the information below",
+      "formHeading": "Send a message",
+      "quickConnectHeading": "Quick connect",
+      "quickConnectParagraph": "Need help right away? Send an email to the Kim Housing consulting team.",
+      "sendEmail": "Send email",
+      "fullContactLink": "View full contact information →"
+    }
+  },
+  "about": {
+    "hero": {
+      "breadcrumb": "About us",
+      "title": "Renting Made Transparent and Easy",
+      "description": "Kim Housing is a serviced apartment rental brand in Ho Chi Minh City, connecting tenants with apartments that match their listings and real prices, with a fast room-viewing booking experience."
+    },
+    "intro": {
+      "eyebrow": "Introduction",
+      "heading": "With You on Your Journey Home",
+      "paragraph1": "Kim Housing officially began operating on January 1, 2026, with the goal of building a transparent, dedicated, and professional serviced apartment rental brand. We believe a good home starts with honest information, clear pricing, and a team that's always ready to help.",
+      "paragraph2": "From room consulting and contract support to customer care throughout the rental period, Kim Housing builds a closed-loop service ecosystem so tenants can rent with peace of mind and landlords can hand over operations with confidence.",
+      "quickFacts": [
+        { "label": "Founded", "value": "01/01/2026" },
+        { "label": "Core staff", "value": "30+" },
+        { "label": "Coverage area", "value": "Ho Chi Minh City" },
+        { "label": "Business type", "value": "Serviced apartments" }
+      ]
+    },
+    "brandMeaning": {
+      "eyebrow": "Brand meaning",
+      "heading": "Why KIM HOUSING?",
+      "paragraph1": "In Vietnamese, KIM means \"value\" - exactly what Kim Housing wants to deliver to every customer. KIM also means metal, or diamond: enduring through time, much like how we choose to stand by our tenants and landlords for the long run.",
+      "paragraph1Highlight": "value",
+      "letters": [
+        { "letter": "K", "title": "Kaizen", "description": "A spirit of continuous improvement, getting better every day.", "center": false },
+        { "letter": "I", "title": "Interaction", "description": "People are at the center of every connection.", "center": true },
+        { "letter": "M", "title": "Mission", "description": "A long-term mission, focused on depth.", "center": false }
+      ],
+      "lettersNote": "The letter I sits at the center, representing people - the focus of every value Kim Housing creates.",
+      "paragraph2": "By putting the team's depth of growth at the center, Kim Housing believes this is the foundation for quality service and real value for customers.",
+      "rotateHint": "Drag or tap the emblem to rotate it."
+    },
+    "links": {
+      "eyebrow": "Learn more",
+      "heading": "Discover Kim Housing",
+      "cta": "Learn more →",
+      "items": [
+        { "href": "/about/values", "title": "Core values", "description": "The foundational values that guide everything Kim Housing does." },
+        { "href": "/#vision", "title": "Strategic vision", "description": "Our direction toward becoming the most trusted serviced apartment brand." },
+        { "href": "/about/history", "title": "Our history", "description": "The journey from idea to the official launch of Kim Housing." },
+        { "href": "/about/social-responsibility", "title": "Social responsibility", "description": "Our commitment to sustainable growth with customers, partners, and the community." },
+        { "href": "/about/team", "title": "Our team", "description": "Our founding team and 30+ experienced core staff." }
+      ]
+    },
+    "cta": {
+      "heading": "Ready to Find the Right Apartment?",
+      "paragraph": "Browse our serviced apartment listings or contact the Kim Housing team for free advice.",
+      "primary": "Find a room now",
+      "secondary": "Talk to a consultant"
+    }
+  },
+  "aboutHistory": {
+    "hero": { "breadcrumb": "Our history", "title": "Our History" },
+    "milestones": [
+      {
+        "date": "2026-01",
+        "title": "KIM HOUSING Officially Launches",
+        "description": "After a period of preparation, Kim Housing officially began operating on January 1, 2026, marking the launch of a serviced apartment rental brand in Ho Chi Minh City. From day one, Kim Housing has made transparency and the tenant experience its core values in everything it does."
+      },
+      {
+        "date": "2025-10",
+        "title": "Finalizing the Platform & Team",
+        "description": "In the final months of 2025, the Kim Housing team focused on finalizing operating processes, building an apartment management system, and recruiting staff for consulting and customer care roles, getting ready for the official launch."
+      },
+      {
+        "date": "2025-06",
+        "title": "Shaping the Service Direction",
+        "description": "By mid-2025, Kim Housing's service direction had taken clear shape: from the serviced apartment rental model, to room consulting, to landlord partnerships - all working toward a complete ecosystem for tenants in Ho Chi Minh City."
+      },
+      {
+        "date": "2025-01",
+        "title": "The Idea Takes Shape",
+        "description": "The idea for Kim Housing began with a desire to build a transparent, dedicated serviced apartment rental brand that puts tenants' interests first - a gap the founding team saw remained in the market."
+      }
+    ]
+  },
+  "aboutSocial": {
+    "hero": {
+      "breadcrumb": "Social responsibility",
+      "title": "Social Responsibility",
+      "description": "Growth tied to responsibility toward customers, partners, and the community."
+    },
+    "intro": {
+      "eyebrow": "Our direction",
+      "heading": "Sustainable, Responsible Growth",
+      "paragraph": "From its earliest days, Kim Housing has treated social responsibility not as a campaign but as part of how it operates every day - from transparent information for tenants, to fairness with landlord partners, to caring for its staff and the surrounding community."
+    },
+    "commitmentsSection": {
+      "eyebrow": "Our commitments",
+      "heading": "Kim Housing's Four Pillars of Responsibility"
+    },
+    "commitments": [
+      {
+        "title": "To Tenants",
+        "description": "Transparent apartment information, rental pricing, and contracts. We don't let tenants bear the risk of misleading listings or unclear extra costs."
+      },
+      {
+        "title": "To Landlord Partners",
+        "description": "A commitment to transparent cash flow, legal support, and responsible operations when landlords trust us with managing their property."
+      },
+      {
+        "title": "To Our Staff",
+        "description": "Building a fair workplace, providing thorough training, and creating long-term growth opportunities for every Kim Housing team member."
+      },
+      {
+        "title": "To the Community",
+        "description": "Working toward being a responsible serviced apartment brand in Ho Chi Minh City, supporting meaningful activities for the community where Kim Housing operates."
+      }
+    ],
+    "cta": {
+      "heading": "Build a Trustworthy Rental Community with Kim Housing",
+      "paragraph": "If you have a partnership proposal or feedback on Kim Housing's sustainable growth direction, please get in touch with us.",
+      "button": "Contact Kim Housing"
+    }
+  },
+  "aboutTeam": {
+    "hero": { "breadcrumb": "Our team", "title": "Our Team" },
+    "founders": {
+      "eyebrow": "Founders",
+      "heading": "Led by an Experienced Team",
+      "paragraph": "Kim Housing was founded by a team with years of experience in rental real estate, united by a shared vision to build a transparent, dedicated, and professional serviced apartment brand in Ho Chi Minh City."
+    },
+    "coreTeam": {
+      "eyebrow": "Core team",
+      "heading": "30+ Experienced Staff",
+      "paragraph": "Alongside its founding team, Kim Housing brings together more than 30 core staff with years of experience in serviced apartment sales across Ho Chi Minh City. Deeply familiar with the market and each rental area, the Kim Housing team is always ready to advise and support tenants in finding the apartment that fits them best."
+    }
+  },
+  "aboutValues": {
+    "hero": {
+      "breadcrumb": "Core values",
+      "title": "Core Values",
+      "description": "The foundational values guiding every decision and action of the Kim Housing team."
+    },
+    "values": [
+      { "title": "Transparency", "description": "Rental pricing, apartment photos, and contract terms are all clear and public - no hidden costs throughout the rental period." },
+      { "title": "Dedication", "description": "Tenant satisfaction and experience come first in every decision, from room consulting to after-signing care." },
+      { "title": "Professionalism", "description": "Operations, consulting, and contract signing processes are standardized by a team with deep experience in rental real estate." },
+      { "title": "Innovation", "description": "Continuously applying technology to management and room search, making the serviced apartment rental journey faster and more convenient." },
+      { "title": "Responsibility", "description": "A commitment to standing by tenants, landlord partners, and the community where Kim Housing operates, working toward sustainable growth." },
+      { "title": "Collaboration", "description": "Building mutually beneficial partnerships with landlords - transparent cash flow, optimized occupancy, and legal peace of mind." }
+    ],
+    "cta": {
+      "eyebrow": "Our commitment",
+      "heading": "Values Reflected in Every Experience",
+      "paragraph": "From the moment you start searching to the moment you're settled in, Kim Housing upholds these values at every touchpoint with tenants and partners.",
+      "button": "Learn about Kim Housing"
+    }
+  },
+  "apartmentsListing": {
+    "kicker": "Apartments",
+    "description": "Kim Housing's serviced apartment search page is being finalized. Contact our consulting team to get matched with the right apartment today.",
+    "action": "Talk to a consultant"
+  },
+  "careers": {
+    "hero": {
+      "breadcrumb": "Careers",
+      "title": "Join Kim Housing",
+      "description": "Help build the most transparent and dedicated serviced apartment brand in Ho Chi Minh City."
+    },
+    "intro": {
+      "eyebrow": "Why Kim Housing",
+      "heading": "Grow Your Career with Us",
+      "paragraph": "Kim Housing is steadily building a strong team for its long-term growth journey. We're looking for dedicated, proactive people who want to grow alongside a serviced apartment brand that's expanding every day in Ho Chi Minh City."
+    },
+    "benefitsSection": {
+      "eyebrow": "Benefits",
+      "heading": "What Kim Housing Offers Its Team"
+    },
+    "benefits": [
+      { "title": "Competitive Pay", "description": "Compensation that matches your ability, plus performance-based bonuses." },
+      { "title": "A Young, Dynamic Environment", "description": "Work alongside an enthusiastic team in an open, supportive culture." },
+      { "title": "Thorough Training", "description": "Learn our consulting and operations processes from day one, alongside an experienced team." },
+      { "title": "Room to Grow", "description": "A clear career path as Kim Housing continues to expand its operations." }
+    ],
+    "openings": {
+      "eyebrow": "Open positions",
+      "heading": "No Openings Right Now",
+      "paragraph": "Kim Housing always welcomes promising candidates for consultant, sales specialist, and apartment operations roles. Send us your CV and we'll reach out as soon as a matching position opens up.",
+      "button": "Submit your CV",
+      "emailSubject": "Application to Kim Housing"
+    }
+  },
+  "contact": {
+    "hero": {
+      "breadcrumb": "Contact",
+      "title": "Contact Kim Housing",
+      "description": "The Kim Housing consulting team is always ready to help you find the right apartment or discuss a leasing partnership."
+    },
+    "companyName": "Kim Housing Co., Ltd.",
+    "info": [
+      { "title": "Address", "value": "14/5A5 Ky Dong Street, Nhieu Loc Ward, Ho Chi Minh City" },
+      { "title": "Hotline", "value": "Coming soon" },
+      { "title": "Email", "value": "kimhousing.hrad@gmail.com" },
+      { "title": "Business hours", "value": "8:00 AM - 6:00 PM, Monday - Sunday" }
+    ],
+    "formHeading": "Send us a message",
+    "mapTitle": "Kim Housing's location on Google Maps"
+  },
+  "contactForm": {
+    "nameLabel": "Full name",
+    "namePlaceholder": "Jane Doe",
+    "nameError": "Please enter your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "example@email.com",
+    "emailRequiredError": "Please enter your email",
+    "emailInvalidError": "Invalid email address",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "0912 345 678",
+    "phoneRequiredError": "Please enter your phone number",
+    "phoneInvalidError": "Invalid phone number",
+    "messageLabel": "Message",
+    "messagePlaceholder": "What do you need help with?",
+    "messageError": "Please enter a message",
+    "submit": "Send now",
+    "submitting": "Sending...",
+    "successTitle": "Sent successfully",
+    "successDescription": "Thanks for reaching out. The Kim Housing team will get back to you as soon as possible.",
+    "sendAnother": "Send another request"
+  },
+  "gallery": {
+    "hero": {
+      "breadcrumb": "Photo gallery",
+      "title": "Photo Gallery",
+      "description": "Photos of apartment spaces, team activities, and Kim Housing events will be added here soon."
+    },
+    "albums": [
+      { "id": "can-ho", "label": "Apartment spaces", "tiles": 6 },
+      { "id": "doi-ngu", "label": "Team activities", "tiles": 4 },
+      { "id": "su-kien", "label": "Events & handovers", "tiles": 4 }
+    ]
+  },
+  "news": {
+    "hero": {
+      "breadcrumb": "Blog",
+      "title": "Kim Housing Blog",
+      "description": "Our news and rental-experience section is being finalized by the Kim Housing team."
+    },
+    "categoriesSection": {
+      "eyebrow": "Coming soon",
+      "heading": "Categories in the Works",
+      "badge": "Coming soon"
+    },
+    "categories": [
+      { "title": "Rental Tips", "description": "Tips for choosing the right apartment, comparing areas, and budgeting for rent in Ho Chi Minh City." },
+      { "title": "Kim Housing News", "description": "Updates on our activities, new apartment projects, and promotions from Kim Housing." },
+      { "title": "Procedure Guides", "description": "Guides for deposits, contract signing, and temporary residence registration when renting a serviced apartment." }
+    ],
+    "cta": {
+      "heading": "Don't Miss Our First Post",
+      "paragraph": "Contact Kim Housing by email to get notified as soon as the blog officially launches.",
+      "button": "Contact Kim Housing"
+    }
+  },
+  "services": {
+    "hero": {
+      "breadcrumb": "Services",
+      "title": "Kim Housing's Services",
+      "description": "A full-service ecosystem, supporting tenants and landlords throughout the entire rental journey."
+    },
+    "services": [
+      { "title": "Apartment Consulting", "description": "Our consultants listen to your needs, budget, and preferred area to recommend the best-fit serviced apartments, and arrange free in-person viewings." },
+      { "title": "Contract Support", "description": "Standardized deposit and lease-signing procedures, ensuring clear, transparent terms for both tenants and landlords." },
+      { "title": "Apartment Operations Management", "description": "Managing, maintaining, and resolving issues on the landlord's behalf during the rental period, keeping the apartment in top condition." },
+      { "title": "Customer Care", "description": "24/7 support for tenants throughout their stay, receiving and responding to every request as quickly as possible." },
+      { "title": "Landlord Partnerships", "description": "Taking on management and leasing on your behalf, with a commitment to transparent cash flow, optimized occupancy, and legal support throughout the partnership." },
+      { "title": "Residence Registration Support", "description": "Guiding and supporting tenants through temporary residence registration procedures with local authorities, in full compliance with the law." }
+    ],
+    "processSection": {
+      "eyebrow": "How we work together",
+      "heading": "Simple, Clear, Step by Step"
+    },
+    "process": [
+      { "step": "1", "title": "Request received", "description": "Tenants or landlords contact Kim Housing via the website or email." },
+      { "step": "2", "title": "Consultation & survey", "description": "Our consultant proposes the right solution and arranges an apartment viewing or survey." },
+      { "step": "3", "title": "Contract signed", "description": "Deposit and contract-signing procedures completed, clearly and transparently." },
+      { "step": "4", "title": "Ongoing support", "description": "Kim Housing continues to support and care for you throughout the rental period." }
+    ],
+    "cta": {
+      "heading": "Need the Right Service for You?",
+      "paragraph": "Whether you're a tenant looking for an apartment or a landlord looking to partner with us, Kim Housing is ready to help.",
+      "primary": "Find an apartment now",
+      "secondary": "Contact us to partner"
+    }
+  },
+  "privacyPolicy": {
+    "hero": { "breadcrumb": "Privacy policy", "title": "Privacy Policy", "description": "Kim Housing's Privacy Policy" },
+    "sections": {
+      "s1Heading": "I. Definitions & Scope",
+      "s1P1": "This Personal Data Protection Policy sets out the standards for collecting, storing, processing, protecting, and sharing the personal data of users (including tenants and landlord/leasing partners) across Kim Housing's entire data system. As both Data Controller and Data Processor, Kim Housing is committed to strictly complying with Vietnamese data protection law (in particular the 2025 Law on Personal Data Protection and Decree No. 356/2025/ND-CP dated December 31, 2025).",
+      "s2Heading": "II. Detailed Provisions",
+      "s2_1Heading": "1. General principles and consent",
+      "s2_1P1Label": "Free anonymous access: ",
+      "s2_1P1": "Kim Housing keeps its platform open. Users may access and look up serviced apartment information completely free of charge and anonymously, without any requirement to register an account or log in.",
+      "s2_1P2Label": "Principle of consent: ",
+      "s2_1P2": "By actively submitting information through our contact channels (hotline, Zalo OA), registering for a service, or signing transaction forms (Deposit Receipt, Room Transfer Form), users are deemed to have confirmed and consented to Kim Housing collecting and processing their personal data under the terms of this policy.",
+      "s2_2Heading": "2. Categories of data collected",
+      "s2_2Intro": "Personal data is classified as follows:",
+      "s2_2Item1Label": "Technical data (anonymous): ",
+      "s2_2Item1": "The system automatically records non-identifying information such as temporary IP address, device type, operating system, web browser, access time, and general activity history on the website, for the purpose of improving system performance and user experience.",
+      "s2_2Item2Label": "Transaction identification data:",
+      "s2_2Item2aLabel": "Tenants: ",
+      "s2_2Item2a": "Full name, ID card/passport number, mobile phone number, permanent address, bank account information (for preferential support services), number of co-residing household members, and number of vehicles.",
+      "s2_2Item2bLabel": "Lessor (landlord/manager): ",
+      "s2_2Item2b": "Full name, ID card/passport number, phone number, rental building address, and account information for receiving the holding deposit.",
+      "s2_2Item2cLabel": "Sales specialists: ",
+      "s2_2Item2c": "Full name, phone number, and employee ID.",
+      "s2_3Heading": "3. Purpose and scope of information use",
+      "s2_3Intro": "Personal data collected is used only for the following lawful purposes:",
+      "s2_3Item1Label": "Establishing and carrying out transactions: ",
+      "s2_3Item1": "Drafting, cross-checking, and retaining legal transaction records, including the Deposit Receipt, Room Transfer Form, and Transaction Confirmation Form.",
+      "s2_3Item2Label": "Verification and transparency: ",
+      "s2_3Item2": "Verifying the identity of tenants and landlords to prevent financial fraud, fake listings, or deposit scams.",
+      "s2_3Item3Label": "Fulfilling legal obligations: ",
+      "s2_3Item3": "Providing tenants' personal information to the lessor to complete temporary residence/absence registration with local police authorities, as required by residency law.",
+      "s2_3Item4Label": "Customer care: ",
+      "s2_3Item4": "Integrating data to manage loyalty-point accounts on Zalo OA; sending promotional programs and service vouchers from ecosystem partners. Providing contact information implies consent to share limited basic information with these partners to activate offers.",
+      "s2_4Heading": "4. Security and data-transfer commitments (per Article 7, Decree No. 356/2025/ND-CP)",
+      "s2_4P1Label": "No commercialization commitment: ",
+      "s2_4P1": "Kim Housing is committed to fully safeguarding users' personal data. We do not sell or trade personal data to third parties for commercial purposes without the user's written consent.",
+      "s2_4P2Label": "Personal data transfer rules: ",
+      "s2_4P2": "In compliance with Article 7 of Decree No. 356/2025/ND-CP, when transferring users' personal data to a third party (landlord/building manager or ecosystem partner), Kim Housing applies the following measures:",
+      "s2_4Item1Label": "Written transfer agreement: ",
+      "s2_4Item1": "Establishing a clear written agreement/terms with the data recipient (landlord/manager or partner), specifying: the purpose of transfer, the type of data transferred, the data retention period, the legal basis for processing, each party's data-protection responsibilities, responsibility for fulfilling data subjects' rights, and the coordination mechanism in the event of an incident or violation.",
+      "s2_4Item2Label": "Limited purpose and scope of use: ",
+      "s2_4Item2": "The data recipient may only process personal data for the committed transfer purpose, consistent with its registered business line, and may not further transfer it to a fourth party without the consent of both Kim Housing and the data subject.",
+      "s2_4Item3Label": "Transparent consent mechanism: ",
+      "s2_4Item3": "For linked data-sharing activities that generate economic benefit or ancillary services, Kim Housing sets up a clear technical interface or confirmation mechanism so users can give precise, per-service consent.",
+      "s2_4Item4Label": "Legal requests: ",
+      "s2_4Item4": "Providing data upon the written request of police authorities or competent state administrative agencies for residency management purposes.",
+      "s2_5Heading": "5. Storage, protection, and technical security measures",
+      "s2_5P1Label": "Retention period: ",
+      "s2_5P1": "Transaction data is securely stored on internal servers for a maximum of two (2) years from the date the transaction ends, for the purpose of financial reconciliation and resolving any complaints or disputes that may arise. After this period, identifying data is deleted or fully anonymized.",
+      "s2_5P2Label": "Internal protection measures: ",
+      "s2_5P2": "Data is digitized and centrally managed in an internal database with strict access controls. Sales specialists may only access information for the group of customers they are directly responsible for.",
+      "s2_5P3Label": "User's security responsibility: ",
+      "s2_5P3": "Users are responsible for safeguarding their own transaction information and deposit records. Kim Housing is not liable for any loss resulting from a user voluntarily disclosing transaction or account information to a third party outside the system's authority.",
+      "s2_6Heading": "6. Data subject rights and response time",
+      "s2_6Intro": "Users have the full rights of a data subject under Decree No. 356/2025/ND-CP, including:",
+      "s2_6Item1": "The right to request review, updating, or correction of personal information.",
+      "s2_6Item2": "The right to withdraw consent to data processing or request restricted processing.",
+      "s2_6Item3": "The right to request complete deletion of personal data from Kim Housing's internal storage systems.",
+      "s2_6P1Label": "How to submit a request: ",
+      "s2_6P1": "All requests relating to personal data rights may be sent to kimhousing.hrad@gmail.com or submitted in person at the Kim Housing office (14/5A5 Ky Dong Street, Nhieu Loc Ward, Ho Chi Minh City).",
+      "s2_6P2Label": "Response time: ",
+      "s2_6P2": "Kim Housing is committed to verifying identity and fully processing a valid user request within a maximum of 48 working hours of receipt."
+    }
+  }
+}

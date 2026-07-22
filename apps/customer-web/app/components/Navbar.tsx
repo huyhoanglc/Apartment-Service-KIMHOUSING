@@ -2,23 +2,23 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import Button from "@/app/components/ui/Button";
 import { cn } from "@/app/lib/cn";
+import { Link, usePathname } from "@/i18n/navigation";
 
 const NAV_LINKS = [
-  { href: "/", label: "Trang chủ" },
-  { href: "/services", label: "Dịch vụ" },
-  { href: "/about", label: "Về chúng tôi" },
-  { href: "/news", label: "Tin tức" },
-  { href: "/careers", label: "Tuyển dụng" },
-  { href: "/contact", label: "Liên hệ" },
-];
+  { href: "/", key: "home" },
+  { href: "/services", key: "services" },
+  { href: "/about", key: "about" },
+  { href: "/news", key: "news" },
+  { href: "/careers", key: "careers" },
+  { href: "/contact", key: "contact" },
+] as const;
 
 const linkClass = (active: boolean) =>
   cn(
@@ -27,6 +27,7 @@ const linkClass = (active: boolean) =>
   );
 
 export default function Navbar() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
@@ -76,7 +77,7 @@ export default function Navbar() {
               aria-current={isActive(link.href) ? "page" : undefined}
               className={linkClass(isActive(link.href))}
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </nav>
@@ -85,7 +86,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <ThemeToggle />
           <Button href="/contact" size="sm" className="whitespace-nowrap">
-            Liên hệ ngay
+            {t("contactCta")}
           </Button>
         </div>
 
@@ -96,7 +97,7 @@ export default function Navbar() {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             className="flex h-9 w-9 items-center justify-center rounded-md text-white"
-            aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
+            aria-label={mobileOpen ? t("closeMenu") : t("openMenu")}
             aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -122,11 +123,11 @@ export default function Navbar() {
                   aria-current={isActive(link.href) ? "page" : undefined}
                   className={linkClass(isActive(link.href))}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               ))}
               <Button href="/contact" onClick={() => setMobileOpen(false)} className="mt-2 text-center">
-                Liên hệ ngay
+                {t("contactCta")}
               </Button>
             </nav>
           </motion.div>

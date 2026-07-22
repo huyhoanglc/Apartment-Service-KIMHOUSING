@@ -1,7 +1,7 @@
-import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/app/lib/cn";
 import Spinner from "@/app/components/ui/Spinner";
+import { Link } from "@/i18n/navigation";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "outline-invert" | "ghost" | "danger" | "success";
 export type ButtonSize = "sm" | "md" | "lg";
