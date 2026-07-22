@@ -1,5 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Home, Laptop, MessageCircle, Settings, Headset, Phone, User, Users, CheckCircle2 } from "lucide-react";
+import { Home, Laptop, MessageCircle, Settings, Headset, Mail, User, Users, CheckCircle2 } from "lucide-react";
 import HeroCarousel, { type HeroSlide } from "@/app/components/HeroCarousel";
 import AbstractPanel from "@/app/components/AbstractPanel";
 import ContactForm from "@/app/components/ContactForm";
@@ -10,8 +11,14 @@ import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
 
-// Không khai báo metadata riêng ở đây - trang chủ kế thừa title/description
-// mặc định từ app/layout.tsx (layout.template không áp dụng cho page cùng segment gốc).
+// title/description không khai báo lại ở đây - trang chủ kế thừa default title/description
+// từ app/layout.tsx (title.template không áp dụng cho page cùng segment gốc). Chỉ khai báo
+// canonical + openGraph riêng cho route "/".
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 const FOUNDING_DATE = "01/01/2026";
 
@@ -415,14 +422,15 @@ export default function HomePage() {
             <h3 className="text-lg font-semibold text-navy dark:text-white">Kết nối nhanh</h3>
             <div className="mt-4 space-y-5 border-t border-navy/10 pt-4 dark:border-white/10">
               <p className="text-sm text-navy/60 dark:text-white/60">
-                Cần hỗ trợ ngay? Gọi hotline hoặc chat Zalo với đội ngũ tư vấn Kim Housing.
+                Cần hỗ trợ ngay? Gửi email cho đội ngũ tư vấn Kim Housing.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Button href="tel:0394008700" variant="outline" icon={<Phone size={16} strokeWidth={2} />}>
-                  Gọi hotline
-                </Button>
-                <Button href="https://zalo.me/0394008700" variant="outline">
-                  Chat Zalo
+                <Button
+                  href="mailto:kimhousing.hrad@gmail.com"
+                  variant="outline"
+                  icon={<Mail size={16} strokeWidth={2} />}
+                >
+                  Gửi email
                 </Button>
               </div>
               <Link

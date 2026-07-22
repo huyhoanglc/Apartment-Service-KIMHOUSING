@@ -7,10 +7,15 @@ import Badge from "@/app/components/ui/Badge";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Blog";
+const DESCRIPTION = "Chuyên mục tin tức, kinh nghiệm thuê nhà và hướng dẫn thủ tục của Kim Housing.";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Chuyên mục tin tức, kinh nghiệm thuê nhà và hướng dẫn thủ tục của Kim Housing.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/news" }),
 };
 
 const CATEGORIES = [

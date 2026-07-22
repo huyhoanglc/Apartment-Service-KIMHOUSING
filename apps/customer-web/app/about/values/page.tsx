@@ -6,11 +6,16 @@ import Card from "@/app/components/ui/Card";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Giá trị cốt lõi";
+const DESCRIPTION =
+  "Minh bạch, tận tâm, chuyên nghiệp và đổi mới - những giá trị cốt lõi dẫn dắt mọi hoạt động của Kim Housing.";
 
 export const metadata: Metadata = {
-  title: "Giá trị cốt lõi",
-  description:
-    "Minh bạch, tận tâm, chuyên nghiệp và đổi mới - những giá trị cốt lõi dẫn dắt mọi hoạt động của Kim Housing.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/about/values" }),
 };
 
 const CORE_VALUES = [

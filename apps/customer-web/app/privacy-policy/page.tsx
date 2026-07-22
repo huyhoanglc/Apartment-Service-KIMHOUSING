@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import PageHero from "@/app/components/PageHero";
 import Section from "@/app/components/ui/Section";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Chính sách bảo mật";
+const DESCRIPTION =
+  "Chính sách Bảo mật Thông tin Cá nhân của Kim Housing - quy định thu thập, lưu trữ, xử lý, bảo vệ và chia sẻ thông tin cá nhân của khách thuê và đối tác.";
 
 export const metadata: Metadata = {
-  title: "Chính sách bảo mật",
-  description:
-    "Chính sách Bảo mật Thông tin Cá nhân của Kim Housing - quy định thu thập, lưu trữ, xử lý, bảo vệ và chia sẻ thông tin cá nhân của khách thuê và đối tác.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/privacy-policy" }),
 };
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
@@ -182,9 +187,8 @@ export default function ChinhSachBaoMatPage() {
           </ul>
           <P>
             <span className="font-semibold text-navy dark:text-white">Quy trình tiếp nhận: </span>
-            Mọi yêu cầu liên quan đến quyền dữ liệu cá nhân được gửi qua Hotline hỗ trợ 0394-008-700, kênh Zalo OA
-            chính thức, hoặc trực tiếp tại văn phòng Kim Housing (14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP. Hồ Chí
-            Minh).
+            Mọi yêu cầu liên quan đến quyền dữ liệu cá nhân được gửi qua email kimhousing.hrad@gmail.com hoặc trực
+            tiếp tại văn phòng Kim Housing (14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP. Hồ Chí Minh).
           </P>
           <P>
             <span className="font-semibold text-navy dark:text-white">Thời gian phản hồi: </span>

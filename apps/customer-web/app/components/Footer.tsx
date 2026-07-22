@@ -61,8 +61,8 @@ export default function Footer() {
             />
             <p className="mt-4 text-sm font-semibold text-white">Công Ty TNHH MTV KIM Housing</p>
             <p className="mt-3 text-sm text-white/60">Địa chỉ: 14/5A5 Đường Kỳ Đồng, Phường Nhiêu Lộc, TP Hồ Chí Minh</p>
-            <p className="text-sm text-white/60">Hotline: 0394-008-700 (Mr. Quang)</p>
-            <p className="text-sm text-white/60">Email: kimhousinghr@gmail.com</p>
+            <p className="text-sm text-white/60">Hotline: Đang cập nhật</p>
+            <p className="text-sm text-white/60">Email: kimhousing.hrad@gmail.com</p>
             <div className="mt-4 flex gap-2">
               {SOCIAL_LINKS.map((social) => (
                 <SocialIcon key={social.label} {...social} />

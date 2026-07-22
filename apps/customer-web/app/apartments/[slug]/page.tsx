@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getRoomBySlug, type RoomListItem } from "@/app/lib/api";
 import Badge from "@/app/components/ui/Badge";
+import { SITE_NAME } from "@/app/lib/site";
 
 const ROOM_TYPE_LABEL: Record<RoomListItem["roomType"], string> = {
   STUDIO: "Studio",
@@ -23,14 +24,37 @@ export async function generateMetadata({
   const room = await getRoomBySlug(slug).catch(() => null);
 
   if (!room) {
-    return { title: "Không tìm thấy phòng" };
+    return { title: "Không tìm thấy phòng", robots: { index: false, follow: false } };
   }
 
+  const title = `Phòng ${room.code} - ${room.apartment.district}`;
+  const description = `${ROOM_TYPE_LABEL[room.roomType]}, ${room.area}m², giá ${room.publicPrice.toLocaleString(
+    "vi-VN"
+  )}đ/tháng tại ${room.apartment.district}.`;
+  const path = `/apartments/${room.slug}`;
+  const roomImage = room.media.find((m) => m.type === "IMAGE")?.url;
+
   return {
-    title: `Phòng ${room.code} - ${room.apartment.district}`,
-    description: `${ROOM_TYPE_LABEL[room.roomType]}, ${room.area}m², giá ${room.publicPrice.toLocaleString(
-      "vi-VN"
-    )}đ/tháng tại ${room.apartment.district}.`,
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      locale: "vi_VN",
+      siteName: SITE_NAME,
+      title,
+      description,
+      url: path,
+      images: roomImage
+        ? [{ url: roomImage, alt: title }]
+        : [{ url: "/Logo_navbar.png", width: 468, height: 196, alt: SITE_NAME }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [roomImage ?? "/Logo_navbar.png"],
+    },
   };
 }
 
@@ -65,7 +89,7 @@ export default async function RoomDetailPage({
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 p-6">
         {room.media.length > 0 && (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {room.media.map((m) => (
+            {room.media.map((m, i) => (
               <div
                 key={m.id}
                 className="relative aspect-square overflow-hidden rounded-input bg-navy/5 dark:bg-white/5"
@@ -73,10 +97,11 @@ export default async function RoomDetailPage({
                 {m.type === "IMAGE" ? (
                   <Image
                     src={m.url}
-                    alt={`Phòng ${room.code}`}
+                    alt={`${ROOM_TYPE_LABEL[room.roomType]} phòng ${room.code} tại ${room.apartment.district} - ảnh ${i + 1}`}
                     fill
                     sizes="(min-width: 640px) 33vw, 50vw"
                     className="object-cover"
+                    priority={i === 0}
                   />
                 ) : (
                   <video src={m.url} controls className="h-full w-full object-cover" />

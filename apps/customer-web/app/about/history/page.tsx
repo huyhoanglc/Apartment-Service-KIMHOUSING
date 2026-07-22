@@ -3,10 +3,15 @@ import AbstractPanel from "@/app/components/AbstractPanel";
 import PageHero from "@/app/components/PageHero";
 import Section from "@/app/components/ui/Section";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Lịch sử hình thành";
+const DESCRIPTION = "Hành trình hình thành và ra mắt của Kim Housing - thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM.";
 
 export const metadata: Metadata = {
-  title: "Lịch sử hình thành",
-  description: "Hành trình hình thành và ra mắt của Kim Housing - thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/about/history" }),
 };
 
 const MILESTONES = [

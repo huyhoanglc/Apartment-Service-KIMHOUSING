@@ -8,11 +8,16 @@ import Badge from "@/app/components/ui/Badge";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Tuyển dụng";
+const DESCRIPTION =
+  "Cơ hội nghề nghiệp tại Kim Housing - môi trường làm việc năng động, chế độ đãi ngộ cạnh tranh cho các vị trí tư vấn, kinh doanh và vận hành.";
 
 export const metadata: Metadata = {
-  title: "Tuyển dụng",
-  description:
-    "Cơ hội nghề nghiệp tại Kim Housing - môi trường làm việc năng động, chế độ đãi ngộ cạnh tranh cho các vị trí tư vấn, kinh doanh và vận hành.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/careers" }),
 };
 
 const BENEFITS = [
@@ -101,10 +106,10 @@ export default function TuyenDungPage() {
               Kim Housing luôn chào đón những ứng viên tiềm năng cho các vị trí tư vấn viên, chuyên viên kinh doanh và
               vận hành căn hộ. Gửi CV cho chúng tôi để được liên hệ ngay khi có vị trí phù hợp.
             </p>
-            <Button href="mailto:kimhousinghr@gmail.com?subject=Ứng%20tuyển%20vào%20Kim%20Housing" className="mt-6">
+            <Button href="mailto:kimhousing.hrad@gmail.com?subject=Ứng%20tuyển%20vào%20Kim%20Housing" className="mt-6">
               Gửi CV ứng tuyển
             </Button>
-            <p className="mt-3 text-xs text-navy/50 dark:text-white/50">kimhousinghr@gmail.com</p>
+            <p className="mt-3 text-xs text-navy/50 dark:text-white/50">kimhousing.hrad@gmail.com</p>
           </Card>
         </Reveal>
       </Section>

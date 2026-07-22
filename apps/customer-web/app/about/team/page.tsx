@@ -4,11 +4,16 @@ import PageHero from "@/app/components/PageHero";
 import Section from "@/app/components/ui/Section";
 import Badge from "@/app/components/ui/Badge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Đội ngũ nhân sự";
+const DESCRIPTION =
+  "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi của Kim Housing - nhiều năm kinh nghiệm trong lĩnh vực sale căn hộ dịch vụ tại TP. Hồ Chí Minh.";
 
 export const metadata: Metadata = {
-  title: "Đội ngũ nhân sự",
-  description:
-    "Đội ngũ sáng lập và hơn 30 nhân sự cốt lõi của Kim Housing - nhiều năm kinh nghiệm trong lĩnh vực sale căn hộ dịch vụ tại TP. Hồ Chí Minh.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/about/team" }),
 };
 
 export default function DoiNguNhanSuPage() {

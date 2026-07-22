@@ -3,10 +3,15 @@ import AbstractPanel from "@/app/components/AbstractPanel";
 import PageHero from "@/app/components/PageHero";
 import Section from "@/app/components/ui/Section";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Thư viện ảnh";
+const DESCRIPTION = "Album ảnh không gian căn hộ, hoạt động đội ngũ và sự kiện của Kim Housing.";
 
 export const metadata: Metadata = {
-  title: "Thư viện ảnh",
-  description: "Album ảnh không gian căn hộ, hoạt động đội ngũ và sự kiện của Kim Housing.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/gallery" }),
 };
 
 const ALBUMS = [

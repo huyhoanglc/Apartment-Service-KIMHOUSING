@@ -6,10 +6,15 @@ import Section from "@/app/components/ui/Section";
 import Card from "@/app/components/ui/Card";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Liên hệ";
+const DESCRIPTION = "Liên hệ Kim Housing để được tư vấn thuê căn hộ dịch vụ hoặc hợp tác cho thuê tại TP.HCM.";
 
 export const metadata: Metadata = {
-  title: "Liên hệ",
-  description: "Liên hệ Kim Housing để được tư vấn thuê căn hộ dịch vụ hoặc hợp tác cho thuê tại TP.HCM.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/contact" }),
 };
 
 const CONTACT_INFO = [
@@ -20,14 +25,13 @@ const CONTACT_INFO = [
   },
   {
     title: "Hotline",
-    value: "0394-008-700 (Mr. Quang)",
-    href: "tel:0394008700",
+    value: "Đang cập nhật",
     icon: Phone,
   },
   {
     title: "Email",
-    value: "kimhousinghr@gmail.com",
-    href: "mailto:kimhousinghr@gmail.com",
+    value: "kimhousing.hrad@gmail.com",
+    href: "mailto:kimhousing.hrad@gmail.com",
     icon: Mail,
   },
   {

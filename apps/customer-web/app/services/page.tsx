@@ -7,11 +7,16 @@ import Card from "@/app/components/ui/Card";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Dịch vụ";
+const DESCRIPTION =
+  "Hệ sinh thái dịch vụ trọn gói của Kim Housing: tư vấn thuê nhà, quản lý vận hành, chăm sóc khách hàng và hợp tác cùng chủ nhà.";
 
 export const metadata: Metadata = {
-  title: "Dịch vụ",
-  description:
-    "Hệ sinh thái dịch vụ trọn gói của Kim Housing: tư vấn thuê nhà, quản lý vận hành, chăm sóc khách hàng và hợp tác cùng chủ nhà.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/services" }),
 };
 
 const SERVICES = [

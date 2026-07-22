@@ -11,11 +11,16 @@ import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
 import { cn } from "@/app/lib/cn";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Về Kim Housing";
+const DESCRIPTION =
+  "Kim Housing là thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM, đồng hành cùng khách thuê và chủ nhà bằng sự minh bạch, tận tâm và chuyên nghiệp.";
 
 export const metadata: Metadata = {
-  title: "Về Kim Housing",
-  description:
-    "Kim Housing là thương hiệu căn hộ dịch vụ cho thuê tại TP.HCM, đồng hành cùng khách thuê và chủ nhà bằng sự minh bạch, tận tâm và chuyên nghiệp.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/about" }),
 };
 
 const ABOUT_LINKS = [

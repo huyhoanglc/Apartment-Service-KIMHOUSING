@@ -8,11 +8,16 @@ import Badge from "@/app/components/ui/Badge";
 import Button from "@/app/components/ui/Button";
 import IconBadge from "@/app/components/ui/IconBadge";
 import Reveal from "@/app/components/ui/Reveal";
+import { pageMetadata } from "@/app/lib/site";
+
+const TITLE = "Trách nhiệm xã hội";
+const DESCRIPTION =
+  "Định hướng trách nhiệm xã hội của Kim Housing với khách thuê, đối tác chủ nhà, đội ngũ nhân sự và cộng đồng tại TP.HCM.";
 
 export const metadata: Metadata = {
-  title: "Trách nhiệm xã hội",
-  description:
-    "Định hướng trách nhiệm xã hội của Kim Housing với khách thuê, đối tác chủ nhà, đội ngũ nhân sự và cộng đồng tại TP.HCM.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/about/social-responsibility" }),
 };
 
 const COMMITMENTS = [

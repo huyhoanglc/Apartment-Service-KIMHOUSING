@@ -27,7 +27,7 @@ export default function RoomCard({ room }: { room: RoomListItem }) {
         {thumbnail ? (
           <Image
             src={thumbnail.url}
-            alt={`Phòng ${room.code}`}
+            alt={`${ROOM_TYPE_LABEL[room.roomType]} ${room.area}m² tại ${room.apartment.district} - Kim Housing`}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"

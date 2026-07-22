@@ -1,14 +1,11 @@
 "use client";
 
-import { ArrowUp, MessageCircle, Phone } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 
-const HOTLINE_DISPLAY = "0394 008 700";
-const HOTLINE_TEL = "tel:0394008700";
-// Chưa có link Zalo OA riêng - dùng link chat trực tiếp theo số hotline (định dạng zalo.me/<số
-// điện thoại>), đổi sang link OA chính thức khi có.
-const ZALO_HREF = "https://zalo.me/0394008700";
+// Nút Gọi hotline / Chat Zalo đã tạm ẩn - hotline chưa có số chính thức ("Đang cập nhật") và
+// chưa có link Zalo OA riêng. Bật lại (thêm href tel:/zalo.me thật) khi có thông tin chính thức.
 
 const buttonBase =
   "flex h-12 w-12 items-center justify-center rounded-full shadow-soft-lg transition-transform duration-300 hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-to focus-visible:ring-offset-2";
@@ -41,24 +38,6 @@ export default function FloatingActions() {
           </motion.button>
         )}
       </AnimatePresence>
-
-      <a
-        href={ZALO_HREF}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat Zalo với Kim Housing"
-        className={`${buttonBase} bg-[#0068FF] text-white`}
-      >
-        <MessageCircle size={22} strokeWidth={2} />
-      </a>
-
-      <a
-        href={HOTLINE_TEL}
-        aria-label={`Gọi hotline ${HOTLINE_DISPLAY}`}
-        className={`${buttonBase} animate-pulse-ring bg-emerald-500 text-white`}
-      >
-        <Phone size={20} strokeWidth={2} />
-      </a>
     </div>
   );
 }
