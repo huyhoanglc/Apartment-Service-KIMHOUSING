@@ -1,305 +1,280 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
+import { ChevronLeft, ChevronRight, Download, FileSpreadsheet, FileText, Plus } from "lucide-react";
 import { apiFetch } from "@/app/lib/api";
+import { getUser } from "@/app/lib/auth";
+import { useToast } from "@/app/components/ToastProvider";
+import { useConfirm } from "@/app/components/ConfirmProvider";
 import { usePageTitle } from "@/app/components/PageTitleContext";
-import { HCMC_DISTRICTS } from "@/app/lib/hcmcDistricts";
-import RoomCard, { type RoomListItem, type RoomStatus, type RoomType } from "./RoomCard";
-import PriceRangeSlider from "./PriceRangeSlider";
-
-type ApartmentType = "APARTMENT" | "SERVICED_APARTMENT";
-
-interface Filters {
-  district: string;
-  roomType: RoomType | "";
-  apartmentType: ApartmentType | "";
-  status: RoomStatus | "";
-  priceRange: [number, number];
-}
-
-const PRICE_MIN = 0;
-const PRICE_MAX = 30_000_000;
-const PRICE_STEP = 500_000;
-const PAGE_SIZE = 20;
-
-const DEFAULT_FILTERS: Filters = {
-  district: "",
-  roomType: "",
-  apartmentType: "",
-  status: "",
-  priceRange: [PRICE_MIN, PRICE_MAX],
-};
-
-const inputClass =
-  "w-full rounded-md border border-navy/15 px-3 py-2 text-sm text-navy outline-none transition-colors duration-300 focus:border-gold";
-const labelClass = "mb-1 block text-xs font-medium text-navy/60";
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-      <circle cx="9" cy="9" r="6" />
-      <path d="m17 17-3.5-3.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ChevronIcon({ direction }: { direction: "left" | "right" }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <path
-        d={direction === "left" ? "M12.5 4.5 6 10l6.5 5.5" : "M7.5 4.5 14 10l-6.5 5.5"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function buildQuery(filters: Filters, page: number): string {
-  const params = new URLSearchParams();
-  if (filters.district) params.set("district", filters.district);
-  if (filters.roomType) params.set("roomType", filters.roomType);
-  if (filters.apartmentType) params.set("apartmentType", filters.apartmentType);
-  if (filters.status) params.set("status", filters.status);
-  if (filters.priceRange[0] > PRICE_MIN) params.set("minPrice", String(filters.priceRange[0]));
-  if (filters.priceRange[1] < PRICE_MAX) params.set("maxPrice", String(filters.priceRange[1]));
-  params.set("page", String(page));
-  params.set("pageSize", String(PAGE_SIZE));
-  return `?${params.toString()}`;
-}
+import { Button } from "@/app/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/components/ui/dropdown-menu";
+import EmptyState from "@/app/components/dashboard/EmptyState";
+import ErrorState from "@/app/components/dashboard/ErrorState";
+import { useInventoryStore, PAGE_SIZE } from "@/app/store/useInventoryStore";
+import { useRooms } from "@/app/hooks/useRooms";
+import { refineRooms, sortRooms } from "@/app/lib/filterRooms";
+import { exportRoomsToExcel, exportRoomsToPdf } from "@/app/lib/exportRooms";
+import FilterBar from "./FilterBar";
+import SortMenu from "./SortMenu";
+import RoomCard, { type RoomListItem, type RoomStatus } from "./RoomCard";
+import RoomCardSkeleton from "./RoomCardSkeleton";
+import RoomTable from "./RoomTable";
+import RoomQuickViewDialog from "./RoomQuickViewDialog";
+import BulkActionBar from "./BulkActionBar";
+import RoomWizardSheet from "./RoomWizardSheet";
 
 export default function ApartmentsPage() {
-  usePageTitle("Rổ Hàng Kim Housing");
+  usePageTitle("Kho rổ hàng");
+  const { showToast } = useToast();
+  const confirmDialog = useConfirm();
+  const queryClient = useQueryClient();
+  const isAdmin = getUser()?.role === "ADMIN";
 
-  const [rooms, setRooms] = useState<RoomListItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const filters = useInventoryStore((s) => s.filters);
+  const page = useInventoryStore((s) => s.page);
+  const setPage = useInventoryStore((s) => s.setPage);
+  const sortField = useInventoryStore((s) => s.sortField);
+  const sortDir = useInventoryStore((s) => s.sortDir);
+  const setSort = useInventoryStore((s) => s.setSort);
+  const viewMode = useInventoryStore((s) => s.viewMode);
+  const selectedIds = useInventoryStore((s) => s.selectedIds);
+  const toggleSelected = useInventoryStore((s) => s.toggleSelected);
+  const setSelected = useInventoryStore((s) => s.setSelected);
+  const clearSelected = useInventoryStore((s) => s.clearSelected);
 
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [priceRangeUi, setPriceRangeUi] = useState<[number, number]>(DEFAULT_FILTERS.priceRange);
-  const [page, setPage] = useState(1);
+  const [quickViewRoom, setQuickViewRoom] = useState<RoomListItem | null>(null);
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [bulkBusy, setBulkBusy] = useState(false);
 
-  function updateFilters(updater: (f: Filters) => Filters) {
-    setFilters(updater);
-    setPage(1);
+  const { data, isLoading, isFetching, isError, error, refetch } = useRooms(filters);
+
+  const filteredRooms = useMemo(() => refineRooms(data?.rows ?? [], filters), [data, filters]);
+  const sortedRooms = useMemo(() => sortRooms(filteredRooms, sortField, sortDir), [filteredRooms, sortField, sortDir]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedRooms.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const visibleRooms = sortedRooms.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  function invalidateRooms() {
+    queryClient.invalidateQueries({ queryKey: ["rooms"] });
   }
 
-  // Thanh kéo giá cập nhật UI ngay lập tức, nhưng chỉ áp filter thật (gọi API) sau khi
-  // người dùng dừng kéo ~400ms, tránh gọi API liên tục theo từng pixel kéo.
-  useEffect(() => {
-    const t = setTimeout(() => {
-      updateFilters((f) => ({ ...f, priceRange: priceRangeUi }));
-    }, 400);
-    return () => clearTimeout(t);
-  }, [priceRangeUi]);
+  async function handleDeleteRoom(room: RoomListItem) {
+    const ok = await confirmDialog({
+      title: "Xoá phòng?",
+      description: `Phòng ${room.code} sẽ bị xoá vĩnh viễn khỏi hệ thống.`,
+      confirmText: "Xoá",
+      danger: true,
+    });
+    if (!ok) return;
 
-  useEffect(() => {
-    let ignore = false;
-
-    (async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await apiFetch(`/api/rooms${buildQuery(filters, page)}`);
-        const result = await res.json();
-        if (ignore) return;
-
-        if (!res.ok) {
-          setError(result.message ?? "Không tải được danh sách phòng");
-          return;
-        }
-        setRooms(result.data ?? []);
-        setTotal(result.pagination?.total ?? 0);
-        setTotalPages(result.pagination?.totalPages ?? 1);
-      } catch {
-        if (!ignore) setError("Không thể kết nối đến máy chủ");
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    })();
-
-    return () => {
-      ignore = true;
-    };
-  }, [filters, page]);
-
-  function handleClearFilters() {
-    setFilters(DEFAULT_FILTERS);
-    setPriceRangeUi(DEFAULT_FILTERS.priceRange);
-    setSearch("");
-    setPage(1);
+    const res = await apiFetch(`/api/rooms/${room.id}`, { method: "DELETE" });
+    if (!res.ok) {
+      showToast("Xoá phòng thất bại", "error");
+      return;
+    }
+    showToast("Đã xoá phòng", "success");
+    setSelected(selectedIds.filter((id) => id !== room.id));
+    invalidateRooms();
   }
 
-  const keyword = search.trim().toLowerCase();
-  const visibleRooms = keyword
-    ? rooms.filter((room) => {
-        const haystack =
-          `${room.apartment.houseNumber} ${room.apartment.street} ${room.apartment.district} ${room.code}`.toLowerCase();
-        return haystack.includes(keyword);
-      })
-    : rooms;
+  async function handleBulkChangeStatus(status: RoomStatus) {
+    setBulkBusy(true);
+    try {
+      const results = await Promise.allSettled(
+        selectedIds.map((id) => apiFetch(`/api/rooms/${id}`, { method: "PUT", body: JSON.stringify({ status }) }))
+      );
+      const failed = results.filter((r) => r.status === "rejected" || (r.status === "fulfilled" && !r.value.ok)).length;
+      if (failed > 0) showToast(`Đổi trạng thái thất bại cho ${failed} phòng`, "error");
+      else showToast(`Đã đổi trạng thái ${selectedIds.length} phòng`, "success");
+      clearSelected();
+      invalidateRooms();
+    } finally {
+      setBulkBusy(false);
+    }
+  }
+
+  async function handleBulkDelete() {
+    const ok = await confirmDialog({
+      title: `Xoá ${selectedIds.length} phòng?`,
+      description: "Các phòng đã chọn sẽ bị xoá vĩnh viễn khỏi hệ thống.",
+      confirmText: "Xoá tất cả",
+      danger: true,
+    });
+    if (!ok) return;
+
+    setBulkBusy(true);
+    try {
+      const results = await Promise.allSettled(selectedIds.map((id) => apiFetch(`/api/rooms/${id}`, { method: "DELETE" })));
+      const failed = results.filter((r) => r.status === "rejected" || (r.status === "fulfilled" && !r.value.ok)).length;
+      if (failed > 0) showToast(`Xoá thất bại ${failed} phòng`, "error");
+      else showToast(`Đã xoá ${selectedIds.length} phòng`, "success");
+      clearSelected();
+      invalidateRooms();
+    } finally {
+      setBulkBusy(false);
+    }
+  }
+
+  function handleBulkAssignSale() {
+    showToast("Tính năng gán phòng cho sale khác đang được phát triển", "info");
+  }
+
+  function handleToggleSelectAll() {
+    const pageIds = visibleRooms.map((r) => r.id);
+    const allSelected = pageIds.every((id) => selectedIds.includes(id));
+    setSelected(allSelected ? selectedIds.filter((id) => !pageIds.includes(id)) : [...new Set([...selectedIds, ...pageIds])]);
+  }
+
+  function handleExportExcel() {
+    if (sortedRooms.length === 0) return;
+    exportRoomsToExcel(sortedRooms);
+    showToast("Đã xuất file Excel", "success");
+  }
+
+  function handleExportPdf() {
+    if (sortedRooms.length === 0) return;
+    exportRoomsToPdf(sortedRooms);
+    showToast("Đã xuất file PDF", "success");
+  }
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-end gap-4">
-        <Link
-          href="/dashboard/apartments/new"
-          className="text-sm text-navy/50 underline transition-colors duration-300 hover:text-gold-to"
-        >
+    <div className="flex flex-1 flex-col">
+      <div className="mb-6 flex items-center justify-end gap-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" disabled={sortedRooms.length === 0}>
+              <Download className="h-4 w-4" /> Xuất file
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleExportExcel}>
+              <FileSpreadsheet className="h-4 w-4" /> Xuất Excel (.xlsx)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportPdf}>
+              <FileText className="h-4 w-4" /> Xuất PDF
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Link href="/dashboard/apartments/new" className="text-sm text-navy/50 underline transition-colors duration-300 hover:text-gold-to">
           Chỉ tạo dự án
         </Link>
-        <Link
-          href="/dashboard/rooms/new"
-          className="rounded-full bg-linear-to-r from-gold-from via-gold-via to-gold-to px-4 py-2 text-sm font-semibold text-navy shadow-sm transition-all duration-300 hover:shadow-md hover:brightness-105"
-        >
-          + Thêm Phòng
-        </Link>
+        <Button onClick={() => setWizardOpen(true)}>
+          <Plus className="h-4 w-4" /> Thêm Phòng
+        </Button>
       </div>
 
-      <div className="mb-6 space-y-4 rounded-lg border border-navy/10 bg-white p-5 shadow-sm">
-        <div className="relative">
-          <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-navy/40">
-            <SearchIcon />
-          </span>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo địa chỉ hoặc mã phòng..."
-            className={`${inputClass} pl-9`}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div>
-            <label className={labelClass}>Quận</label>
-            <select
-              value={filters.district}
-              onChange={(e) => updateFilters((f) => ({ ...f, district: e.target.value }))}
-              className={inputClass}
-            >
-              <option value="">Tất cả</option>
-              {HCMC_DISTRICTS.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Dạng phòng</label>
-            <select
-              value={filters.roomType}
-              onChange={(e) => updateFilters((f) => ({ ...f, roomType: e.target.value as RoomType | "" }))}
-              className={inputClass}
-            >
-              <option value="">Tất cả</option>
-              <option value="STUDIO">Studio</option>
-              <option value="DUPLEX">Duplex</option>
-              <option value="ONE_BEDROOM">1 Phòng Ngủ</option>
-              <option value="TWO_BEDROOM">2 Phòng Ngủ</option>
-              <option value="THREE_BEDROOM">3 Phòng Ngủ</option>
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Dạng Căn Hộ</label>
-            <select
-              value={filters.apartmentType}
-              onChange={(e) =>
-                updateFilters((f) => ({ ...f, apartmentType: e.target.value as ApartmentType | "" }))
-              }
-              className={inputClass}
-            >
-              <option value="">Tất cả</option>
-              <option value="APARTMENT">Chung cư</option>
-              <option value="SERVICED_APARTMENT">Căn hộ dịch vụ</option>
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Trạng thái</label>
-            <select
-              value={filters.status}
-              onChange={(e) => updateFilters((f) => ({ ...f, status: e.target.value as RoomStatus | "" }))}
-              className={inputClass}
-            >
-              <option value="">Tất cả</option>
-              <option value="AVAILABLE">Còn Trống</option>
-              <option value="ABOUT_TO_VACATE">Sắp Trống</option>
-              <option value="RENTED">Đã lock</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label className={labelClass}>Khoảng giá</label>
-          <PriceRangeSlider
-            min={PRICE_MIN}
-            max={PRICE_MAX}
-            step={PRICE_STEP}
-            value={priceRangeUi}
-            onChange={setPriceRangeUi}
-          />
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={handleClearFilters}
-            className="rounded-full border border-navy/15 px-5 py-2 text-sm font-medium text-navy transition-colors duration-300 hover:border-gold hover:text-gold-to"
-          >
-            Xoá lọc
-          </button>
-        </div>
+      <div className="mb-6">
+        <FilterBar />
       </div>
 
-      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
-      {loading && <p className="text-sm text-navy/60">Đang tải...</p>}
+      {isError && <ErrorState description={error instanceof Error ? error.message : undefined} onRetry={() => refetch()} />}
 
-      {!loading && !error && visibleRooms.length === 0 && (
-        <p className="text-sm text-navy/60">Không tìm thấy phòng phù hợp.</p>
+      {!isError && isLoading && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <RoomCardSkeleton key={i} />
+          ))}
+        </div>
       )}
 
-      {!loading && visibleRooms.length > 0 && (
+      {!isError && !isLoading && sortedRooms.length === 0 && (
+        <EmptyState
+          title="Không tìm thấy phòng phù hợp"
+          description="Thử điều chỉnh bộ lọc hoặc thêm phòng mới vào kho rổ hàng."
+          action={
+            <Button variant="outline" onClick={() => useInventoryStore.getState().clearFilters()}>
+              Xoá bộ lọc
+            </Button>
+          }
+        />
+      )}
+
+      {!isError && !isLoading && sortedRooms.length > 0 && (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {visibleRooms.map((room) => (
-              <RoomCard key={room.id} room={room} />
-            ))}
+          <div className="mb-3 flex items-center justify-between gap-3 text-sm text-navy/50">
+            <span>
+              {sortedRooms.length} phòng phù hợp {isFetching && "· đang cập nhật..."}
+            </span>
+            <SortMenu />
           </div>
+
+          {viewMode === "grid" ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {visibleRooms.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  selected={selectedIds.includes(room.id)}
+                  onToggleSelect={toggleSelected}
+                  onQuickView={setQuickViewRoom}
+                  onDelete={isAdmin ? handleDeleteRoom : undefined}
+                />
+              ))}
+            </div>
+          ) : (
+            <RoomTable
+              rooms={visibleRooms}
+              selectedIds={selectedIds}
+              onToggleSelect={toggleSelected}
+              onToggleSelectAll={handleToggleSelectAll}
+              sortField={sortField}
+              sortDir={sortDir}
+              onSort={setSort}
+              onQuickView={setQuickViewRoom}
+              onDelete={isAdmin ? handleDeleteRoom : undefined}
+              canDelete={isAdmin}
+            />
+          )}
 
           {totalPages > 1 && (
             <div className="mt-6 flex items-center justify-center gap-4">
               <button
                 type="button"
-                disabled={page <= 1}
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage <= 1}
+                onClick={() => setPage(Math.max(1, currentPage - 1))}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-navy/15 text-navy transition-colors duration-200 hover:border-gold hover:text-gold-to disabled:opacity-30"
                 aria-label="Trang trước"
               >
-                <ChevronIcon direction="left" />
+                <ChevronLeft className="h-4 w-4" />
               </button>
               <span className="text-sm text-navy/60">
-                Trang {page} / {totalPages} · {total} phòng
+                Trang {currentPage} / {totalPages} · {sortedRooms.length} phòng
               </span>
               <button
                 type="button"
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-navy/15 text-navy transition-colors duration-200 hover:border-gold hover:text-gold-to disabled:opacity-30"
                 aria-label="Trang sau"
               >
-                <ChevronIcon direction="right" />
+                <ChevronRight className="h-4 w-4" />
               </button>
             </div>
           )}
         </>
       )}
+
+      <BulkActionBar
+        count={selectedIds.length}
+        onClear={clearSelected}
+        onChangeStatus={handleBulkChangeStatus}
+        onAssignSale={handleBulkAssignSale}
+        onDelete={handleBulkDelete}
+        canDelete={isAdmin}
+        busy={bulkBusy}
+      />
+
+      <RoomQuickViewDialog room={quickViewRoom} onOpenChange={(open) => !open && setQuickViewRoom(null)} />
+      <RoomWizardSheet open={wizardOpen} onOpenChange={setWizardOpen} onCreated={invalidateRooms} />
     </div>
   );
 }
