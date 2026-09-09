@@ -1,9 +1,31 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const app = express();
-app.use(cors());
+app.use(helmet());
+
+// CORS_ORIGIN: danh sách domain FE thật (phân tách bằng dấu phẩy), vd:
+// "https://admin.kimhousing.vn,https://kimhousing.vn". Để trống thì mở cho mọi origin
+// (giữ hành vi cũ) - nên set khi lên production để tránh domain lạ gọi thẳng API.
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use(
+  cors(
+    allowedOrigins.length > 0
+      ? {
+          origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+            callback(new Error('Origin không được phép truy cập API này'));
+          },
+        }
+      : undefined
+  )
+);
 app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth.routes'));
